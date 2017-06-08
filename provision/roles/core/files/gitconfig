@@ -1,5 +1,21 @@
 [user]
-	name = Mark Mandel
-	email = mark.mandel@gmail.com
+	name = Ezra Parker
+	email = ezra@cfgrok.com
+[diff]
+	renames = true
+	tool = meld
+[difftool]
+	prompt = false
+[merge]
+	tool = meld
+[mergetool]
+	keepBackup = false
+	prompt = false
+[alias]
+	oldest-ancestor = !zsh -c 'diff --old-line-format= --new-line-format= <(git rev-list --first-parent \"${1:-master}\") <(git rev-list --first-parent \"${2:-HEAD}\") | head -1' -
+	branchdiff = !bash -c \"git diff `git oldest-ancestor`..\"
+	branchlog = !bash -c \"git log `git oldest-ancestor`..\"
 [push]
 	default = tracking
+[core]
+	editor = vim
