@@ -1,0 +1,1 @@
+alias gdt='git difftool'
