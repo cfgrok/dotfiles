@@ -28,19 +28,11 @@
 - include: oh_my_zsh.yml
 - include: tmux.yml
 - include: scripts.yml
-- include: docker.yml
-- include: keepass.yml
 - include: clipit.yml
 
 - include: install_java.yml
 - include: window_applet.yml
 
 - include: solarize.yml
-- include: tlp.yml
-- include: jdownloader.yml
-#- include: synergy.yml
-- include: templates.yml
 - include: compass_icons.yml
-- include: zeal.yml
-#- include: calibre.yml
 - include: gdrive.yml
