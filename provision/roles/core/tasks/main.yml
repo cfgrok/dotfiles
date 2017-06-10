@@ -28,7 +28,6 @@
 - include: oh_my_zsh.yml
 - include: tmux.yml
 - include: scripts.yml
-- include: clipit.yml
 
 - include: install_java.yml
 - include: window_applet.yml
