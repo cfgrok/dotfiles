@@ -2,12 +2,10 @@
 #set -x verbose #echo on
 
 #only add the bare necessities to get started. Everything else should be ansible.
-workspace="$HOME/workspace"
-ansible="$workspace/ansible"
-ansible_git="https://github.com/ansible/ansible.git"
+workspace="$HOME/Documents/workspace"
 dot_files="$workspace/dotfiles"
 
-if [ -d $workspace ]; then
+if [ -d "$workspace" ]; then
 
 	#self update
 	echo "Updating Dotfiles..."
@@ -17,7 +15,7 @@ if [ -d $workspace ]; then
 	#control which playbook is run from which machine by a .playbook file
 	cd $dot_files
 	playbook=`cat .playbook`.yml
-	echo "Playbook is: ${playbook}"
+	echo "Playbook is: $playbook"
 
 	cd $dot_files/provision
 
