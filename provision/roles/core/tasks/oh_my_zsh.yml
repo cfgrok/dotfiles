@@ -12,7 +12,7 @@
 - name: zshrc config
   copy: src=zshrc dest=~/.zshrc
 - name: set zsh as the shell
-  user: name=mark shell=/usr/bin/zsh
+  user: name=ezra shell=/usr/bin/zsh
   sudo: true
 - name: "install custom plugin: zsh-autosuggestions"
   git: repo=git://github.com/zsh-users/zsh-autosuggestions dest=~/.oh-my-zsh/custom/plugins/zsh-autosuggestions
