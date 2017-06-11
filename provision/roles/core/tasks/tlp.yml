@@ -2,9 +2,8 @@
 - name: Install TLP PPA
   apt_repository: repo=ppa:linrunner/tlp
   become: true
-  notify: apt-update
 - name: Install TLP
-  apt: pkg={{ item }}
+  apt: update_cache=yes pkg={{ item }}
   with_items:
     - tlp
     - tlp-rdw
