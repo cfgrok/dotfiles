@@ -1,14 +1,14 @@
 - name: Install xmonad
   apt: pkg={{ item }}
   with_items:
-    - xmonad
+    - gnome-panel
     - libghc-xmonad-contrib-dev
     - libghc-xmonad-contrib-doc
     - libghc-xmonad-dev
     - libghc-xmonad-doc
     - suckless-tools
-    - gnome-panel
-  sudo: true
+    - xmonad
+  become: true
 - name: make directory for config
   file: path="~/.xmonad" state=directory
 - name: copy xmonad config

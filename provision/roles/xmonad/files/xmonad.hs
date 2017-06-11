@@ -29,19 +29,17 @@ numPadKeys = [ xK_KP_End,  xK_KP_Down,  xK_KP_Page_Down -- 1, 2, 3
              , xK_KP_Insert] -- 0
 
 isTermScratchPad = (className =? "Gnome-terminal") <&&> (stringProperty "WM_WINDOW_ROLE" =? "Scratchpad")
-isKeepass = className =? "KeePass2"
-isGuayadeque = className =? "Guayadeque"
+isKeepass = className =? "Keepassx"
+isNightingale = className =? "Nightingale"
 isDo = className =? "Do"
-isZeal = className =? "Zeal"
 
 myTmuxCommand = "tmux -2 new"
 myScratchCommand = "gnome-terminal --role=Scratchpad -e '" ++ myTmuxCommand ++ "'"
 myTerminal = "gnome-terminal -e '" ++ myTmuxCommand ++ "'"
 
-myScratchpads = [NS "keepass2" "keepass2" isKeepass nonFloating
+myScratchpads = [NS "keepassx" "keepassx" isKeepass nonFloating
                 ,NS "terminal" myScratchCommand isTermScratchPad nonFloating
-                ,NS "guayadeque" "guayadeque" isGuayadeque nonFloating
-                ,NS "zeal" "zeal" isZeal nonFloating]
+                ,NS "nightingale" "nightingale" isNightingale nonFloating]
 
 -- general keysimport XMonad.Prompt
 myKeys = [((myModKey, xK_p), spawn ("dmenu_run" ++ myDemuConfig))
@@ -50,7 +48,6 @@ myKeys = [((myModKey, xK_p), spawn ("dmenu_run" ++ myDemuConfig))
         ,((myModKey .|. shiftMask, xK_g), goToSelected defaultGSConfig)
         ,((myModKey .|. shiftMask, xK_b), bringMenuArgs ["-fn", "ubuntu-mono-10", "-l", "20"])
         ,((myModKey, xK_grave), cycleRecentWS [xK_Super_L] xK_grave xK_grave)
-        ,((mod1Mask .|. shiftMask, xK_a), spawn "keepass2 --auto-type")
         ,((myModKey .|. controlMask, xK_space), spawn "gnome-do")
         -- close focused window
         ,((myModKey, xK_x), kill)
@@ -78,11 +75,9 @@ myKeys = [((myModKey, xK_p), spawn ("dmenu_run" ++ myDemuConfig))
         ++
         -- named scratch pads
         [
-                ((myModKey .|. controlMask, xK_k), namedScratchpadAction myScratchpads "keepass2")
+                ((myModKey .|. controlMask, xK_k), namedScratchpadAction myScratchpads "keepassx")
                 ,((myModKey, xK_F12), namedScratchpadAction myScratchpads "terminal")
-                ,((myModKey, xK_F3), namedScratchpadAction myScratchpads "guayadeque")
-                ,((myModKey, xK_z), namedScratchpadAction myScratchpads "zeal")
-                ,((myModKey .|. controlMask, xK_h), namedScratchpadAction myScratchpads "hangouts")
+                ,((myModKey, xK_F3), namedScratchpadAction myScratchpads "nightingale")
         ]
         -- dynamic workspace groups
         ++
@@ -120,10 +115,9 @@ myManageHook =
                 isFullscreen --> doFullFloat
                 ,isTermScratchPad --> doRectFloat(W.RationalRect 0 0 0.9 0.9)
                 ,isKeepass --> doCenterFloat
-                ,isGuayadeque --> doCenterFloat
+                ,isNightingale --> doCenterFloat
                 ,isDo --> doIgnore
                 ,(className =? "Zenity") --> doCenterFloat
-                ,isZeal --> doRectFloat(W.RationalRect 0 0 0.9 0.9)
         ]
         -- IntelliJ Tweaks
         ++
