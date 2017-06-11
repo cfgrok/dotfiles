@@ -7,9 +7,9 @@
   sudo: true
 
 #git config
-- include: _git_config.yml
+- include: gitconfig.yml
 
-- include: file-descriptors.yml
+- include: file_descriptors.yml
 
 #dropbox
 - name: See if dropbox is installed
@@ -22,11 +22,11 @@
 - name: See if chrome is installed
   command: find /usr/bin -name 'google-chrome'
   register: chrome_installed
-- include: _google_chrome.yml
+- include: google_chrome.yml
   when: (not chrome_installed.stdout)
 
 - include: oh_my_zsh.yml
-- include: _tmux.yml
+- include: tmux.yml
 - include: scripts.yml
 - include: docker.yml
 - include: keepass.yml
