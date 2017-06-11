@@ -1,14 +1,21 @@
 ---
 #Music
-- name: stat Music dir
+- name: stat original Music dir
   stat: path=~/Music
   register: st
-- debug: msg="Music folder Exists; {{ st.stat.exists }} | isDir; {{ st.stat.isdir }}"
-- name: Delete the original Music folder
+- name: delete the original Music folder
   file: state=absent path="~/Music"
   when: st.stat.exists and st.stat.isdir
+- name: stat mount Music dir
+  stat: path=/mnt/data/Music
+  register: st
+- name: create mount dir if not present
+  file: state=directory path="/mnt/data/Music"
+  become: true
 - name: Music symlink
   file: state=link path="~/Music" src="/mnt/data/Music"
 
+- name: launch pCloud
+  command: psyncgui
 - name: scripts symlink
   file: state=link path="~/scripts" src="~/pCloud Sync/scripts"
