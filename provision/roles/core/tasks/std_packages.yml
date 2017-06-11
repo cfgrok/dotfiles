@@ -1,36 +1,40 @@
 ---
 - name: Install core standard packages
   apt: pkg={{ item }}
+  become: true
   with_items:
-    - synaptic
-    - nautilus-open-terminal
-    - nautilus-wipe
-    - wipe
-    - gedit-plugins
-    - htop
-    - meld
-    - ubuntu-restricted-extras
-    - skype
-    - clipit
-    - alacarte
-    - p7zip-full
-    - dconf-tools
-    - lftp
-    - sshfs
     - autojump
-    - gksu
-    - cifs-utils
-    - trash-cli
-    - gnome-nettool
-    - vlc
-    - retext
+    - clipit
+    - dconf-tools
+    - fonts-inconsolata
+    - gedit-plugins
     - gimp
-    - xbacklight
-    - tree
-    - ppa-purge
-    - rar
-    - ubuntu-mono
-    - unity-tweak-tool
+    - gksu
     - gnome-do
     - gnome-do-plugins
-    - sysinfo
+    - gnome-nettool
+    - htop
+    - meld
+    - nautilus-wipe
+    - p7zip-full
+    - ppa-purge
+    - puddletag
+    - retext
+    - skype
+    - synaptic
+    - trash-cli
+    - tree
+    - ubuntu-mono
+    - ubuntu-restricted-extras
+    - vim
+    - vlc
+    - wipe
+#   - alacarte
+#   - cifs-utils
+#   - lftp
+#   - nautilus-open-terminal
+#   - rar
+#   - sshfs
+#   - sysinfo
+#   - unity-tweak-tool
+#   - xbacklight

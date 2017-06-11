@@ -1,22 +1,20 @@
 #clean out some stuff
 - include: clean_packages.yml
-  sudo: yes
 
 #standard packages
 - include: std_packages.yml
-  sudo: true
 
 #git config
 - include: gitconfig.yml
 
 - include: file_descriptors.yml
 
-#dropbox
-- name: See if dropbox is installed
-  command: find /usr/bin/ -name 'dropbox'
-  register: dropbox_installed
-- include: dropbox.yml
-  when: (not dropbox_installed.stdout)
+#pCloud
+- name: See if pCloud is installed
+  command: find /usr/bin/ -name 'psyncgui'
+  register: pcloud_installed
+- include: pcloud.yml
+  when: (not pcloud_installed.stdout)
 
 #chrome
 - name: See if chrome is installed
@@ -30,8 +28,6 @@
 - include: scripts.yml
 
 - include: install_java.yml
-- include: window_applet.yml
 
 - include: solarize.yml
-- include: compass_icons.yml
 - include: gdrive.yml

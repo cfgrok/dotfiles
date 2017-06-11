@@ -1,6 +1,7 @@
 ---
-- name: Remove yucky packages
+- name: Remove unwanted default packages
   apt: pkg={{ item }} state=absent purge=yes
+  become: true
   with_items:
     - empathy
     - evolution

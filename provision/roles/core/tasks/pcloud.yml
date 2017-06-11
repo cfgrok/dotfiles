@@ -1,0 +1,18 @@
+---
+- name: create install dir
+  file: path=/tmp/install_pcloud state=directory
+- name: get JSON from API
+  uri: url=https://api.pcloud.com/getpublinkdownload?code=XZ5LUXZnCaQsycCaLFoymzccM68XFRwXyNX method=GET return_content=yes
+  register: json_response
+- name: set download URL
+  set_fact: download_url="https://{{ json_response.json.hosts[0] }}{{ json_response.json.path }}"
+- name: download pCloud
+  get_url: dest="/tmp/install_pcloud/pcloud.deb" url="{{ download_url }}"
+- name: make sure we have gdebi
+  apt: pkg=gdebi-core
+  become: true
+- name: install pCloud
+  command: gdebi -n /tmp/install_pcloud/pcloud.deb
+  become: true
+- name: clean up
+  file: path=/tmp/install_pcloud state=absent

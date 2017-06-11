@@ -5,7 +5,7 @@
   register: zsh_installed
 - name: zsh
   apt: pkg=zsh
-  sudo: yes
+  become: true
 - name: install oh my zsh
   shell: wget https://github.com/robbyrussell/oh-my-zsh/raw/master/tools/install.sh -O - | zsh
   when: not zsh_installed.stat.exists
@@ -13,7 +13,7 @@
   copy: src=zshrc dest=~/.zshrc
 - name: set zsh as the shell
   user: name=ezra shell=/usr/bin/zsh
-  sudo: true
+  become: true
 - name: "install custom plugin: zsh-autosuggestions"
   git: repo=git://github.com/zsh-users/zsh-autosuggestions dest=~/.oh-my-zsh/custom/plugins/zsh-autosuggestions
 - name: "install custom plugin: zsh-syntax-highlighting"

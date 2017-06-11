@@ -4,7 +4,7 @@
   with_items:
     - coreutils
     - gnome-terminal
-  sudo: true
+  become: true
 - name: "Create .solarized dir"
   file: path="~/.solarized" state=directory
 - name: "Checkout gnome-solarized"
