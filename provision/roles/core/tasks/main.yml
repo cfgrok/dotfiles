@@ -1,6 +1,3 @@
-#clean out some stuff
-- include: clean_packages.yml
-
 #standard packages
 - include: std_packages.yml
 
