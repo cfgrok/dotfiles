@@ -3,9 +3,12 @@
   apt: pkg={{ item }}
   become: true
   with_items:
+    - abcde
+    - audacity
     - autojump
     - clipit
     - dconf-tools
+    - ffmpeg
     - fonts-inconsolata
     - gedit-plugins
     - gimp
@@ -14,9 +17,14 @@
     - gnome-do-plugins
     - gnome-nettool
     - htop
+    - indicator-multiload
+    - keepassx
+    - libreoffice-base
     - meld
     - nautilus-wipe
+    - nethogs
     - p7zip-full
+    - pdftk
     - ppa-purge
     - puddletag
     - retext
@@ -26,7 +34,10 @@
     - tree
     - ubuntu-mono
     - ubuntu-restricted-extras
+    - ufw
+    - vagrant
     - vim
+    - virtualbox
     - vlc
     - wipe
 #   - alacarte
@@ -38,3 +49,5 @@
 #   - sysinfo
 #   - unity-tweak-tool
 #   - xbacklight
+    - dbvis
+    - nightingale
