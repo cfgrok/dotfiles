@@ -3,30 +3,7 @@
   apt: pkg={{ item }} state=absent purge=yes
   become: true
   with_items:
-    - empathy
-    - evolution
-    - evolution-common
-    - evolution-plugins
-    - jayatana
+    - pidgin
     - thunderbird
-    - totem
-    - unity-lens-applications
-    - unity-lens-files
-    - unity-lens-music
-    - unity-lens-photos
-    - unity-lens-video
-    - unity-scope-calculator
-    - unity-scope-chromiumbookmarks
-    - unity-scope-colourlovers
-    - unity-scope-devhelp
-    - unity-scope-firefoxbookmarks
-    - unity-scope-gdrive
-    - unity-scope-home
-    - unity-scope-manpages
-    - unity-scope-openclipart
-    - unity-scope-texdoc
-    - unity-scope-tomboy
-    - unity-scope-video-remote
-    - unity-scope-virtualbox
-    - unity-scope-yelp
-    - unity-scope-zotero
+    - transmission-common
+    - transmission-gtk
