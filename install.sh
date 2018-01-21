@@ -12,6 +12,6 @@ cd ~
 if [ ! -d ~/Documents/workspace/dotfiles ]; then
     mkdir -p Documents/workspace
     cd Documents/workspace
-    git clone git@github.com:cfgrok/dotfiles.git
+    git clone https://github.com/cfgrok/dotfiles
     echo 'primary' > ~/Documents/workspace/dotfiles/.playbook
 fi
