@@ -20,7 +20,7 @@ if [ -d "$workspace" ]; then
 
 	cd $dot_files/provision
 
-	ansible-playbook -vvv -K -i hosts $playbook
+	ansible-playbook -v -K -i hosts $playbook
 
 else
 	echo "$workspace does not exist. WTF?"

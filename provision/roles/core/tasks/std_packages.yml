@@ -7,10 +7,11 @@
     - audacity
     - autojump
     - clipit
+    - curl
     - dconf-tools
     - ffmpeg
     - fonts-inconsolata
-    - gedit-plugins
+    #- gedit-plugins
     - gimp
     - gksu
     - gnome-do
@@ -21,20 +22,21 @@
     - keepassx
     - libreoffice-base
     - meld
-    - nautilus-wipe
+    #- nautilus-wipe
     - nethogs
+    - nfs-common
     - p7zip-full
     - pdftk
     - ppa-purge
     - puddletag
     - retext
-    - skype
+    - skypeforlinux
     - synaptic
-    - trash-cli
+    #- trash-cli
     - tree
-    - ubuntu-mono
-    - ubuntu-restricted-extras
-    - ufw
+    #- ubuntu-mono
+    #- ubuntu-restricted-extras
+    # already installed - ufw
     - vagrant
     - vim
     - virtualbox
@@ -49,5 +51,5 @@
 #   - sysinfo
 #   - unity-tweak-tool
 #   - xbacklight
-    - dbvis
-    - nightingale
+    # download deb - dbvis
+    # no package for artful - nightingale

@@ -4,5 +4,5 @@
   user: ezra
   roles:
     - xubuntu_1710
-    #- core
-    #- xmonad
+    - core
+    - xmonad
