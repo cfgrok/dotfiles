@@ -1,0 +1,17 @@
+---
+#partner repo
+- name: partner repository
+  apt_repository: repo='deb http://archive.canonical.com/ubuntu artful partner'
+  become: true
+- name: partner repository (src)
+  apt_repository: repo='deb-src http://archive.canonical.com/ubuntu artful partner'
+  become: true
+
+
+- name: apt signing key for skype
+  apt_key:
+  url: https://repo.skype.com/data/SKYPE-GPG-KEY
+  state: present
+- name: skype repository
+  apt_repository: repo='deb https://repo.skype.com/deb stable main'
+  become: true

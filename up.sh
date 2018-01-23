@@ -11,7 +11,7 @@ if [ -d "$workspace" ]; then
 	echo "Updating Dotfiles..."
 	cd $dot_files
 	git pull --rebase
-	git checkout xubuntu
+	git checkout mate
 
 	#control which playbook is run from which machine by a .playbook file
 	cd $dot_files
