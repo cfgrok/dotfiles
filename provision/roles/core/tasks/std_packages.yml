@@ -2,6 +2,7 @@
 - name: Install core standard packages
   apt: pkg={{ item }}
   become: true
+  update_cache: true
   with_items:
     - abcde
     - audacity
