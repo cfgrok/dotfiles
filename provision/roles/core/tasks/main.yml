@@ -24,7 +24,14 @@
 - include: tmux.yml
 - include: symlink_dirs.yml
 
-#- include: install_java.yml
+- include: install_java.yml
 
-#- include: solarize.yml
-#- include: tlp.yml
+#dbvis
+- name: See if dbvis is installed
+  command: find /usr/bin -name 'dbvis'
+  register: dbvis_installed
+- include: dbvis.yml
+  when: (not dbvis_installed.stdout)
+
+- include: solarize.yml
+- include: tlp.yml

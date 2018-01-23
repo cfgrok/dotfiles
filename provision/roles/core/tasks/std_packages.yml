@@ -1,6 +1,6 @@
 ---
 - name: Install core standard packages
-  apt: 
+  apt:
     name: "{{ item }}"
     update_cache: true
   become: true
@@ -37,8 +37,7 @@
     #- trash-cli
     - tree
     #- ubuntu-mono
-    #- ubuntu-restricted-extras
-    # already installed - ufw
+    - ubuntu-restricted-extras
     - vagrant
     - vim
     - virtualbox
@@ -53,5 +52,5 @@
 #   - sysinfo
 #   - unity-tweak-tool
 #   - xbacklight
-    # download deb - dbvis
+
     # no package for artful - nightingale

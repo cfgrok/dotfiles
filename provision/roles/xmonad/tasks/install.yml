@@ -1,7 +1,7 @@
 - name: Install xmonad
   apt: pkg={{ item }}
   with_items:
-    - gnome-panel
+    #- gnome-panel
     - libghc-xmonad-contrib-dev
     - libghc-xmonad-contrib-doc
     - libghc-xmonad-dev
@@ -14,4 +14,4 @@
 - name: copy xmonad config
   copy: src=xmonad.hs dest=~/.xmonad/xmonad.hs
 - name: reset xmonad
-  shell: "xmonad --recompile; xmonad --restart"
+  shell: "xmonad --recompile; xmonad --replace"

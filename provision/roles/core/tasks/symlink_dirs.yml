@@ -15,7 +15,7 @@
 - name: Music symlink
   file: state=link path="~/Music" src="/mnt/data/Music"
 
-- name: launch pCloud
-  command: psyncgui
+#- name: launch pCloud
+#  command: psyncgui
 - name: scripts symlink
-  file: state=link path="~/scripts" src="~/pCloud Sync/scripts"
+  file: state=link path="~/scripts" src="~/pCloud Sync/scripts" force=yes
