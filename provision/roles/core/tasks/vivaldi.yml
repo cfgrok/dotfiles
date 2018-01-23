@@ -1,0 +1,13 @@
+---
+- name: create install dir
+  file: path=/tmp/install_vivaldi state=directory
+- name: download vivaldi
+  get_url: dest="/tmp/install_vivaldi/vivaldi.deb" url=https://downloads.vivaldi.com/stable/vivaldi-stable_1.13.1008.44-1_amd64.deb
+- name: make sure we have gdebi
+  apt: pkg=gdebi-core
+  become: true
+- name: install vivaldi
+  command: gdebi -n /tmp/install_vivaldi/vivaldi.deb
+  become: true
+- name: clean up
+  file: path=/tmp/install_vivaldi state=absent

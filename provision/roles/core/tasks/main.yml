@@ -13,12 +13,12 @@
 - include: pcloud.yml
   when: (not pcloud_installed.stdout)
 
-#chrome
-- name: See if chrome is installed
-  command: find /usr/bin -name 'google-chrome'
-  register: chrome_installed
-- include: google_chrome.yml
-  when: (not chrome_installed.stdout)
+#vivaldi
+- name: See if vivaldi is installed
+  command: find /usr/bin -name 'vivaldi'
+  register: vivaldi_installed
+- include: vivaldi.yml
+  when: (not vivaldi_installed.stdout)
 
 - include: oh_my_zsh.yml
 - include: tmux.yml
@@ -26,5 +26,5 @@
 
 #- include: install_java.yml
 
-- include: solarize.yml
-- include: tlp.yml
+#- include: solarize.yml
+#- include: tlp.yml
