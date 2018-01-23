@@ -1,6 +1,6 @@
 #!/bin/sh
 
-if ! grep -qs 'deb http' /etc/apt/sources.list.d/ansible-ubuntu-ansible-xenial.list; then
+if ! grep -qs 'deb http' /etc/apt/sources.list.d/ansible-ubuntu-ansible-*.list; then
     sudo apt-add-repository -y ppa:ansible/ansible
 fi
 
