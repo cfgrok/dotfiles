@@ -7,12 +7,6 @@ dot_files="$workspace/dotfiles"
 
 if [ -d "$workspace" ]; then
 
-	#self update
-	echo "Updating Dotfiles..."
-	cd $dot_files
-	git pull --rebase
-	git checkout mate
-
 	#control which playbook is run from which machine by a .playbook file
 	cd $dot_files
 	playbook=`cat .playbook`.yml

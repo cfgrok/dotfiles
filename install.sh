@@ -14,4 +14,10 @@ if [ ! -d ~/Documents/workspace/dotfiles ]; then
     cd Documents/workspace
     git clone https://github.com/cfgrok/dotfiles
     echo 'primary' > ~/Documents/workspace/dotfiles/.playbook
+
+	#self update
+	echo "Updating Dotfiles..."
+	cd dotfiles
+	git pull --rebase
+	git checkout mate
 fi
