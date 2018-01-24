@@ -27,6 +27,13 @@
 - include: skype.yml
   when: (not skype_installed.stdout)
 
+#nightingale
+- name: See if nightingale is installed
+  command: find /usr/bin -name 'nightingale'
+  register: nightingale_installed
+- include: nightingale.yml
+  when: (not nightingale_installed.stdout)
+
 - include: oh_my_zsh.yml
 - include: tmux.yml
 - include: symlink_dirs.yml

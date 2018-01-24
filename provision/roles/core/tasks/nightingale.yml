@@ -1,0 +1,3 @@
+---
+- name: download nightingale
+  get_url: dest="/usr/bin/nightingale" mode=0775 url=https://drive.google.com/file/d/11rnTF9uIXicS_ckP_ZNm-NP0qF0NZ_B1/view
