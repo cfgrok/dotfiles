@@ -19,5 +19,5 @@ if [ ! -d ~/Documents/workspace/dotfiles ]; then
 	echo "Updating Dotfiles..."
 	cd dotfiles
 	git pull --rebase
-	git checkout mate
+	git checkout personal
 fi
