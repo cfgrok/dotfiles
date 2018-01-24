@@ -1,6 +1,0 @@
----
-#partner repo
-- include: partner_repo.yml
-
-#clean out some stuff
-- include: clean_packages.yml
