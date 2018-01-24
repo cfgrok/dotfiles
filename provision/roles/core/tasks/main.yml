@@ -20,6 +20,13 @@
 - include: vivaldi.yml
   when: (not vivaldi_installed.stdout)
 
+#skype
+- name: See if skype is installed
+  command: find /usr/bin -name 'skypeforlinux'
+  register: skype_installed
+- include: skype.yml
+  when: (not skype_installed.stdout)
+
 - include: oh_my_zsh.yml
 - include: tmux.yml
 - include: symlink_dirs.yml
