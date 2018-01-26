@@ -30,7 +30,7 @@ numPadKeys = [ xK_KP_End,  xK_KP_Down,  xK_KP_Page_Down -- 1, 2, 3
 
 isTermScratchPad = (className =? "Gnome-terminal") <&&> (stringProperty "WM_WINDOW_ROLE" =? "Scratchpad")
 isKeepass = className =? "Keepassx"
-isNightingale = className =? "Nightingale"
+isRhythmbox = className =? "Rhythmbox"
 isDo = className =? "Do"
 
 myTmuxCommand = "tmux -2 new"
@@ -39,7 +39,7 @@ myTerminal = "gnome-terminal -e '" ++ myTmuxCommand ++ "'"
 
 myScratchpads = [NS "keepassx" "keepassx" isKeepass nonFloating
                 ,NS "terminal" myScratchCommand isTermScratchPad nonFloating
-                ,NS "nightingale" "nightingale" isNightingale nonFloating]
+                ,NS "rhythmbox" "rhythmbox" isRhythmbox nonFloating]
 
 -- general keysimport XMonad.Prompt
 myKeys = [((myModKey, xK_p), spawn ("dmenu_run" ++ myDemuConfig))
@@ -77,7 +77,7 @@ myKeys = [((myModKey, xK_p), spawn ("dmenu_run" ++ myDemuConfig))
         [
                 ((myModKey .|. controlMask, xK_k), namedScratchpadAction myScratchpads "keepassx")
                 ,((myModKey, xK_F12), namedScratchpadAction myScratchpads "terminal")
-                ,((myModKey, xK_F3), namedScratchpadAction myScratchpads "nightingale")
+                ,((myModKey, xK_F3), namedScratchpadAction myScratchpads "rhythmbox")
         ]
         -- dynamic workspace groups
         ++
@@ -115,7 +115,7 @@ myManageHook =
                 isFullscreen --> doFullFloat
                 ,isTermScratchPad --> doRectFloat(W.RationalRect 0 0 0.9 0.9)
                 ,isKeepass --> doCenterFloat
-                ,isNightingale --> doCenterFloat
+                ,isRhythmbox --> doCenterFloat
                 ,isDo --> doIgnore
                 ,(className =? "Zenity") --> doCenterFloat
         ]
