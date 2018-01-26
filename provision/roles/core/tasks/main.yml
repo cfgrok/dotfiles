@@ -27,6 +27,13 @@
 - include: skype.yml
   when: (not skype_installed.stdout)
 
+#sublime
+- name: See if sublime is installed
+  command: find /usr/bin -name 'subl'
+  register: sublime_installed
+- include: sublime.yml
+  when: (not sublime_installed.stdout)
+
 - include: oh_my_zsh.yml
 - include: tmux.yml
 - include: symlink_dirs.yml
