@@ -8,31 +8,31 @@
 
 #pCloud
 - name: See if pCloud is installed
-  command: find /usr/bin/ -name 'psyncgui'
+  stat: path=/usr/bin//psyncgui
   register: pcloud_installed
 - include: pcloud.yml
-  when: (not pcloud_installed.stdout)
+  when: (not pcloud_installed.stat.exists or not pcloud_installed.stat.executable)
 
 #vivaldi
 - name: See if vivaldi is installed
-  command: find /usr/bin -name 'vivaldi'
+  stat: path=/usr/bin/vivaldi
   register: vivaldi_installed
 - include: vivaldi.yml
-  when: (not vivaldi_installed.stdout)
+  when: (not vivaldi_installed.stat.exists or not vivaldi_installed.stat.executable)
 
 #skype
 - name: See if skype is installed
-  command: find /usr/bin -name 'skypeforlinux'
+  stat: path=/usr/bin/skypeforlinux
   register: skype_installed
 - include: skype.yml
-  when: (not skype_installed.stdout)
+  when: (not skype_installed.stat.exists or not skype_installed.stat.executable)
 
 #sublime
 - name: See if sublime is installed
-  command: find /usr/bin -name 'subl'
+  stat: path=/usr/bin/subl
   register: sublime_installed
 - include: sublime.yml
-  when: (not sublime_installed.stdout)
+  when: (not sublime_installed.stat.exists or not sublime_installed.stat.executable)
 
 - include: oh_my_zsh.yml
 - include: tmux.yml
@@ -42,10 +42,10 @@
 
 #dbvis
 - name: See if dbvis is installed
-  command: find /usr/local/bin -name 'dbvis'
+  stat: path=/usr/local/bin/dbvis
   register: dbvis_installed
 - include: dbvis.yml
-  when: (not dbvis_installed.stdout)
+  when: (not dbvis_installed.stat.exists or not dbvis_installed.stat.executable)
 
 - include: solarize.yml
 - include: tlp.yml
