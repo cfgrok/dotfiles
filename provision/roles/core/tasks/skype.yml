@@ -5,7 +5,9 @@
     state: present
   become: true
 - name: skype repository
-  apt_repository: repo='deb https://repo.skype.com/deb stable main'
+  apt_repository: 
+    repo: 'deb [arch=amd64] https://repo.skype.com/deb stable main'
+    filename: 'skype-stable'
   become: true
 - name: install skype
   apt: pkg=skypeforlinux
