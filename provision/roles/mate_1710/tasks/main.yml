@@ -1,6 +1,6 @@
 ---
 #partner repo
-- include: partner_repo.yml
+- import_tasks: partner_repo.yml
 
 #clean out some stuff
-- include: clean_packages.yml
+- import_tasks: clean_packages.yml

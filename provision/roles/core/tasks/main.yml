@@ -1,51 +1,51 @@
 #standard packages
-- include: std_packages.yml
+- import_tasks: std_packages.yml
 
 #git config
-- include: gitconfig.yml
+- import_tasks: gitconfig.yml
 
-- include: file_descriptors.yml
+- import_tasks: file_descriptors.yml
 
 #pCloud
 - name: See if pCloud is installed
   stat: path=/usr/bin//psyncgui
   register: pcloud_installed
-- include: pcloud.yml
+- import_tasks: pcloud.yml
   when: (not pcloud_installed.stat.exists or not pcloud_installed.stat.executable)
 
 #vivaldi
 - name: See if vivaldi is installed
   stat: path=/usr/bin/vivaldi
   register: vivaldi_installed
-- include: vivaldi.yml
+- import_tasks: vivaldi.yml
   when: (not vivaldi_installed.stat.exists or not vivaldi_installed.stat.executable)
 
 #skype
 - name: See if skype is installed
   stat: path=/usr/bin/skypeforlinux
   register: skype_installed
-- include: skype.yml
+- import_tasks: skype.yml
   when: (not skype_installed.stat.exists or not skype_installed.stat.executable)
 
 #sublime
 - name: See if sublime is installed
   stat: path=/usr/bin/subl
   register: sublime_installed
-- include: sublime.yml
+- import_tasks: sublime.yml
   when: (not sublime_installed.stat.exists or not sublime_installed.stat.executable)
 
-- include: oh_my_zsh.yml
-- include: tmux.yml
-- include: symlink_dirs.yml
+- import_tasks: oh_my_zsh.yml
+- import_tasks: tmux.yml
+- import_tasks: symlink_dirs.yml
 
-- include: install_java.yml
+- import_tasks: install_java.yml
 
 #dbvis
 - name: See if dbvis is installed
   stat: path=/usr/local/bin/dbvis
   register: dbvis_installed
-- include: dbvis.yml
+- import_tasks: dbvis.yml
   when: (not dbvis_installed.stat.exists or not dbvis_installed.stat.executable)
 
-- include: solarize.yml
-- include: tlp.yml
+- import_tasks: solarize.yml
+- import_tasks: tlp.yml
