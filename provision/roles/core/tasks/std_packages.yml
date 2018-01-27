@@ -29,6 +29,7 @@
     - pdftk
     - ppa-purge
     - puddletag
+    - python-psutil
     - retext
     - synaptic
     - tree

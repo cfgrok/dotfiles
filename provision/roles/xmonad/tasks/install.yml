@@ -15,4 +15,7 @@
 - name: reset xmonad
   shell: "xmonad --recompile"
 - name: set window manager
-  command: gsettings set org.mate.session.required-components windowmanager 'xmonad'
+  dconf:
+    key: "/org/mate/desktop/session/required-components/windowmanager"
+    value: "'xmonad'"
+    state: present
