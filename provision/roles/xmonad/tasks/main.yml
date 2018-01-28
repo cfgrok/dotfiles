@@ -1,2 +1,6 @@
 ---
+- name: See if xmonad is installed
+  stat: path=/home/ezra/.xmonad/xmonad.hs
+  register: xmonad_installed
 - import_tasks: install.yml
+  when: not xmonad_installed.stat.exists
