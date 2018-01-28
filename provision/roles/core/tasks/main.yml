@@ -38,7 +38,12 @@
 - import_tasks: tmux.yml
 - import_tasks: symlink_dirs.yml
 
+#java
+- name: See if java is installed
+  stat: path=/usr/lib/jvm/java-9-oracle/bin/java
+  register: java_installed
 - import_tasks: install_java.yml
+  when: (not java_installed.stat.exists or not java_installed.stat.executable)
 
 #dbvis
 - name: See if dbvis is installed
