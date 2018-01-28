@@ -34,8 +34,8 @@ isRhythmbox = className =? "Rhythmbox"
 isDo = className =? "Do"
 
 myTmuxCommand = "tmux -2 new"
-myScratchCommand = "gnome-terminal --role=Scratchpad -e '" ++ myTmuxCommand ++ "'"
-myTerminal = "gnome-terminal -e '" ++ myTmuxCommand ++ "'"
+myScratchCommand = "mate-terminal --role=Scratchpad -e '" ++ myTmuxCommand ++ "'"
+myTerminal = "mate-terminal -e '" ++ myTmuxCommand ++ "'"
 
 myScratchpads = [NS "keepassx" "keepassx" isKeepass nonFloating
                 ,NS "terminal" myScratchCommand isTermScratchPad nonFloating

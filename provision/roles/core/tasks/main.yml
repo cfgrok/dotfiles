@@ -8,7 +8,7 @@
 
 #pCloud
 - name: See if pCloud is installed
-  stat: path=/usr/bin//psyncgui
+  stat: path=/usr/bin/psyncgui
   register: pcloud_installed
 - import_tasks: pcloud.yml
   when: (not pcloud_installed.stat.exists or not pcloud_installed.stat.executable)
@@ -52,5 +52,11 @@
 - import_tasks: dbvis.yml
   when: (not dbvis_installed.stat.exists or not dbvis_installed.stat.executable)
 
+#solarized
+- name: See if solarized is installed
+  stat: path=~/.dircolors
+  register: solarized_installed
 - import_tasks: solarize.yml
+  when: not solarized_installed.stat.exists
+
 - import_tasks: tlp.yml
