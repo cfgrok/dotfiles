@@ -34,7 +34,13 @@
 - import_tasks: sublime.yml
   when: (not sublime_installed.stat.exists or not sublime_installed.stat.executable)
 
+#oh_my_zsh
+- name: See if oh-my-zsh is installed
+  stat: path=~/.oh-my-zsh/custom/plugins/zsh-syntax-highlighting
+  register: oh_my_zsh_installed
 - import_tasks: oh_my_zsh.yml
+  when: not oh_my_zsh_installed.stat.exists
+
 - import_tasks: tmux.yml
 - import_tasks: symlink_dirs.yml
 
