@@ -28,7 +28,7 @@ numPadKeys = [ xK_KP_End,  xK_KP_Down,  xK_KP_Page_Down -- 1, 2, 3
              , xK_KP_Home, xK_KP_Up,    xK_KP_Page_Up   -- 7, 8, 9
              , xK_KP_Insert] -- 0
 
-isTermScratchPad = (className =? "Gnome-terminal") <&&> (stringProperty "WM_WINDOW_ROLE" =? "Scratchpad")
+isTermScratchPad = (className =? "Mate-terminal") <&&> (stringProperty "WM_WINDOW_ROLE" =? "Scratchpad")
 isKeepass = className =? "Keepassx"
 isRhythmbox = className =? "Rhythmbox"
 isDo = className =? "Do"
