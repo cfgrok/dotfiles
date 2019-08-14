@@ -1,0 +1,9 @@
+[Desktop Entry]
+Type=Application
+Exec=/opt/pcloud/pcloud
+Hidden=false
+X-MATE-Autostart-enabled=true
+Name[en_US]=pCloud
+Name=pCloud
+Comment[en_US]=
+Comment=

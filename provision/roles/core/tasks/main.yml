@@ -8,7 +8,7 @@
 
 #pCloud
 - name: See if pCloud is installed
-  stat: path=/usr/bin/psyncgui
+  stat: path=/opt/pcloud/pcloud
   register: pcloud_installed
 - import_tasks: pcloud.yml
   when: (not pcloud_installed.stat.exists or not pcloud_installed.stat.executable)
