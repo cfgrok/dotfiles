@@ -1,14 +1,16 @@
 ---
-- name: apt signing key for skype
+- name: add apt signing key for skype
   apt_key:
     url: https://repo.skype.com/data/SKYPE-GPG-KEY
     state: present
   become: true
-- name: skype repository
+- name: add skype repository
   apt_repository: 
-    repo: 'deb [arch=amd64] https://repo.skype.com/deb stable main'
-    filename: 'skype-stable'
+    repo: deb [arch=amd64] https://repo.skype.com/deb stable main
+    filename: skype-stable
   become: true
 - name: install skype
-  apt: pkg=skypeforlinux
+  apt:
+    name: skypeforlinux
+    update_cache: yes
   become: true
