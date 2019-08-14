@@ -1,41 +1,40 @@
 ---
 - name: Install core standard packages
   apt:
-    name: "{{ item }}"
+    name:
+      - abcde
+      - audacity
+      - autojump
+      - clipit
+      - curl
+      - dconf-tools
+      - ffmpeg
+      - fonts-inconsolata
+      - gimp
+      - gksu
+      - gnome-do
+      - gnome-do-plugins
+      - gnome-nettool
+      - htop
+      - indicator-multiload
+      - keepassx
+      - libreoffice-base
+      - meld
+      - nethogs
+      - nfs-common
+      - p7zip-full
+      - pdftk
+      - ppa-purge
+      - puddletag
+      - python-psutil
+      - retext
+      - synaptic
+      - tree
+      - ubuntu-restricted-extras
+      - vagrant
+      - vim
+      - virtualbox
+      - vlc
+      - wipe
     update_cache: true
   become: true
-  with_items:
-    - abcde
-    - audacity
-    - autojump
-    - clipit
-    - curl
-    - dconf-tools
-    - ffmpeg
-    - fonts-inconsolata
-    - gimp
-    - gksu
-    - gnome-do
-    - gnome-do-plugins
-    - gnome-nettool
-    - htop
-    - indicator-multiload
-    - keepassx
-    - libreoffice-base
-    - meld
-    - nethogs
-    - nfs-common
-    - p7zip-full
-    - pdftk
-    - ppa-purge
-    - puddletag
-    - python-psutil
-    - retext
-    - synaptic
-    - tree
-    - ubuntu-restricted-extras
-    - vagrant
-    - vim
-    - virtualbox
-    - vlc
-    - wipe

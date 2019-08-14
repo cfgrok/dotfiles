@@ -1,6 +1,6 @@
 - name: Install xmonad
-  apt: pkg={{ item }}
-  with_items:
+  apt:
+    name:
     - libghc-xmonad-contrib-dev
     - libghc-xmonad-contrib-doc
     - libghc-xmonad-dev

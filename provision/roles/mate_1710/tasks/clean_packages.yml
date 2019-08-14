@@ -1,9 +1,11 @@
 ---
 - name: Remove unwanted default packages
-  apt: pkg={{ item }} state=absent purge=yes
+  apt:
+    name:
+      - thunderbird
+      - transmission-common
+      - transmission-gtk
+      - vim-tiny
+    state: absent
+    purge: yes
   become: true
-  with_items:
-    - thunderbird
-    - transmission-common
-    - transmission-gtk
-    - vim-tiny

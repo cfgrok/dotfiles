@@ -3,8 +3,9 @@
   apt_repository: repo=ppa:linrunner/tlp
   become: true
 - name: Install TLP
-  apt: update_cache=yes pkg={{ item }}
-  with_items:
-    - tlp
-    - tlp-rdw
+  apt:
+    name:
+      - tlp
+      - tlp-rdw
+    update_cache: yes 
   become: true
