@@ -1,13 +1,16 @@
 ---
-- name: create install dir
-  file: path=/tmp/install_vivaldi state=directory
-- name: download vivaldi
-  get_url: dest="/tmp/install_vivaldi/vivaldi.deb" url=https://downloads.vivaldi.com/stable/vivaldi-stable_1.13.1008.44-1_amd64.deb
-- name: make sure we have gdebi
-  apt: pkg=gdebi-core
+- name: add apt signing key for vivaldi
+  apt_key:
+    url: https://repo.vivaldi.com/archive/linux_signing_key.pub
+    state: present
+  become: true
+- name: add vivaldi repository
+  apt_repository: 
+    repo: deb https://repo.vivaldi.com/archive/deb/ stable main
+    filename: vivaldi-stable
   become: true
 - name: install vivaldi
-  command: gdebi -n /tmp/install_vivaldi/vivaldi.deb
+  apt:
+    name: vivaldi-stable
+    update_cache: yes
   become: true
-- name: clean up
-  file: path=/tmp/install_vivaldi state=absent
