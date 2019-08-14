@@ -16,6 +16,15 @@
   shell: "xmonad --recompile"
 - name: set window manager
   dconf:
-    key: "/org/mate/desktop/session/required-components/windowmanager"
+    key: /org/mate/desktop/session/required-components/windowmanager
     value: "'xmonad'"
+    state: present
+- name: remove super key mappings
+  dconf:
+    key: /org/mate/mate-menu/hot-key
+    value: "''"
+    state: present
+  dconf:
+    key: /com/solus-project/brisk-menu/hot-key
+    value: "''"
     state: present
