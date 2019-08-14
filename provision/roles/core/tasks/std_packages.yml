@@ -22,7 +22,6 @@
       - nethogs
       - nfs-common
       - p7zip-full
-      - pdftk
       - ppa-purge
       - puddletag
       - python-psutil
@@ -31,7 +30,7 @@
       - tree
       - ubuntu-restricted-extras
       - vagrant
-      - vim
+      - vim-gtk
       - virtualbox
       - vlc
       - wipe
