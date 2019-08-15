@@ -13,5 +13,7 @@
 - name: make pCloud application executable
   file: dest="/opt/pcloud/pcloud" mode=a+x
   become: true
-- name: set pCloud to autostart
-  copy: src=pcloud.desktop dest="~/.config/autostart" mode=0644
+- name: ensure autostart directory exists
+  file: path=~/.config/autostart state=directory mode=0700
+- name: add autostart file for pCloud
+  copy: src=pcloud.desktop dest="~/.config/autostart/pcloud.desktop" mode=0644
