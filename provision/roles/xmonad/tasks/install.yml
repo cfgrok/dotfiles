@@ -19,11 +19,12 @@
     key: /org/mate/desktop/session/required-components/windowmanager
     value: "'xmonad'"
     state: present
-- name: remove super key mappings
+- name: remove super key mappings 1
   dconf:
     key: /org/mate/mate-menu/hot-key
     value: "''"
     state: present
+- name: remove super key mappings 2
   dconf:
     key: /com/solus-project/brisk-menu/hot-key
     value: "''"
