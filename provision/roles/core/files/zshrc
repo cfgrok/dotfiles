@@ -45,3 +45,5 @@ source $ZSH/oh-my-zsh.sh
 if [ -f ~/.dircolors ]; then
   eval `dircolors ~/.dircolors`
 fi
+
+export TERM='xterm-256color'
