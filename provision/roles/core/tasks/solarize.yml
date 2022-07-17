@@ -1,6 +1,6 @@
 ---
 - name: install solarized-mate-terminal
-  git: repo=git://github.com/oz123/solarized-mate-terminal dest=~/Documents/workspace/solarized/solarized-mate-terminal
+  git: repo=https://github.com/oz123/solarized-mate-terminal dest=~/Documents/workspace/solarized/solarized-mate-terminal
 - name: execute solarized theme installation script
   command: bash solarized-mate.sh chdir=~/Documents/workspace/solarized/solarized-mate-terminal
 - name: set default terminal theme
@@ -9,7 +9,7 @@
     value: "'solarized-dark'"
     state: present
 - name: install dircolors-solarized
-  git: repo=git://github.com/seebi/dircolors-solarized dest=~/Documents/workspace/solarized/dircolors-solarized
+  git: repo=https://github.com/seebi/dircolors-solarized dest=~/Documents/workspace/solarized/dircolors-solarized
 - name: copy .dircolors file
   copy:
     src: ~/Documents/workspace/solarized/dircolors-solarized/dircolors.ansi-dark

@@ -26,6 +26,6 @@
 - name: git-patch plugin
   copy: src=git-patch.plugin.zsh dest=~/.oh-my-zsh/custom/plugins/git-patch/
 - name: "install custom plugin: zsh-autosuggestions"
-  git: repo=git://github.com/zsh-users/zsh-autosuggestions dest=~/.oh-my-zsh/custom/plugins/zsh-autosuggestions
+  git: repo=https://github.com/zsh-users/zsh-autosuggestions dest=~/.oh-my-zsh/custom/plugins/zsh-autosuggestions
 - name: "install custom plugin: zsh-syntax-highlighting"
-  git: repo=git://github.com/zsh-users/zsh-syntax-highlighting dest=~/.oh-my-zsh/custom/plugins/zsh-syntax-highlighting
+  git: repo=https://github.com/zsh-users/zsh-syntax-highlighting dest=~/.oh-my-zsh/custom/plugins/zsh-syntax-highlighting

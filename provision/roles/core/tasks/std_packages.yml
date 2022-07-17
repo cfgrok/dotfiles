@@ -5,14 +5,10 @@
       - abcde
       - audacity
       - autojump
-      - clipit
       - curl
-      - dconf-tools
       - ffmpeg
       - fonts-inconsolata
       - gimp
-      - gnome-do
-      - gnome-do-plugins
       - gnome-nettool
       - htop
       - indicator-multiload
@@ -22,10 +18,7 @@
       - nethogs
       - nfs-common
       - p7zip-full
-      - ppa-purge
       - puddletag
-      - python-psutil
-      - retext
       - synaptic
       - tree
       - ubuntu-restricted-extras
@@ -33,6 +26,5 @@
       - vim-gtk
       - virtualbox
       - vlc
-      - wipe
     update_cache: true
   become: true
