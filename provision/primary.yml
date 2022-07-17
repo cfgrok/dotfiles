@@ -3,6 +3,5 @@
   connection: local
   user: ezra
   roles:
-    - mate_1804
     - core
     - xmonad

@@ -1,5 +1,0 @@
----
-#partner repo
-- name: partner repository
-  apt_repository: repo='deb http://archive.canonical.com/ubuntu bionic partner'
-  become: true

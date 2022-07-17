@@ -1,3 +1,6 @@
+#clean out some stuff
+- import_tasks: clean_packages.yml
+
 #standard packages
 - import_tasks: std_packages.yml
 
