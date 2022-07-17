@@ -1,139 +1,101 @@
-import qualified Data.Map                              as M
-import           XMonad
-import           XMonad.Actions.CopyWindow
-import           XMonad.Actions.CycleRecentWS
-import           XMonad.Actions.DynamicWorkspaceGroups
-import           XMonad.Actions.GridSelect
-import           XMonad.Actions.WindowBringer
-import           XMonad.Config.Gnome
-import           XMonad.Hooks.DynamicLog
-import           XMonad.Hooks.ManageDocks
-import           XMonad.Hooks.ManageHelpers
-import           XMonad.Hooks.SetWMName
-import           XMonad.Layout.NoBorders
-import           XMonad.Layout.Spiral
-import           XMonad.Layout.Tabbed
-import           XMonad.Prompt
-import qualified XMonad.StackSet                       as W
-import           XMonad.Util.EZConfig
-import           XMonad.Util.NamedScratchpad
+{-# LANGUAGE RebindableSyntax #-}
+import XMonad.Config.Prime
+import XMonad.Config.Desktop (desktopConfig)
 
-myWorkspaces = ["1","2","3","4","5","6","7","8","9","0"]
+import XMonad.Actions.CopyWindow (copy, kill1)
+import XMonad.Actions.CycleRecentWS (cycleRecentWS)
+import XMonad.Actions.DynamicWorkspaceGroups (promptWSGroupAdd
+  , promptWSGroupForget, promptWSGroupView)
+import XMonad.Actions.GridSelect (defaultGSConfig, goToSelected)
+import XMonad.Actions.SwapWorkspaces (swapWithCurrent)
+import XMonad.Actions.WindowBringer (bringMenuArgs, gotoMenuArgs)
 
-myModKey = mod4Mask
+import XMonad.Hooks.SetWMName (setWMName)
 
--- Non-numeric num pad keys, sorted by number
-numPadKeys = [ xK_KP_End,  xK_KP_Down,  xK_KP_Page_Down -- 1, 2, 3
-             , xK_KP_Left, xK_KP_Begin, xK_KP_Right     -- 4, 5, 6
-             , xK_KP_Home, xK_KP_Up,    xK_KP_Page_Up   -- 7, 8, 9
-             , xK_KP_Insert] -- 0
+import XMonad.Layout.Fullscreen (fullscreenSupport)
+import XMonad.Layout.NoBorders (smartBorders)
 
-isTermScratchPad = (className =? "Mate-terminal") <&&> (stringProperty "WM_WINDOW_ROLE" =? "Scratchpad")
-isKeepass = className =? "Keepassx"
-isRhythmbox = className =? "Rhythmbox"
-isDo = className =? "Do"
+import XMonad.Util.NamedScratchpad (customFloating, defaultFloating
+  , namedScratchpadAction, namedScratchpadManageHook, NamedScratchpad(NS))
 
-myTmuxCommand = "tmux -2 new"
-myScratchCommand = "mate-terminal --role=Scratchpad -e '" ++ myTmuxCommand ++ "'"
-myTerminal = "mate-terminal -e '" ++ myTmuxCommand ++ "'"
+import XMonad.Prompt (defaultXPConfig, font, height, promptBorderWidth)
+import XMonad.StackSet (greedyView, shift, RationalRect(RationalRect))
 
-myScratchpads = [NS "keepassx" "keepassx" isKeepass nonFloating
-                ,NS "terminal" myScratchCommand isTermScratchPad nonFloating
-                ,NS "rhythmbox" "rhythmbox" isRhythmbox nonFloating]
-
--- general keysimport XMonad.Prompt
-myKeys = [((myModKey, xK_p), spawn ("dmenu_run" ++ myDemuConfig))
-        ,((myModKey .|. shiftMask, xK_p), spawn ("p=`echo '' | dmenu -fn ubuntu-mono-10 -p 'Open File:'` && d=`locate $p | dmenu" ++ myDemuConfig ++ "` && xdg-open \"$d\""))
-        ,((myModKey, xK_g), gotoMenuArgs ["-fn", "ubuntu-mono-10", "-l", "20"])
-        ,((myModKey .|. shiftMask, xK_g), goToSelected defaultGSConfig)
-        ,((myModKey .|. shiftMask, xK_b), bringMenuArgs ["-fn", "ubuntu-mono-10", "-l", "20"])
-        ,((myModKey, xK_grave), cycleRecentWS [xK_Super_L] xK_grave xK_grave)
-        ,((myModKey .|. controlMask, xK_space), spawn "gnome-do")
-        -- close focused window
-        ,((myModKey, xK_x), kill)
-        -- close only the copy of the window
-        ,((myModKey .|. shiftMask, xK_x), kill1)]
-        ++
-        -- map all my workspaces
-        -- mod-[1..9] @@ Switch to workspace N
-        -- mod-shift-[1..9] @@ Move client to workspace N
-        -- mod-control-shift-[1..9] @@ Copy client to workspace N
-        [((m .|. myModKey, k), windows $ f i)
-            | (i, k) <- zip myWorkspaces [xK_1 ..]
-            , (f, m) <- [(W.greedyView, 0), (W.shift, shiftMask), (copy, shiftMask .|. controlMask)]]
-        ++
-        -- make the 0 button go to the 0 workspace
-        [((myModKey, xK_0), windows $ W.greedyView "0")
-        , ((myModKey .|. shiftMask, xK_0), withFocused (\w -> windows $ W.shift "0"))
-        , ((myModKey .|. shiftMask .|. controlMask, xK_0), withFocused (\w -> windows $ copy "0"))]
-        ++
-        -- numberpad
-        [((m .|. myModKey, k), windows $ f i)
-                | (i, k) <- zip myWorkspaces numPadKeys
-                -- shift will send, but ctrl+shift will copy the window to the workspace
-                , (f, m) <- [(W.greedyView, 0), (W.shift, shiftMask), (copy, shiftMask .|. controlMask)]]
-        ++
-        -- named scratch pads
-        [
-                ((myModKey .|. controlMask, xK_k), namedScratchpadAction myScratchpads "keepassx")
-                ,((myModKey, xK_F12), namedScratchpadAction myScratchpads "terminal")
-                ,((myModKey, xK_F3), namedScratchpadAction myScratchpads "rhythmbox")
-        ]
-        -- dynamic workspace groups
-        ++
-        [
-                ((myModKey .|. controlMask, xK_a), promptWSGroupAdd myXPConfig "Name this group: ")
-                , ((myModKey, xK_m), promptWSGroupView myXPConfig "Go to group: ")
-                , ((myModKey .|. controlMask, xK_f), promptWSGroupForget myXPConfig "Forget group: ")
-        ]
-        where
-        myDemuConfig = " -l 20 -fn ubuntu-mono-10 "
-        myXPConfig = defaultXPConfig
-                     {
-                        font = "xft: ubuntu-mono-10"
-                        ,promptBorderWidth = 0
-                     }
-
-
-
-myLayout = tiled ||| Mirror tiled ||| spiral (toRational (2 / (1 + sqrt 5::Double))) ||| simpleTabbed ||| Full
+main = xmonad $ do
+  startWith desktopConfig
+  focusedBorderColor =: "#008db8"
+  modMask =: mod4Mask
+  terminal =: terminalCommand
+  modifyLayout smartBorders
+  apply fullscreenSupport
+  manageHook =+ namedScratchpadManageHook scratchpads
+  startupHook =+ setWMName "LG3D"
+  withWorkspaces $ do
+    wsActions =+ [
+        ("M-C-", windows . swapWithCurrent)
+        , ("M-S-C-", windows . copy)
+      ]
+    wsKeys =+ ["0"]
+  keys =- [
+      ("M-S-c")
+    ]
+  keys =+ [
+      ("M-p", spawn ("dmenu_run " ++ dmenuConfig))
+      , ("M-S-p", spawn ("p=`echo '' | dmenu " ++ dmenuFont
+        ++ " -p 'Open File:'` && d=`locate $p | dmenu " ++ dmenuConfig
+        ++ " ` && xdg-open \"$d\""))
+      , ("M-g", gotoMenuArgs dmenuArgs)
+      , ("M-S-g", goToSelected defaultGSConfig)
+      , ("M-S-b", bringMenuArgs dmenuArgs)
+      , ("M-`", cycleRecentWS [xK_Super_L] xK_grave xK_grave)
+      , ("M-x", kill)
+      , ("M-S-x", kill1)
+      , ("M-o", spawn "mate-screenshot -w")
+    ]
+  -- workspace support for number pad keys
+  keys =+ [
+      ("M-" ++ m ++ k, windows $ f i)
+        | (i, k) <- zip workspaceIds numpadKeys
+        , (f, m) <- [
+            (greedyView, "")
+            , (shift, "S-")
+            , (swapWithCurrent, "M-C-")
+            , (copy, "M-S-C-")
+          ]
+    ]
+  -- dynamic workspace groups
+  keys =+ [
+      ("M-C-a", promptWSGroupAdd promptConfig "Name this group: ")
+      , ("M-C-f", promptWSGroupForget promptConfig "Forget group: ")
+      , ("M-C-v", promptWSGroupView promptConfig "Go to group: ")
+    ]
+  -- named scratchpads
+  keys =+ [
+      ("M-C-k", namedScratchpadAction scratchpads "keepassx")
+      , ("M-<F12>", namedScratchpadAction scratchpads "terminal")
+      , ("M-<F3>", namedScratchpadAction scratchpads "rhythmbox")
+    ]
   where
-     -- default tiling algorithm partitions the screen into two panes
-     tiled   = Tall nmaster delta ratio
-
-     -- The default number of windows in the master pane
-     nmaster = 1
-
-     -- Default proportion of screen occupied by master pane
-     ratio   = 1/2
-
-     -- Percent of screen to increment by when resizing panes
-     delta   = 3/100
-
-myManageHook =
-        [
-                isFullscreen --> doFullFloat
-                ,isTermScratchPad --> doRectFloat(W.RationalRect 0 0 0.9 0.9)
-                ,isKeepass --> doCenterFloat
-                ,isRhythmbox --> doCenterFloat
-                ,isDo --> doIgnore
-                ,(className =? "Zenity") --> doCenterFloat
-        ]
-        -- IntelliJ Tweaks
-        ++
-        [
-                --ignore IntelliJ autocomplete
-                appName =? "sun-awt-X11-XWindowPeer" <&&> className =? "jetbrains-idea" --> doIgnore
-        ]
-
-main = xmonad $ gnomeConfig {
-        modMask = myModKey
-        , terminal = myTerminal
-        , focusedBorderColor = "#008db8"
-        , workspaces = myWorkspaces
-        , layoutHook = avoidStruts $ smartBorders myLayout
-        , manageHook = manageHook gnomeConfig <+> composeAll myManageHook
-        , startupHook = do
-           startupHook gnomeConfig
-           setWMName "LG3D"
-} `additionalKeys` myKeys
+  dmenuFont = "-fn 'Inconsolata-14:bold'"
+  dmenuConfig = dmenuFont ++ " -l 20"
+  dmenuArgs = words dmenuConfig
+  workspaceIds = map show $ [1..9] ++ [0]
+  numpadKeys = [
+      "<KP_End>", "<KP_Down>", "<KP_Page_Down>", "<KP_Left>", "<KP_Begin>"
+      , "<KP_Right>", "<KP_Home>", "<KP_Up>", "<KP_Page_Up>", "<KP_Insert>"
+    ]
+  promptConfig = defaultXPConfig {
+    font = "xft:Inconsolata:pixelsize=24:weight=bold"
+    , height = 30
+    , promptBorderWidth = 0
+  }
+  scratchpads = [
+      NS "keepassx" "keepassx" (className =? "Keepassx") defaultFloating
+      , NS "terminal" scratchpadCommand 
+          (stringProperty "WM_WINDOW_ROLE" =? "scratchpad")
+          (customFloating $ RationalRect (1/6) (1/6) (2/3) (2/3))
+      , NS "rhythmbox" "rhythmbox" (className =? "Rhythmbox") defaultFloating
+    ]
+  scratchpadCommand = terminalCommand ++ " --role=scratchpad"
+  terminalCommand = "mate-terminal -e '" ++ tmuxCommand ++ "'"
+  tmuxCommand = "tmux -2 new"
