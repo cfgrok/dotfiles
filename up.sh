@@ -1,21 +1,4 @@
 #!/bin/bash
-#set -x verbose #echo on
 
-#only add the bare necessities to get started. Everything else should be ansible.
-workspace="$HOME/Documents/workspace"
-dot_files="$workspace/dotfiles"
-
-if [ -d "$workspace" ]; then
-
-	#control which playbook is run from which machine by a .playbook file
-	cd $dot_files
-	playbook=`cat .playbook`.yml
-	echo "Playbook is: $playbook"
-
-	cd $dot_files/provision
-
-	ansible-playbook -vvv -K -i hosts $playbook
-
-else
-	echo "$workspace does not exist. WTF?"
-fi
+cd "$HOME"/Documents/workspace/dotfiles/provision
+ansible-playbook -vvv -K -i hosts primary.yml

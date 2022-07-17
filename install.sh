@@ -4,19 +4,12 @@ if ! grep -qs 'deb http' /etc/apt/sources.list.d/ansible-ubuntu-ansible-*.list; 
     sudo apt-add-repository -y ppa:ansible/ansible
 fi
 
-sudo apt-get update
-sudo apt-get install -y ansible git
+sudo apt update
+sudo apt install -y ansible git
 
-cd ~
-
-if [ ! -d ~/Documents/workspace/dotfiles ]; then
+if [ ! -d "$HOME"/Documents/workspace/dotfiles ]; then
+    cd "$HOME"
     mkdir -p Documents/workspace
     cd Documents/workspace
     git clone https://github.com/cfgrok/dotfiles
-    echo 'primary' > ~/Documents/workspace/dotfiles/.playbook
-
-	#self update
-	echo "Updating Dotfiles..."
-	cd dotfiles
-	git pull --rebase
 fi
