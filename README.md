@@ -1,15 +1,16 @@
 My Dot Files + Local Provisioning
 ===================================
 
-My local machine(s) provisioning setup.
+My local machine provisioning setup.
 
-Yay for [Ansible](http://www.ansibleworks.com/).
+Uses [Ansible](http://www.ansibleworks.com/) to automate installation and configuration of a newly-installed OS.
 
-Includes configuration files, dockerfiles and more.
+Includes install scripts, Ansible playbook, configuration files and more.
 
-## Licence
+## License
 
-Copyright 2015 Mark Mandel
+Forked version copyright 2017-2022 Ezra Parker\
+Original code copyright 2015 Mark Mandel
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
