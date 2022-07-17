@@ -97,5 +97,4 @@ main = xmonad $ do
       , NS "rhythmbox" "rhythmbox" (className =? "Rhythmbox") defaultFloating
     ]
   scratchpadCommand = terminalCommand ++ " --role=scratchpad"
-  terminalCommand = "mate-terminal -e '" ++ tmuxCommand ++ "'"
-  tmuxCommand = "tmux -2 new"
+  terminalCommand = "mate-terminal"
