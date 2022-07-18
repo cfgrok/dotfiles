@@ -2,6 +2,8 @@
 - name: Remove unwanted default packages
   apt:
     name:
+      - compiz-core
+      - flatpak
       - thunderbird
       - transmission-common
       - transmission-gtk
