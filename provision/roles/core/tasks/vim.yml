@@ -1,0 +1,6 @@
+- name: See if .vimrc is already present
+  stat: path=~/.vimrc
+  register: vimrc_exists
+- name: Copy .vimrc config file
+  copy: src=vimrc dest=~/.vimrc
+  when: not vimrc_exists.stat.exists

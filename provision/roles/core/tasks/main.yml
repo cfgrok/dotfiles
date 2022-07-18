@@ -36,3 +36,6 @@
   register: solarized_installed
 - import_tasks: solarize.yml
   when: not solarized_installed.stat.exists
+
+#vim
+- import_tasks: vim.yml
