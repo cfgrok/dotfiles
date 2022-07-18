@@ -7,8 +7,6 @@
 #git config
 - import_tasks: gitconfig.yml
 
-- import_tasks: file_descriptors.yml
-
 #pCloud
 - name: See if pCloud is installed
   stat: path=/opt/pcloud/pcloud
@@ -23,13 +21,6 @@
 - import_tasks: vivaldi.yml
   when: (not vivaldi_installed.stat.exists or not vivaldi_installed.stat.executable)
 
-#skype
-- name: See if skype is installed
-  stat: path=/usr/bin/skypeforlinux
-  register: skype_installed
-- import_tasks: skype.yml
-  when: (not skype_installed.stat.exists or not skype_installed.stat.executable)
-
 #oh_my_zsh
 - name: See if oh-my-zsh is installed
   stat: path=~/.oh-my-zsh/custom/plugins/zsh-syntax-highlighting
@@ -37,7 +28,6 @@
 - import_tasks: oh_my_zsh.yml
   when: not oh_my_zsh_installed.stat.exists
 
-- import_tasks: tmux.yml
 - import_tasks: symlink_dirs.yml
 
 #solarized
@@ -46,5 +36,3 @@
   register: solarized_installed
 - import_tasks: solarize.yml
   when: not solarized_installed.stat.exists
-
-- import_tasks: tlp.yml

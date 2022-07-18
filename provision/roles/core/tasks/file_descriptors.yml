@@ -1,4 +1,0 @@
----
-- name: increase file descriptors
-  copy: src=limits.d dest="/etc/security/limits.d"
-  become: true
