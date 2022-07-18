@@ -3,7 +3,7 @@
   file: path=/opt/pcloud state=directory
   become: true
 - name: get JSON from API
-  uri: url=https://api.pcloud.com/getpublinkdownload?code=XZGr337ZAdsin51iTdSc2MVwD7bHzbMenjok method=GET return_content=yes
+  uri: url=https://api.pcloud.com/getpublinkdownload?code=XZWTVkVZQM0GNXA4hrFGPkefzUUWVLKOpPIX method=GET return_content=yes
   register: json_response
 - name: set download URL
   set_fact: download_url="https://{{ json_response.json.hosts[0] }}{{ json_response.json.path }}"
