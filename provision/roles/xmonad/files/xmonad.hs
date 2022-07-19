@@ -1,100 +1,86 @@
-{-# LANGUAGE RebindableSyntax #-}
-import XMonad.Config.Prime
-import XMonad.Config.Desktop (desktopConfig)
-
+import XMonad
 import XMonad.Actions.CopyWindow (copy, kill1)
 import XMonad.Actions.CycleRecentWS (cycleRecentWS)
-import XMonad.Actions.DynamicWorkspaceGroups (promptWSGroupAdd
-  , promptWSGroupForget, promptWSGroupView)
-import XMonad.Actions.GridSelect (defaultGSConfig, goToSelected)
+import XMonad.Actions.GridSelect (goToSelected, gridselectWindow)
 import XMonad.Actions.SwapWorkspaces (swapWithCurrent)
 import XMonad.Actions.WindowBringer (bringMenuArgs, gotoMenuArgs)
-
+import XMonad.Config.Mate (desktopLayoutModifiers, mateConfig)
+import XMonad.Hooks.ManageHelpers (doCenterFloat, doRectFloat)
 import XMonad.Hooks.SetWMName (setWMName)
-
 import XMonad.Layout.Fullscreen (fullscreenSupport)
 import XMonad.Layout.NoBorders (smartBorders)
+import XMonad.StackSet (RationalRect(RationalRect))
+import XMonad.Util.EZConfig (additionalKeysP, removeKeysP)
+import XMonad.Util.NamedScratchpad (namedScratchpadAction, nonFloating, NamedScratchpad(NS))
 
-import XMonad.Util.NamedScratchpad (customFloating, defaultFloating
-  , namedScratchpadAction, namedScratchpadManageHook, NamedScratchpad(NS))
+isKeepass = className =? "keepassx"
+isMatePanel = className =? "Mate-panel"
+isMusicPlayer = className =? "Deadbeef"
+isScratchPad = (className =? "Mate-terminal") <&&> (stringProperty "WM_WINDOW_ROLE" =? "Scratchpad")
 
-import XMonad.Prompt (defaultXPConfig, font, height, promptBorderWidth)
-import XMonad.StackSet (greedyView, shift, RationalRect(RationalRect))
+keepassCommand = "keepassx"
+musicPlayerCommand = "/opt/deadbeef/bin/deadbeef"
+scratchCommand = "mate-terminal --role=Scratchpad"
 
-main = xmonad $ do
-  startWith desktopConfig
-  focusedBorderColor =: "#008db8"
-  modMask =: mod4Mask
-  terminal =: terminalCommand
-  modifyLayout smartBorders
-  apply fullscreenSupport
-  manageHook =+ namedScratchpadManageHook scratchpads
-  startupHook =+ setWMName "LG3D"
-  withWorkspaces $ do
-    wsActions =+ [
-        ("M-C-", windows . swapWithCurrent)
-        , ("M-S-C-", windows . copy)
-      ]
-    wsKeys =+ ["0"]
-  keys =- [
-      ("M-S-c")
-    ]
-  keys =+ [
-      ("M-p", spawn ("dmenu_run " ++ dmenuConfig))
-      , ("M-S-p", spawn ("p=`echo '' | dmenu " ++ dmenuFont
+myModMask = mod4Mask
+
+dmenuFont = "-fn 'Inconsolata-14:bold'"
+dmenuConfig = dmenuFont ++ " -l 20"
+dmenuArgs = words dmenuConfig
+
+workspaceIds = map show $ [1..9]
+
+myKeys = [
+    ("M-i", spawn "firefox")
+    , ("M-o", spawn "mate-screenshot -w")
+    , ("M-u", spawn "caja --no-desktop $HOME")
+    , ("M-x", kill)
+    , ("M-S-x", kill1)
+    , ("M-g", gotoMenuArgs dmenuArgs)
+    , ("M-S-g", goToSelected def)
+    , ("M-S-b", bringMenuArgs dmenuArgs)
+    , ("M-;", cycleRecentWS [xK_Super_L, xK_Super_R] xK_semicolon xK_colon)
+    , ("M-<F3>", namedScratchpadAction myScratchpads "musicplayer")
+    , ("M-<F12>", namedScratchpadAction myScratchpads "terminal")
+    , ("M-C-k", namedScratchpadAction myScratchpads "keepass")
+    , ("M-S-p", spawn ("p=`echo '' | dmenu " ++ dmenuFont
         ++ " -p 'Open File:'` && d=`locate $p | dmenu " ++ dmenuConfig
         ++ " ` && xdg-open \"$d\""))
-      , ("M-g", gotoMenuArgs dmenuArgs)
-      , ("M-S-g", goToSelected defaultGSConfig)
-      , ("M-S-b", bringMenuArgs dmenuArgs)
-      , ("M-`", cycleRecentWS [xK_Super_L] xK_grave xK_grave)
-      , ("M-x", kill)
-      , ("M-S-x", kill1)
-      , ("M-o", spawn "mate-screenshot -w")
     ]
-  -- workspace support for number pad keys
-  keys =+ [
-      ("M-" ++ m ++ k, windows $ f i)
-        | (i, k) <- zip workspaceIds numpadKeys
-        , (f, m) <- [
-            (greedyView, "")
-            , (shift, "S-")
-            , (swapWithCurrent, "M-C-")
-            , (copy, "M-S-C-")
-          ]
+    ++
+    [
+    ("M-" ++ modifier ++ id, windows $ command id)
+        | (id) <- workspaceIds
+        , (command, modifier) <- [
+            (swapWithCurrent, "C-")
+            , (copy, "S-C-")
+        ]
     ]
-  -- dynamic workspace groups
-  keys =+ [
-      ("M-C-a", promptWSGroupAdd promptConfig "Name this group: ")
-      , ("M-C-f", promptWSGroupForget promptConfig "Forget group: ")
-      , ("M-C-v", promptWSGroupView promptConfig "Go to group: ")
+
+myScratchpads = [
+    NS "keepass" keepassCommand isKeepass nonFloating
+    , NS "musicplayer" musicPlayerCommand isMusicPlayer nonFloating
+    , NS "terminal" scratchCommand isScratchPad nonFloating 
     ]
-  -- named scratchpads
-  keys =+ [
-      ("M-C-k", namedScratchpadAction scratchpads "keepassx")
-      , ("M-<F12>", namedScratchpadAction scratchpads "terminal")
-      , ("M-<F3>", namedScratchpadAction scratchpads "rhythmbox")
+
+myManageHook = composeAll
+    [
+        isKeepass --> doCenterFloat
+        , isMatePanel --> doCenterFloat
+        , isMusicPlayer --> doCenterFloat
+        , isScratchPad --> doRectFloat (RationalRect (1/6) (1/6) (2/3) (2/3))
     ]
-  where
-  dmenuFont = "-fn 'Inconsolata-14:bold'"
-  dmenuConfig = dmenuFont ++ " -l 20"
-  dmenuArgs = words dmenuConfig
-  workspaceIds = map show $ [1..9] ++ [0]
-  numpadKeys = [
-      "<KP_End>", "<KP_Down>", "<KP_Page_Down>", "<KP_Left>", "<KP_Begin>"
-      , "<KP_Right>", "<KP_Home>", "<KP_Up>", "<KP_Page_Up>", "<KP_Insert>"
-    ]
-  promptConfig = defaultXPConfig {
-    font = "xft:Inconsolata:pixelsize=24:weight=bold"
-    , height = 30
-    , promptBorderWidth = 0
-  }
-  scratchpads = [
-      NS "keepassx" "keepassx" (className =? "Keepassx") defaultFloating
-      , NS "terminal" scratchpadCommand 
-          (stringProperty "WM_WINDOW_ROLE" =? "scratchpad")
-          (customFloating $ RationalRect (1/6) (1/6) (2/3) (2/3))
-      , NS "rhythmbox" "rhythmbox" (className =? "Rhythmbox") defaultFloating
-    ]
-  scratchpadCommand = terminalCommand ++ " --role=scratchpad"
-  terminalCommand = "mate-terminal"
+
+main = xmonad
+    $ fullscreenSupport
+    $ mateConfig {
+        modMask = myModMask
+        , focusedBorderColor = "#008db8"
+        , layoutHook = smartBorders $ desktopLayoutModifiers $ layoutHook def
+        , manageHook = manageHook mateConfig <+> myManageHook
+        , startupHook = do
+            startupHook mateConfig
+            setWMName "LG3D"
+    }
+    `additionalKeysP` myKeys
+    `removeKeysP` [("M-S-c")]
