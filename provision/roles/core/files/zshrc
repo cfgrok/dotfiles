@@ -72,35 +72,3 @@ function cmdlog() { ( echo "${@:2}" && "${@:2}" ) |& tee -a "$1" ;}
 # Set preferred text editor
 export EDITOR="vim"
 export VISUAL="vim"
-
-# This loads nvm
-export NVM_DIR="/home/ezra/.nvm"
-[ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh"
-
-# When ready to move to Neovim, uncomment to alias 'vi' and 'vim' to nvim
-# alias vi=nvim
-# alias vim=nvim
-# alias ex=nvim
-# alias view=nvim
-# alias gvim=nvim
-# alias gview=nvim
-# alias evim=nvim
-# alias eview=nvim
-# alias rvim=nvim
-# alias rview=nvim
-# alias rgvim=nvim
-# alias rgview=nvim
-
-# Neovim configuration and data directories
-export VIMCONFIG="$HOME/.config/nvim"
-export VIMDATA="$HOME/.local/share/nvim"
-
-# Prevent opening nested Neovim editor inside Terminal mode, use nvr to execute command if available
-if [ -n "$NVIM_LISTEN_ADDRESS" ]; then
-  if [ -x "$(command -v nvr)" ]; then
-    alias nvim=nvr
-    export VISUAL="nvr -cc split --remote-wait +'set bufhidden=wipe'"
-  else
-    alias nvim='echo "No nesting!"'
-  fi
-fi
