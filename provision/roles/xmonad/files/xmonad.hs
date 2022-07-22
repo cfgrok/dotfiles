@@ -39,7 +39,7 @@ myKeys = [
     , ("M-g", gotoMenuArgs dmenuArgs)
     , ("M-S-g", goToSelected def)
     , ("M-S-b", bringMenuArgs dmenuArgs)
-    , ("M-;", cycleRecentWS [xK_Super_L, xK_Super_R] xK_semicolon xK_colon)
+    , ("M-;", cycleRecentWS [xK_Super_L, xK_Super_R] xK_semicolon xK_apostrophe)
     , ("M-<F3>", namedScratchpadAction myScratchpads "musicplayer")
     , ("M-<F12>", namedScratchpadAction myScratchpads "terminal")
     , ("M-C-k", namedScratchpadAction myScratchpads "keepass")

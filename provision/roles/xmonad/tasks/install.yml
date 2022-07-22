@@ -1,4 +1,4 @@
-- name: Install xmonad
+- name: Install XMonad
   apt:
     name:
     - libghc-xmonad-contrib-dev
@@ -8,24 +8,36 @@
     - suckless-tools
     - xmonad
   become: true
-- name: make directory for config
-  file: path="~/.xmonad" state=directory
-- name: copy xmonad config
-  copy: src=xmonad.hs dest=~/.xmonad/xmonad.hs
-- name: reset xmonad
+- name: copy XMonad config
+  copy:
+    src: xmonad.hs
+    dest: ~/.config/xmonad/
+- name: create XMonad cache directory
+  file:
+    path: ~/.cache/xmonad
+    state: directory
+- name: create XMonad data directory
+  file:
+    path: ~/.local/share/xmonad
+    state: directory
+- name: reset XMonad
   shell: "xmonad --recompile"
 - name: set window manager
   dconf:
     key: /org/mate/desktop/session/required-components/windowmanager
     value: "'xmonad'"
-    state: present
-- name: remove super key mappings 1
+- name: remove Mint menu super key mapping
   dconf:
-    key: /org/mate/mate-menu/hot-key
+    key: /com/linuxmint/mintmenu/hot-key
     value: "''"
-    state: present
-- name: remove super key mappings 2
-  dconf:
-    key: /com/solus-project/brisk-menu/hot-key
-    value: "''"
-    state: present
+- name: add desktop config file
+  copy:
+    src: xmonad.desktop
+    dest: /usr/share/applications/
+  become: true
+- name: modify Mint desktop management script
+  replace:
+    path: /usr/lib/linuxmint/mintdesktop/mintdesktop.py
+    regexp: '^(\s+)(settings.set_string\("windowmanager", "mint-window-manager"\))$'
+    replace: '\1# \2'
+  become: true
