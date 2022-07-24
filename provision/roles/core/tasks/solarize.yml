@@ -13,5 +13,5 @@
 - name: copy .dircolors file
   copy:
     src: ~/Documents/workspace/solarized/dircolors-solarized/dircolors.ansi-dark
-    dest: ~/.dircolors
+    dest: ~/.config/dircolors
     remote_src: yes
