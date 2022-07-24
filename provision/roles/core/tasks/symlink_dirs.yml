@@ -1,18 +1,47 @@
 ---
-#Music
-- name: stat original Music dir
-  stat: path=~/Music
+- name: Get info for original Music directory
+  stat:
+    path: ~/Music
   register: st
-- name: delete the original Music folder
-  file: state=absent path="~/Music"
+
+- name: Delete the original Music folder
+  file:
+    path: ~/Music
+    state: absent
   when: st.stat.exists and st.stat.isdir
-- name: stat mount Music dir
-  stat: path=/mnt/data/Music
-  register: st
-- name: create mount dir if not present
-  file: state=directory path="/mnt/data/Music"
+
+- name: Create Music mount directory
+  file:
+    path: /mnt/data/Music
+    state: directory
   become: true
-- name: Music symlink
-  file: state=link path="~/Music" src="/mnt/data/Music"
-- name: scripts symlink
-  file: state=link path="~/scripts" src="~/pCloud Sync/scripts" force=yes
+
+- name: Create Music symlink
+  file:
+    path: ~/Music
+    src: /mnt/data/Music
+    state: link
+
+- name: Create Documents mount directory
+  file:
+    path: /mnt/data/Documents
+    state: directory
+  become: true
+
+- name: Create docs symlink
+  file:
+    path: ~/docs
+    src: /mnt/data/Documents
+    state: link
+
+- name: Create Photos mount directory
+  file:
+    path: /mnt/data/Photos
+    state: directory
+  become: true
+
+- name: Create archive mount directory
+  file:
+    path: /mnt/data/archive
+    state: directory
+  become: true
