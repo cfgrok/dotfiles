@@ -40,3 +40,6 @@
 
 #vim
 - import_tasks: vim.yml
+
+# Update user settings
+- import_tasks: settings.yml
