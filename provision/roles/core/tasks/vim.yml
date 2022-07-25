@@ -1,6 +1,18 @@
+---
 - name: See if .vimrc is already present
-  stat: path=~/.vimrc
+  stat:
+    path: ~/.vimrc
   register: vimrc_exists
 - name: Copy .vimrc config file
-  copy: src=vimrc dest=~/.vimrc
+  copy:
+    src: vimrc
+    dest: ~/.vimrc
   when: not vimrc_exists.stat.exists
+- name: Create undo directory
+  file:
+    path: ~/.vim/undo
+    state: directory
+- name: Copy Emmet snippet file
+  copy:
+    src: vim_snippets_custom.json
+    dest: ~/.vim/.vim_snippets_custom.json

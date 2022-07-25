@@ -1,16 +1,20 @@
-call plug#begin('~/.vim/plugins')
+if empty(glob('~/.vim/autoload/plug.vim'))
+  silent execute '!curl -fLo ~/.vim/autoload/plug.vim --create-dirs https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim'
+  autocmd VimEnter * PlugInstall --sync | source $MYVIMRC
+endif
+
+call plug#begin('~/.vim/plugged')
 
 Plug 'AndrewRadev/splitjoin.vim'
 Plug 'Raimondi/delimitMate'
 Plug 'altercation/vim-colors-solarized'
 Plug 'godlygeek/tabular'
 Plug 'itchyny/lightline.vim'
-Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
+Plug 'junegunn/fzf', { 'dir': '~/.config/fzf', 'do': './install --all --xdg --no-update-rc --no-bash' }
 Plug 'junegunn/fzf.vim'
 Plug 'kana/vim-textobj-user'
 Plug 'mattn/emmet-vim'
 Plug 'mattn/webapi-vim'
-Plug 'nelstrom/vim-textobj-rubyblock'
 Plug 'p0deje/vim-ruby-interpolation'
 Plug 'tpope/vim-abolish'
 Plug 'tpope/vim-bundler'
@@ -37,13 +41,66 @@ Plug 'tpope/vim-surround'
 Plug 'tpope/vim-unimpaired'
 Plug 'vim-test/vim-test'
 
+" User-defined text objects
+Plug 'Julian/vim-textobj-variable-segment' " [ai]v
+Plug 'beloglazov/vim-textobj-quotes' " [ai]q -- evaluate, behavior seems sketchy if unmatched quotes are present in file
+Plug 'idbrii/textobj-word-column.vim' " [ai]c [ai]C -- remapped from c/C to l/L
+Plug 'jceb/vim-textobj-uri' " [ai]u go
+" Plug 'nelstrom/vim-textobj-rubyblock' " [ai]r -- superseded by vim-textobj-ruby
+Plug 'tek/vim-textobj-ruby' " [ai]r [ai]c [ai]f [ai]n
+Plug 'whatyouhide/vim-textobj-erb' " [ai]e -- remapped from E to e
+Plug 'whatyouhide/vim-textobj-xmlattr' " [ai]x
+
+" Other user-defined text objects to review
+" https://github.com/kana/vim-textobj-indent
+" https://github.com/vimtaku/vim-textobj-keyvalue
+
 call plug#end()
 
 
+" Remap vim-textobj-erb from E to e
+silent! ounmap aE
+silent! ounmap iE
+silent! xunmap aE
+silent! xunmap iE
+
+omap ae <Plug>(textobj-erb-a)
+omap ie <Plug>(textobj-erb-i)
+xmap ae <Plug>(textobj-erb-a)
+xmap ie <Plug>(textobj-erb-i)
+
+
+" Remap idbrii/textobj-word-column.vim from [cC] to [lL]
+silent! ounmap ac
+silent! ounmap aC
+silent! ounmap ic
+silent! ounmap iC
+silent! xunmap ac
+silent! xunmap aC
+silent! xunmap ic
+silent! xunmap iC
+
+omap al <Plug>(textobj-wordcolumn-word-a)
+omap aL <Plug>(textobj-wordcolumn-WORD-a)
+omap il <Plug>(textobj-wordcolumn-word-i)
+omap iL <Plug>(textobj-wordcolumn-WORD-i)
+xmap al <Plug>(textobj-wordcolumn-word-a)
+xmap aL <Plug>(textobj-wordcolumn-WORD-a)
+xmap il <Plug>(textobj-wordcolumn-word-i)
+xmap iL <Plug>(textobj-wordcolumn-WORD-i)
+
+
+" Load solarized color scheme if installed
+if !empty(globpath(&runtimepath, 'colors/solarized.vim'))
+  colorscheme solarized
+endif
+
+
 " Base options
-colorscheme solarized
 set background=dark
-set clipboard=unnamed,unnamedplus
+set clipboard^=unnamed,unnamedplus
+set guifont=Inconsolata\ Medium\ 18
+set hidden
 set history=10000
 set nojoinspaces
 " set langnoremap
@@ -51,20 +108,30 @@ set nojoinspaces
 set number
 set scrolloff=3
 set noshowmode
-set undodir=$HOME/.vim/undo
+set undodir=~/.vim/undo
 set undofile
 
 
+" Mappings
+nnoremap Y y$
+xnoremap * y/\V<C-R>"<CR>
+xnoremap # y?\V<C-R>"<CR>
+
+
+" Fix for broken lightline display that sometimes occurs when calling vim via xdg-open
+nnoremap <silent> <C-_> G<C-F>gg:call lightline#disable()<CR>:call lightline#enable()<CR>
+
+
 " Indenting defaults (does not override vim-sleuth's indenting detection)
-" Defaults to 4 spaces for most filetypes
+" Defaults to 2 spaces for most filetypes
 if get(g:, '_has_set_default_indent_settings', 0) == 0
-    " Set the indenting level to 2 spaces for the following file types.
-    autocmd FileType typescript,javascript,css,html,ruby,eruby
-        \ setlocal expandtab tabstop=2 shiftwidth=2
-    set expandtab
-    set tabstop=4
-    set shiftwidth=4
-    let g:_has_set_default_indent_settings = 1
+  " Set the indenting level to 4 spaces for the following file types.
+  autocmd FileType python
+    \ setlocal expandtab tabstop=4 shiftwidth=4
+  set expandtab
+  set tabstop=2
+  set shiftwidth=2
+  let g:_has_set_default_indent_settings = 1
 endif
 
 
@@ -75,55 +142,58 @@ let delimitMate_expand_space = 1
 let delimitMate_jump_expansion = 1
 
 if empty(maparg('<CR>', 'i'))
-    imap <CR> <Plug>delimitMateCR
+  imap <CR> <Plug>delimitMateCR
 endif
 
 
 " lightline configuration
 let g:lightline = {
-    \ 'colorscheme': 'solarized',
-    \ 'active': {
-    \   'left': [
-    \       [ 'mode', 'paste' ],
-    \       [ 'gitbranch', 'readonly', 'filepath', 'modified' ]
-    \   ]
-    \ },
-    \ 'component_function': {
-    \   'gitbranch': 'FugitiveHead',
-    \   'filepath': 'LightlinePath',
-    \   'fileformat': 'LightlineFileformat',
-    \   'fileencoding': 'LightlineFileencoding',
-    \   'filetype': 'LightlineFiletype',
-    \ },
-    \ }
+  \ 'colorscheme': 'solarized',
+  \ 'active': {
+  \   'left': [
+  \     [ 'mode', 'paste' ],
+  \     [ 'gitbranch', 'readonly', 'filepath', 'modified' ]
+  \   ]
+  \ },
+  \ 'component_function': {
+  \   'gitbranch': 'FugitiveHead',
+  \   'filepath': 'LightlinePath',
+  \   'fileformat': 'LightlineFileformat',
+  \   'fileencoding': 'LightlineFileencoding',
+  \   'filetype': 'LightlineFiletype',
+  \ },
+  \ }
 
 function! LightlinePath()
-    return len(expand('%:f')) <= 40 && winwidth(0) > 40 ? expand('%:f') : expand('%:t')
+  return len(expand('%:f')) <= 40 && winwidth(0) > 40 ? expand('%:f') : expand('%:t')
 endfunction
 
 function! LightlineFileformat()
-    return winwidth(0) > 80 ? &fileformat : ''
+  return winwidth(0) > 80 ? &fileformat : ''
 endfunction
 
 function! LightlineFileencoding()
-    return winwidth(0) > 80 ? (&fenc !=# '' ? &fenc : &enc) : ''
+  return winwidth(0) > 80 ? (&fenc !=# '' ? &fenc : &enc) : ''
 endfunction
 
 function! LightlineFiletype()
-    return winwidth(0) > 80 ? (&filetype !=# '' ? &filetype : 'no ft') : ''
+  return winwidth(0) > 80 ? (&filetype !=# '' ? &filetype : 'no ft') : ''
 endfunction
 
 
-" Emmet JSON parsing support
-let g:user_emmet_settings = webapi#json#decode(join(readfile(expand('~/.vim_snippets_custom.json')), "\n"))
+" Load Emmet custom snippets
+if !empty(glob('~/.vim/plugged/webapi-vim')) && !empty(glob('~/.vim/.vim_snippets_custom.json'))
+  let g:user_emmet_settings = webapi#json#decode(join(readfile(expand('~/.vim/.vim_snippets_custom.json')), "\n"))
+endif
+
 
 " Custom function to toggle dark/light solarized themes
 function! ToggleSolarizedBackground()
-    let &background = ( &background == 'dark'? 'light' : 'dark' )
-    if exists('g:lightline')
-        runtime autoload/lightline/colorscheme/solarized.vim
-        call lightline#colorscheme()
-    endif
+  let &background = ( &background == 'dark'? 'light' : 'dark' )
+  if exists('g:lightline')
+    runtime autoload/lightline/colorscheme/solarized.vim
+    call lightline#colorscheme()
+  endif
 endfunction
 
 map <F12> :call ToggleSolarizedBackground()<CR>
@@ -131,3 +201,7 @@ map <F12> :call ToggleSolarizedBackground()<CR>
 
 " Use Dispatch for running tests
 let test#strategy = "dispatch"
+
+
+" Custom command to save & source current file
+command! Ws write | source %
