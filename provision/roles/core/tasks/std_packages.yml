@@ -1,24 +1,39 @@
 ---
+- name: Set up EULA response for MS fonts
+  debconf:
+    name: ttf-mscorefonts-installer
+    question: msttcorefonts/accepted-mscorefonts-eula
+    vtype: boolean
+    value: true
+  become: true
+
 - name: Install core standard packages
   apt:
     name:
       - abcde
       - audacity
       - autojump
-      - curl
+      - brasero
       - dconf-editor
+      - exuberant-ctags
+      - fd-find
       - ffmpeg
       - fonts-inconsolata
       - gimp
+      - git-extras
       - gnome-nettool
       - htop
+      - kazam
       - keepassx
-      - libreoffice-base
       - meld
       - nethogs
       - nfs-common
-      - p7zip-full
-      - synaptic
+      - nmap
+      - phantomjs
+      - postgresql
+      - postgresql-client
+      - ripgrep
+      - taskwarrior
       - tree
       - ubuntu-restricted-extras
       - vagrant
