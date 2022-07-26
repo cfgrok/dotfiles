@@ -103,9 +103,11 @@ fi
 [ -f "${XDG_CONFIG_HOME:-$HOME/.config}"/fzf/fzf.zsh ] && source "${XDG_CONFIG_HOME:-$HOME/.config}"/fzf/fzf.zsh
 
 # Add rbenv to PATH & initialize
-export PATH="$HOME/.local/rbenv/bin:$HOME/.local/bin:$PATH"
+export PATH="$HOME/.local/rbenv/bin:$PATH"
 export RBENV_ROOT="$HOME"/.local/rbenv
-eval "$(rbenv init -)"
+if [ -f "$HOME"/.local/rbenv/bin/rbenv ]; then
+  eval "$(rbenv init - zsh)"
+fi
 
 # Custom function to swap names of 2 files
 function swap() { mv "$1" "$1".tmp && mv "$2" "$1" && mv "$1".tmp "$2" }

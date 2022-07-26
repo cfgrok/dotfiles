@@ -38,6 +38,14 @@
 - import_tasks: solarize.yml
   when: not solarized_installed.stat.exists
 
+#rbenv
+- name: See if rbenv is installed
+  stat:
+    path: ~/.local/rbenv
+  register: rbenv_installed
+- import_tasks: rbenv.yml
+  when: not rbenv_installed.stat.exists
+
 #vim
 - import_tasks: vim.yml
 
