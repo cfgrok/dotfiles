@@ -49,5 +49,8 @@
 #vim
 - import_tasks: vim.yml
 
+# PostgreSQL role
+- import_tasks: postgres.yml
+
 # Update user settings
 - import_tasks: settings.yml
