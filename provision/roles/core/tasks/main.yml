@@ -29,6 +29,14 @@
 - import_tasks: google_chrome.yml
   when: (not chrome_installed.stat.exists or not chrome_installed.stat.executable)
 
+# Deadbeef
+- name: See if deadbeef is installed
+  stat:
+    path: /opt/deadbeef/bin/deadbeef
+  register: deadbeef_installed
+- import_tasks: deadbeef.yml
+  when: (not deadbeef_installed.stat.exists or not deadbeef_installed.stat.executable)
+
 #zsh
 - name: See if Oh My Zsh is installed
   stat:
