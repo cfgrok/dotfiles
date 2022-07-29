@@ -1,9 +1,16 @@
-if empty(glob('~/.vim/autoload/plug.vim'))
-  silent execute '!curl -fLo ~/.vim/autoload/plug.vim --create-dirs https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim'
+" Set up runtimepath for running vim from XDG config directory
+let &runtimepath = substitute(&runtimepath, '\.vim', '.config/vim', 'g')
+
+" Set location of viminfo file to XDG config directory
+set viminfo+=n~/.config/vim/viminfo
+
+" Auto-install vim-plug and plugins if not present
+if empty(glob('~/.config/vim/autoload/plug.vim'))
+  silent execute '!curl -fLo ~/.config/vim/autoload/plug.vim --create-dirs https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim'
   autocmd VimEnter * PlugInstall --sync | source $MYVIMRC
 endif
 
-call plug#begin('~/.vim/plugged')
+call plug#begin('~/.config/vim/plugged')
 
 Plug 'AndrewRadev/splitjoin.vim'
 Plug 'Raimondi/delimitMate'
@@ -108,7 +115,7 @@ set nojoinspaces
 set number
 set scrolloff=3
 set noshowmode
-set undodir=~/.vim/undo
+set undodir=~/.config/vim/undo
 set undofile
 
 
@@ -182,8 +189,8 @@ endfunction
 
 
 " Load Emmet custom snippets
-if !empty(glob('~/.vim/plugged/webapi-vim')) && !empty(glob('~/.vim/.vim_snippets_custom.json'))
-  let g:user_emmet_settings = webapi#json#decode(join(readfile(expand('~/.vim/.vim_snippets_custom.json')), "\n"))
+if !empty(glob('~/.config/vim/plugged/webapi-vim')) && !empty(glob('~/.config/vim/vim_snippets_custom.json'))
+  let g:user_emmet_settings = webapi#json#decode(join(readfile(expand('~/.config/vim/vim_snippets_custom.json')), "\n"))
 endif
 
 
