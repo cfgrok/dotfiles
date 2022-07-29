@@ -21,6 +21,14 @@
 - import_tasks: vivaldi.yml
   when: (not vivaldi_installed.stat.exists or not vivaldi_installed.stat.executable)
 
+# Google Chrome
+- name: See if chrome is installed
+  stat:
+    path: /opt/google/chrome/chrome
+  register: chrome_installed
+- import_tasks: google_chrome.yml
+  when: (not chrome_installed.stat.exists or not chrome_installed.stat.executable)
+
 #zsh
 - name: See if Oh My Zsh is installed
   stat:
