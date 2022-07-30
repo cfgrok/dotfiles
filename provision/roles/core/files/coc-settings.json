@@ -1,0 +1,6 @@
+{
+  "snippets.extends": {
+    "ruby": ["rails"]
+  },
+  "snippets.snipmate.enable": false
+}

@@ -15,6 +15,7 @@ call plug#begin('~/.config/vim/plugged')
 Plug 'AndrewRadev/splitjoin.vim'
 Plug 'Raimondi/delimitMate'
 Plug 'godlygeek/tabular'
+Plug 'honza/vim-snippets'
 Plug 'itchyny/lightline.vim'
 Plug 'itchyny/vim-gitbranch'
 Plug 'junegunn/fzf', { 'dir': '~/.config/fzf', 'do': './install --all --xdg --no-update-rc --no-bash' }
@@ -22,8 +23,10 @@ Plug 'junegunn/fzf.vim'
 Plug 'kana/vim-textobj-user'
 Plug 'mattn/emmet-vim'
 Plug 'mattn/webapi-vim'
+Plug 'neoclide/coc.nvim', {'branch': 'release'}
 Plug 'overcache/NeoSolarized'
 Plug 'p0deje/vim-ruby-interpolation'
+Plug 'pearofducks/ansible-vim'
 Plug 'tpope/vim-abolish'
 Plug 'tpope/vim-bundler'
 Plug 'tpope/vim-commentary'
@@ -65,6 +68,10 @@ Plug 'whatyouhide/vim-textobj-xmlattr' " [ai]x
 " https://github.com/vimtaku/vim-textobj-keyvalue
 
 call plug#end()
+
+
+" Coc configuration
+source ~/.config/vim/coc.vim
 
 
 " Remap vim-textobj-erb from E to e
