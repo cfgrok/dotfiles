@@ -14,14 +14,15 @@ call plug#begin('~/.config/vim/plugged')
 
 Plug 'AndrewRadev/splitjoin.vim'
 Plug 'Raimondi/delimitMate'
-Plug 'altercation/vim-colors-solarized'
 Plug 'godlygeek/tabular'
 Plug 'itchyny/lightline.vim'
+Plug 'itchyny/vim-gitbranch'
 Plug 'junegunn/fzf', { 'dir': '~/.config/fzf', 'do': './install --all --xdg --no-update-rc --no-bash' }
 Plug 'junegunn/fzf.vim'
 Plug 'kana/vim-textobj-user'
 Plug 'mattn/emmet-vim'
 Plug 'mattn/webapi-vim'
+Plug 'overcache/NeoSolarized'
 Plug 'p0deje/vim-ruby-interpolation'
 Plug 'tpope/vim-abolish'
 Plug 'tpope/vim-bundler'
@@ -53,10 +54,11 @@ Plug 'Julian/vim-textobj-variable-segment' " [ai]v
 Plug 'beloglazov/vim-textobj-quotes' " [ai]q -- evaluate, behavior seems sketchy if unmatched quotes are present in file
 Plug 'idbrii/textobj-word-column.vim' " [ai]c [ai]C -- remapped from c/C to l/L
 Plug 'jceb/vim-textobj-uri' " [ai]u go
-" Plug 'nelstrom/vim-textobj-rubyblock' " [ai]r -- superseded by vim-textobj-ruby
 Plug 'tek/vim-textobj-ruby' " [ai]r [ai]c [ai]f [ai]n
 Plug 'whatyouhide/vim-textobj-erb' " [ai]e -- remapped from E to e
 Plug 'whatyouhide/vim-textobj-xmlattr' " [ai]x
+
+" Plug 'nelstrom/vim-textobj-rubyblock' " [ai]r -- superseded by vim-textobj-ruby, investigate possible reversion due to duplication of functionality between coc.nvim and vim-textobj-ruby
 
 " Other user-defined text objects to review
 " https://github.com/kana/vim-textobj-indent
@@ -97,9 +99,9 @@ xmap il <Plug>(textobj-wordcolumn-word-i)
 xmap iL <Plug>(textobj-wordcolumn-WORD-i)
 
 
-" Load solarized color scheme if installed
-if !empty(globpath(&runtimepath, 'colors/solarized.vim'))
-  colorscheme solarized
+" Load NeoSolarized color scheme if installed
+if &rtp =~ 'NeoSolarized'
+  colorscheme NeoSolarized
 endif
 
 
@@ -117,6 +119,10 @@ set scrolloff=3
 set noshowmode
 set undodir=~/.config/vim/undo
 set undofile
+
+
+" Fix terminal background color
+highlight Normal ctermbg=NONE
 
 
 " Mappings
@@ -163,7 +169,7 @@ let g:lightline = {
   \   ]
   \ },
   \ 'component_function': {
-  \   'gitbranch': 'FugitiveHead',
+  \   'gitbranch': 'gitbranch#name',
   \   'filepath': 'LightlinePath',
   \   'fileformat': 'LightlineFileformat',
   \   'fileencoding': 'LightlineFileencoding',
@@ -189,7 +195,7 @@ endfunction
 
 
 " Load Emmet custom snippets
-if !empty(glob('~/.config/vim/plugged/webapi-vim')) && !empty(glob('~/.config/vim/vim_snippets_custom.json'))
+if &rtp =~ 'webapi-vim' && !empty(glob('~/.config/vim/vim_snippets_custom.json'))
   let g:user_emmet_settings = webapi#json#decode(join(readfile(expand('~/.config/vim/vim_snippets_custom.json')), "\n"))
 endif
 
