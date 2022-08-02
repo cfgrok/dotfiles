@@ -1,6 +1,0 @@
----
-- name: See if XMonad is installed
-  stat: path=~/.config/xmonad/monad.hs
-  register: xmonad_installed
-- import_tasks: install.yml
-  when: not xmonad_installed.stat.exists

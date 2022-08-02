@@ -17,4 +17,3 @@
 	branchlog = !bash -c \"git log `git oldest-ancestor`..\"
 [push]
 	default = tracking
-[core]

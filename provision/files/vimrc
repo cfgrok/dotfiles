@@ -18,6 +18,7 @@ Plug 'godlygeek/tabular'
 Plug 'honza/vim-snippets'
 Plug 'itchyny/lightline.vim'
 Plug 'itchyny/vim-gitbranch'
+Plug 'jenterkin/vim-autosource'
 Plug 'junegunn/fzf', { 'dir': '~/.config/fzf', 'do': './install --all --xdg --no-update-rc --no-bash' }
 Plug 'junegunn/fzf.vim'
 Plug 'kana/vim-textobj-user'

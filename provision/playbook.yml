@@ -1,0 +1,138 @@
+---
+- hosts: localhost
+  tasks:
+
+    # XMonad installation
+    - name: See if XMonad is installed
+      ansible.builtin.stat:
+        path: ~/.config/xmonad/xmonad.hs
+      register: xmonad_installed
+      tags: xmonad
+
+    - ansible.builtin.import_tasks: xmonad.yml
+      when: not xmonad_installed.stat.exists
+      tags: xmonad
+
+
+    # Remove unwanted default packages
+    - ansible.builtin.import_tasks: clean_packages.yml
+      tags: clean_packages
+
+
+    # Install standard packages
+    - ansible.builtin.import_tasks: install_packages.yml
+      tags: install_packages
+
+
+    # Copy Git config
+    - ansible.builtin.import_tasks: git_config.yml
+      tags: git_config
+
+
+    # Create mount directories and home folder links
+    - ansible.builtin.import_tasks: link_dirs.yml
+      tags: link_dirs
+
+
+    # Install zsh and Oh My Zsh
+    - name: See if Oh My Zsh is installed
+      ansible.builtin.stat:
+        path: ~/.config/oh-my-zsh/custom/plugins/zsh-syntax-highlighting
+      register: oh_my_zsh_installed
+      tags: zsh
+
+    - ansible.builtin.import_tasks: oh_my_zsh.yml
+      when: not oh_my_zsh_installed.stat.exists
+      tags: zsh
+
+
+    # Install solarized color schemes for terminal and directory listings
+    - name: See if solarized projects are installed
+      ansible.builtin.stat:
+        path: ~/.config/dircolors
+      register: solarized_installed
+      tags: solarized
+
+    - ansible.builtin.import_tasks: solarize.yml
+      when: not solarized_installed.stat.exists
+      tags: solarized
+
+
+    # Copy Vim configuration
+    - ansible.builtin.import_tasks: vim.yml
+      tags: vim
+
+
+    # Install rbenv and ruby
+    - name: See if rbenv is installed
+      ansible.builtin.stat:
+        path: ~/.local/rbenv
+      register: rbenv_installed
+      tags: rbenv
+
+    - ansible.builtin.import_tasks: rbenv.yml
+      when: not rbenv_installed.stat.exists
+      tags: rbenv
+
+
+    # Install pCloud
+    - name: See if pCloud is installed
+      ansible.builtin.stat:
+        path: /opt/pcloud/pcloud
+      register: pcloud_installed
+      tags: pcloud
+
+    - ansible.builtin.import_tasks: pcloud.yml
+      when: not pcloud_installed.stat.exists or not pcloud_installed.stat.executable
+      tags: pcloud
+
+
+    # Install Vivaldi
+    - name: See if Vivaldi is installed
+      ansible.builtin.stat:
+        path: /usr/bin/vivaldi
+      register: vivaldi_installed
+      tags: vivaldi
+
+    - ansible.builtin.import_tasks: vivaldi.yml
+      when: not vivaldi_installed.stat.exists or not vivaldi_installed.stat.executable
+      tags: vivaldi
+
+
+    # Install Google Chrome
+    - name: See if Chrome is installed
+      ansible.builtin.stat:
+        path: /opt/google/chrome/chrome
+      register: chrome_installed
+      tags: chrome
+
+    - ansible.builtin.import_tasks: google_chrome.yml
+      when: not chrome_installed.stat.exists or not chrome_installed.stat.executable
+      tags: chrome
+
+
+    # Install DeaDBeeF
+    - name: See if DeaDBeeF is installed
+      ansible.builtin.stat:
+        path: /opt/deadbeef/bin/deadbeef
+      register: deadbeef_installed
+      tags: deadbeef
+
+    - ansible.builtin.import_tasks: deadbeef.yml
+      when: not deadbeef_installed.stat.exists or not deadbeef_installed.stat.executable
+      tags: deadbeef
+
+
+    # Set up PostgreSQL role
+    - ansible.builtin.import_tasks: postgres.yml
+      tags: postgres
+
+
+    # Install nvm and nodejs
+    - ansible.builtin.import_tasks: node.yml
+      tags: node
+
+
+    # Update user settings
+    - ansible.builtin.import_tasks: settings.yml
+      tags: settings
