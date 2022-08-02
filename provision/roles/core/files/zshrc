@@ -1,12 +1,15 @@
+XDG_CACHE="${XDG_CACHE_HOME:-$HOME/.cache}"
+XDG_CONFIG="${XDG_CONFIG_HOME:-$HOME/.config}"
+
 # Enable Powerlevel10k instant prompt. Should stay close to the top of ~/.zshrc.
 # Initialization code that may require console input (password prompts, [y/n]
 # confirmations, etc.) must go above this block; everything else may go below.
-if [ "$TERM" != "linux" ] && [ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]; then
-  source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
+if [ "$TERM" != "linux" ] && [ -r "$XDG_CACHE/p10k-instant-prompt-${(%):-%n}.zsh" ]; then
+  source "$XDG_CACHE/p10k-instant-prompt-${(%):-%n}.zsh"
 fi
 
 # Path to your oh-my-zsh configuration.
-ZSH="${XDG_CONFIG_HOME:-$HOME/.config}/oh-my-zsh"
+ZSH="$XDG_CONFIG/oh-my-zsh"
 
 # Disable PowerLevel10K theme & functionality in console
 [ "$TERM" != "linux" ] && ZSH_THEME=powerlevel10k/powerlevel10k
@@ -14,7 +17,7 @@ ZSH="${XDG_CONFIG_HOME:-$HOME/.config}/oh-my-zsh"
 # History settings
 HIST_IGNORE_SPACE="true"
 HIST_STAMPS="yyyy-mm-dd"
-HISTFILE="${XDG_CONFIG_HOME:-$HOME/.config}/zsh/.zsh_history"
+HISTFILE="$XDG_CONFIG/zsh/.zsh_history"
 HISTSIZE=1000000
 SAVEHIST=1000000
 
@@ -89,21 +92,22 @@ alias gdtr="git diff-tree --no-commit-id --name-only -r"
 zstyle ':completion:*' special-dirs false
 
 # Solarized colors for ls commands
-if [ -f "${XDG_CONFIG_HOME:-$HOME/.config}/dircolors" ]; then
-  eval $(dircolors "${XDG_CONFIG_HOME:-$HOME/.config}/dircolors")
+if [ -f "$XDG_CONFIG/dircolors" ]; then
+  eval $(dircolors "$XDG_CONFIG/dircolors")
 fi
 
 # Powerlevel10K -- to customize prompt, run `p10k configure` or edit "$ZSH"/custom/powerlevel10k/p10k.zsh
 [ -f "$ZSH/custom/powerlevel10k/p10k.zsh" ] && [ "$TERM" != "linux" ] && source "$ZSH/custom/powerlevel10k/p10k.zsh"
 
 # Initialize fzf if present
-[ -f "${XDG_CONFIG_HOME:-$HOME/.config}/fzf/fzf.zsh" ] && source "${XDG_CONFIG_HOME:-$HOME/.config}/fzf/fzf.zsh"
+[ -f "$XDG_CONFIG/fzf/fzf.zsh" ] && source "$XDG_CONFIG/fzf/fzf.zsh"
 
 # Set vim to use XDG config directory
-export VIMINIT="source ${XDG_CONFIG_HOME:-$HOME/.config}/vim/vimrc"
+export VIMINIT="source $XDG_CONFIG/vim/vimrc"
+export MYVIMRC="$XDG_CONFIG/vim/vimrc"
 
 # Alias for editing vimrc config
-alias vimrc="${=EDITOR} ${XDG_CONFIG_HOME:-$HOME/.config}/vim/vimrc"
+alias vimrc="${=EDITOR} $XDG_CONFIG/vim/vimrc"
 
 # Add rbenv to PATH & initialize
 export PATH="$HOME/.local/rbenv/bin:$PATH"
