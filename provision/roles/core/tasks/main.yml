@@ -65,6 +65,10 @@
 #vim
 - import_tasks: vim.yml
 
+# Install nvm and nodejs
+- import_tasks: node.yml
+  tags: node
+
 # PostgreSQL role
 - import_tasks: postgres.yml
 

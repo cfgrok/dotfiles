@@ -53,6 +53,7 @@ plugins=(
   globalias
   jsontools
   nmap
+  nvm
   rails
   rake
   rake-fast
