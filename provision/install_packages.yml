@@ -1,14 +1,14 @@
 ---
 - name: Set up EULA response for MS fonts
-  debconf:
+  ansible.builtin.debconf:
     name: ttf-mscorefonts-installer
     question: msttcorefonts/accepted-mscorefonts-eula
     vtype: boolean
     value: true
   become: true
 
-- name: Install core standard packages
-  apt:
+- name: Install standard packages
+  ansible.builtin.apt:
     name:
       - abcde
       - audacity

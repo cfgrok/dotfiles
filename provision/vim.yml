@@ -1,43 +1,43 @@
 ---
 - name: See if vimrc is already present
-  stat:
+  ansible.builtin.stat:
     path: ~/.config/vim/vimrc
   register: vimrc_exists
 
 - name: Copy vimrc config file
-  copy:
+  ansible.builtin.copy:
     src: vimrc
-    dest: ~/.config/vim/vimrc
+    dest: ~/.config/vim/
   when: not vimrc_exists.stat.exists
 
 - name: Create undo directory
-  file:
+  ansible.builtin.file:
     path: ~/.config/vim/undo
     state: directory
 
 - name: Copy Emmet snippet file
-  copy:
+  ansible.builtin.copy:
     src: vim_snippets_custom.json
     dest: ~/.config/vim/vim_snippets_custom.json
 
 - name: See if coc.vim is already present
-  stat:
+  ansible.builtin.stat:
     path: ~/.config/vim/coc.vim
   register: cocvim_exists
 
 - name: Copy coc.vim config file
-  copy:
+  ansible.builtin.copy:
     src: coc.vim
     dest: ~/.config/vim/coc.vim
   when: not cocvim_exists.stat.exists
 
 - name: See if coc-settings.json is already present
-  stat:
+  ansible.builtin.stat:
     path: ~/.config/vim/coc-settings.json
   register: cocsettings_exists
 
 - name: Copy coc json settings file
-  copy:
+  ansible.builtin.copy:
     src: coc-settings.json
     dest: ~/.config/vim/coc-settings.json
   when: not cocsettings_exists.stat.exists

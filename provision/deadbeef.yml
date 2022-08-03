@@ -1,19 +1,20 @@
 ---
-- name: Create deadbeef install directory
-  file:
+- name: Create DeaDBeeF install directory
+  ansible.builtin.file:
     path: /tmp/install_deadbeef
     state: directory
 
-- name: Download deadbeef
-  get_url:
+- name: Download DeaDBeeF
+  ansible.builtin.get_url:
     url: https://sourceforge.net/projects/deadbeef/files/travis/linux/1.9.1/deadbeef-static_1.9.1-1_amd64.deb/download
     dest: /tmp/install_deadbeef/deadbeef.deb
 
-- name: Install deadbeef
-  command: gdebi -n /tmp/install_deadbeef/deadbeef.deb
+- name: Install DeaDBeeF
+  ansible.builtin.command:
+    cmd: gdebi -n /tmp/install_deadbeef/deadbeef.deb
   become: true
 
-- name: Clean up deadbeef install directory
-  file:
+- name: Clean up DeaDBeeF install directory
+  ansible.builtin.file:
     path: /tmp/install_deadbeef
     state: absent

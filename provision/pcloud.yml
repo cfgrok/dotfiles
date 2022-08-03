@@ -1,19 +1,30 @@
 ---
-- name: create install dir
-  file: path=/opt/pcloud state=directory
+- name: Create install dir
+  ansible.builtin.file:
+    path: /opt/pcloud
+    state: directory
   become: true
-- name: get JSON from API
-  uri: url=https://api.pcloud.com/getpublinkdownload?code=XZWTVkVZQM0GNXA4hrFGPkefzUUWVLKOpPIX method=GET return_content=yes
+
+- name: Get JSON from API
+  ansible.builtin.uri:
+    url: https://api.pcloud.com/getpublinkdownload?code=XZWTVkVZQM0GNXA4hrFGPkefzUUWVLKOpPIX
+    method: GET
+    return_content: true
   register: json_response
-- name: set download URL
-  set_fact: download_url="https://{{ json_response.json.hosts[0] }}{{ json_response.json.path }}"
-- name: download pCloud
-  get_url: dest="/opt/pcloud/pcloud" url="{{ download_url }}"
+
+- name: Set download URL
+  ansible.builtin.set_fact:
+    download_url: "https://{{ json_response.json.hosts[0] }}{{ json_response.json.path }}"
+
+- name: Download pCloud
+  ansible.builtin.get_url:
+    url: "{{ download_url }}"
+    dest: /opt/pcloud/pcloud
+    mode: a+x
   become: true
-- name: make pCloud application executable
-  file: dest="/opt/pcloud/pcloud" mode=a+x
-  become: true
-- name: ensure autostart directory exists
-  file: path=~/.config/autostart state=directory mode=0700
-- name: add autostart file for pCloud
-  copy: src=pcloud.desktop dest="~/.config/autostart/pcloud.desktop" mode=0644
+
+- name: Add autostart file for pCloud
+  ansible.builtin.copy:
+    src: pcloud.desktop
+    dest: ~/.config/autostart/
+    mode: 0644

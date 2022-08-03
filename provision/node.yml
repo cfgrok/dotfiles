@@ -25,5 +25,7 @@
   when: node_directory.matched > 0
 
 - name: Install node
-  ansible.builtin.shell: nvm install --lts 
+  ansible.builtin.shell:
+    executable: /usr/bin/zsh
+    cmd: source ~/.config/nvm/nvm.sh && nvm install --lts
   when: node_directory.matched == 0 or not node_installed.stat.exists or not node_installed.stat.executable

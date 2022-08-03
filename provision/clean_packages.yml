@@ -1,6 +1,6 @@
 ---
 - name: Remove unwanted default packages
-  apt:
+  ansible.builtin.apt:
     name:
       - compiz-core
       - flatpak
@@ -9,5 +9,5 @@
       - transmission-gtk
       - vim-tiny
     state: absent
-    purge: yes
+    purge: true
   become: true

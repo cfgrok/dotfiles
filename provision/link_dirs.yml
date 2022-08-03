@@ -1,47 +1,47 @@
 ---
 - name: Get info for original Music directory
-  stat:
+  ansible.builtin.stat:
     path: ~/Music
   register: st
 
 - name: Delete the original Music folder
-  file:
+  ansible.builtin.file:
     path: ~/Music
     state: absent
   when: st.stat.exists and st.stat.isdir
 
 - name: Create Music mount directory
-  file:
+  ansible.builtin.file:
     path: /mnt/data/Music
     state: directory
   become: true
 
 - name: Create Music symlink
-  file:
+  ansible.builtin.file:
     path: ~/Music
     src: /mnt/data/Music
     state: link
 
 - name: Create Documents mount directory
-  file:
+  ansible.builtin.file:
     path: /mnt/data/Documents
     state: directory
   become: true
 
 - name: Create docs symlink
-  file:
+  ansible.builtin.file:
     path: ~/docs
     src: /mnt/data/Documents
     state: link
 
 - name: Create Photos mount directory
-  file:
+  ansible.builtin.file:
     path: /mnt/data/Photos
     state: directory
   become: true
 
 - name: Create archive mount directory
-  file:
+  ansible.builtin.file:
     path: /mnt/data/archive
     state: directory
   become: true

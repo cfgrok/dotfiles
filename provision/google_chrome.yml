@@ -1,19 +1,20 @@
 ---
-- name: Create chrome install directory
-  file:
+- name: Create Chrome install directory
+  ansible.builtin.file:
     path: /tmp/install_chrome
     state: directory
 
-- name: Download chrome
-  get_url:
+- name: Download Chrome
+  ansible.builtin.get_url:
     url: https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
     dest: /tmp/install_chrome/chrome.deb
 
-- name: Install chrome
-  command: gdebi -n /tmp/install_chrome/chrome.deb
+- name: Install Chrome
+  ansible.builtin.command:
+    cmd: gdebi -n /tmp/install_chrome/chrome.deb
   become: true
 
-- name: Clean up chrome install directory
-  file:
+- name: Clean up Chrome install directory
+  ansible.builtin.file:
     path: /tmp/install_chrome
     state: absent

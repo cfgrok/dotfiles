@@ -1,9 +1,8 @@
 [Desktop Entry]
 Type=Application
+Version=1.0
+Name=pcloud
+Comment=pcloudstartup script
 Exec=/opt/pcloud/pcloud
-Hidden=false
-X-MATE-Autostart-enabled=true
-Name[en_US]=pCloud
-Name=pCloud
-Comment[en_US]=
-Comment=
+StartupNotify=false
+Terminal=false

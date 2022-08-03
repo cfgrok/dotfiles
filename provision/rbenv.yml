@@ -1,30 +1,30 @@
 ---
 - name: Clone rbenv repository
-  git:
+  ansible.builtin.git:
     repo: https://github.com/rbenv/rbenv
     dest: ~/.local/rbenv
 
 - name: Create rbenv plugins directory
-  file:
+  ansible.builtin.file:
     path: ~/.local/rbenv/plugins
     state: directory
 
 - name: Clone ruby-build repository into plugins directory
-  git:
+  ansible.builtin.git:
     repo: https://github.com/rbenv/ruby-build
     dest: ~/.local/rbenv/plugins/ruby-build
 
 - name: Install ruby libssl-dev dependency
-  apt:
+  ansible.builtin.apt:
     name: libssl-dev
   become: true
 
 - name: Install ruby 3.1.2
-  shell:
+  ansible.builtin.shell:
     executable: /usr/bin/zsh
     cmd: rbenv install 3.1.2
 
 - name: Set ruby 3.1.2 as global version
-  shell:
+  ansible.builtin.shell:
     executable: /usr/bin/zsh
     cmd: rbenv global 3.1.2

@@ -1,16 +1,18 @@
 ---
-- name: add apt signing key for vivaldi
-  apt_key:
+- name: Add apt signing key for Vivaldi
+  ansible.builtin.apt_key:
     url: https://repo.vivaldi.com/archive/linux_signing_key.pub
     state: present
   become: true
-- name: add vivaldi repository
-  apt_repository: 
+
+- name: Add Vivaldi repository
+  ansible.builtin.apt_repository: 
     repo: deb https://repo.vivaldi.com/archive/deb/ stable main
     filename: vivaldi-stable
   become: true
-- name: install vivaldi
-  apt:
+
+- name: Install Vivaldi
+  ansible.builtin.apt:
     name: vivaldi-stable
-    update_cache: yes
+    update_cache: true
   become: true

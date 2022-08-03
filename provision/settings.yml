@@ -36,51 +36,51 @@
 
 # Use dconf module to set terminal profile settings, as there is no schema to use gsettings
 - name: Set background transparency shading for solarized-dark terminal profile
-  dconf:
+  community.general.dconf:
     key: /org/mate/terminal/profiles/solarized-dark/background-darkness
     value: 0.8
 
 - name: Set background to transparent for solarized-dark terminal profile
-  dconf:
+  community.general.dconf:
     key: /org/mate/terminal/profiles/solarized-dark/background-type
     value: "'transparent'"
 
 - name: Disable menubar for solarized-dark terminal profile
-  dconf:
+  community.general.dconf:
     key: /org/mate/terminal/profiles/solarized-dark/default-show-menubar
     value: "false"
 
 - name: Set font for solarized-dark terminal profile
-  dconf:
+  community.general.dconf:
     key: /org/mate/terminal/profiles/solarized-dark/font
     value: "'MesloLGS NF 16'"
 
 - name: Disable scrollbar for solarized-dark terminal profile
-  dconf:
+  community.general.dconf:
     key: /org/mate/terminal/profiles/solarized-dark/scrollbar-position
     value: "'hidden'"
 
 - name: Disable system font for solarized-dark terminal profile
-  dconf:
+  community.general.dconf:
     key: /org/mate/terminal/profiles/solarized-dark/use-system-font
     value: "false"
 
 - name: Disable menubar for solarized-light terminal profile
-  dconf:
+  community.general.dconf:
     key: /org/mate/terminal/profiles/solarized-light/default-show-menubar
     value: "false"
 
 - name: Set font for solarized-light terminal profile
-  dconf:
+  community.general.dconf:
     key: /org/mate/terminal/profiles/solarized-light/font
     value: "'MesloLGS NF 16'"
 
 - name: Disable scrollbar for solarized-light terminal profile
-  dconf:
+  community.general.dconf:
     key: /org/mate/terminal/profiles/solarized-light/scrollbar-position
     value: "'hidden'"
 
 - name: Disable system font for solarized-light terminal profile
-  dconf:
+  community.general.dconf:
     key: /org/mate/terminal/profiles/solarized-light/use-system-font
     value: "false"

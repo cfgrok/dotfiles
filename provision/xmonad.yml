@@ -1,5 +1,6 @@
+---
 - name: Install XMonad
-  apt:
+  ansible.builtin.apt:
     name:
     - libghc-xmonad-contrib-dev
     - libghc-xmonad-contrib-doc
@@ -8,35 +9,44 @@
     - suckless-tools
     - xmonad
   become: true
-- name: copy XMonad config
-  copy:
+
+- name: Copy XMonad config
+  ansible.builtin.copy:
     src: xmonad.hs
     dest: ~/.config/xmonad/
-- name: create XMonad cache directory
-  file:
+
+- name: Create XMonad cache directory
+  ansible.builtin.file:
     path: ~/.cache/xmonad
     state: directory
-- name: create XMonad data directory
-  file:
+
+- name: Create XMonad data directory
+  ansible.builtin.file:
     path: ~/.local/share/xmonad
     state: directory
-- name: reset XMonad
-  shell: "xmonad --recompile"
-- name: set window manager
-  dconf:
+
+- name: Reset XMonad
+  ansible.builtin.shell:
+    cmd: xmonad --recompile
+
+- name: Set window manager
+  community.general.dconf:
     key: /org/mate/desktop/session/required-components/windowmanager
     value: "'xmonad'"
-- name: remove Mint menu super key mapping
-  dconf:
+
+- name: Remove Mint menu super key mapping
+  community.general.dconf:
     key: /com/linuxmint/mintmenu/hot-key
     value: "''"
-- name: add desktop config file
-  copy:
+
+- name: Add desktop config file
+  ansible.builtin.copy:
     src: xmonad.desktop
     dest: /usr/share/applications/
   become: true
-- name: modify Mint desktop management script
-  replace:
+
+- name: Modify Mint desktop management script
+  ansible.builtin.replace:
     path: /usr/lib/linuxmint/mintdesktop/mintdesktop.py
     regexp: '^(\s+)(settings.set_string\("windowmanager", "mint-window-manager"\))$'
     replace: '\1# \2'

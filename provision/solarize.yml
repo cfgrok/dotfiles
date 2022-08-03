@@ -1,25 +1,27 @@
 ---
 - name: Install solarized-mate-terminal
-  git:
+  ansible.builtin.git:
     repo: https://github.com/oz123/solarized-mate-terminal
     dest: ~/Documents/workspace/solarized/solarized-mate-terminal
 
 - name: Execute solarized theme installation script
-  shell: ~/Documents/workspace/solarized/solarized-mate-terminal/solarized-mate.sh
+  ansible.builtin.shell:
+    cmd: ./solarized-mate.sh
+    chdir: ~/Documents/workspace/solarized/solarized-mate-terminal
 
 - name: Set default terminal theme
-  dconf:
-    key: "/org/mate/terminal/global/default-profile"
+  community.general.dconf:
+    key: /org/mate/terminal/global/default-profile
     value: "'solarized-dark'"
     state: present
 
 - name: Install dircolors-solarized
-  git:
+  ansible.builtin.git:
     repo: https://github.com/seebi/dircolors-solarized
     dest: ~/Documents/workspace/solarized/dircolors-solarized
 
 - name: Copy dircolors file
-  copy:
+  ansible.builtin.copy:
     src: ~/Documents/workspace/solarized/dircolors-solarized/dircolors.256dark
     dest: ~/.config/dircolors
-    remote_src: yes
+    remote_src: true

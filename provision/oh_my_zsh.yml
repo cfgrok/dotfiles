@@ -1,50 +1,60 @@
 ---
 - name: Install zsh
-  apt:
+  ansible.builtin.apt:
     name: zsh
   become: true
+
 - name: Set ZDOTDIR in root zshenv to use XDG config directory
-  lineinfile:
+  ansible.builtin.lineinfile:
     path: /etc/zsh/zshenv
     line: export ZDOTDIR="$HOME/.config/zsh"
   become: true
+
 - name: Set shell to zsh
-  user:
+  ansible.builtin.user:
     name: "{{ ansible_user_id }}"
     shell: /usr/bin/zsh
   become: true
+
 - name: Check if Oh My Zsh is installed
-  stat:
+  ansible.builtin.stat:
     path: ~/.config/oh-my-zsh
   register: zsh_installed
+
 - name: Install Oh My Zsh
-  git:
+  ansible.builtin.git:
     repo: https://github.com/ohmyzsh/ohmyzsh
     dest: ~/.config/oh-my-zsh
   when: not zsh_installed.stat.exists
+
 - name: Create zsh config directory
-  file:
+  ansible.builtin.file:
     path: ~/.config/zsh
     state: directory
+
 - name: Copy .zshrc config
-  copy:
+  ansible.builtin.copy:
     src: zshrc
     dest: ~/.config/zsh/.zshrc
+
 - name: Install powerlevel10k theme
-  git:
+  ansible.builtin.git:
     repo: https://github.com/romkatv/powerlevel10k
     dest: ~/.config/oh-my-zsh/custom/themes/powerlevel10k
+
 - name: Copy powerlevel10k config script
-  copy:
+  ansible.builtin.copy:
     src: p10k.zsh
     dest: ~/.config/oh-my-zsh/custom/powerlevel10k/
+
 - name: Create font directory
-  file:
+  ansible.builtin.file:
     path: /usr/share/fonts/truetype/MesloLGS NF
     state: directory
   become: true
+
 - name: Download powerlevel10k fonts
-  uri:
+  ansible.builtin.uri:
     url: "https://github.com/romkatv/powerlevel10k-media/raw/master/{{ item | urlencode }}"
     dest: "/usr/share/fonts/truetype/MesloLGS NF/{{ item }}"
   loop:
@@ -53,13 +63,17 @@
     - MesloLGS NF Italic.ttf
     - MesloLGS NF Bold Italic.ttf
   become: true
+
 - name: Refresh font cache
-  shell: fc-cache
+  ansible.builtin.shell:
+    cmd: fc-cache
+
 - name: "Install custom plugin: zsh-autosuggestions"
-  git:
+  ansible.builtin.git:
     repo: https://github.com/zsh-users/zsh-autosuggestions
     dest: ~/.config/oh-my-zsh/custom/plugins/zsh-autosuggestions
+
 - name: "Install custom plugin: zsh-syntax-highlighting"
-  git:
+  ansible.builtin.git:
     repo: https://github.com/zsh-users/zsh-syntax-highlighting
     dest: ~/.config/oh-my-zsh/custom/plugins/zsh-syntax-highlighting
