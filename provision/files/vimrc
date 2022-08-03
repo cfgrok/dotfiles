@@ -133,15 +133,21 @@ set undofile
 highlight Normal ctermbg=NONE
 
 
-" Mappings
+" Yank to end of line
 nnoremap Y y$
+
+" Search word under cursor in visual mode
 xnoremap * y/\V<C-R>"<CR>
 xnoremap # y?\V<C-R>"<CR>
 
+" Close all but the current buffer
+noremap <leader>bo :%bd\|e#\|bd#<CR>\|'"
 
-" Fix for broken lightline display that sometimes occurs when calling vim via xdg-open
+" Fix for broken lightline display that sometimes occurs when calling Vim via xdg-open
 nnoremap <silent> <C-_> G<C-F>gg:call lightline#disable()<CR>:call lightline#enable()<CR>
 
+" Expand directory of current file in command mode
+cnoremap <expr> %% getcmdtype() == ':' ? expand('%:h') . '/' : '%%'
 
 " Indenting defaults (does not override vim-sleuth's indenting detection)
 " Defaults to 2 spaces for most filetypes
