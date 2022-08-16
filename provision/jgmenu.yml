@@ -1,0 +1,23 @@
+---
+- name: Install jgmenu
+  ansible.builtin.apt:
+    name: jgmenu
+  become: true
+
+- name: Copy supporting scripts to system directory
+  ansible.builtin.copy:
+    src: "files/{{ item }}"
+    dest: "/usr/local/bin/{{ item }}"
+    owner: root
+    group: root
+    mode: 0755
+  loop:
+    - driver-manager-pkexec
+    - lightdm-settings-pkexec
+    - mintsources-pkexec
+  become: true
+
+- name: Copy jgmenu config file
+  ansible.builtin.copy:
+    src: files/jgmenurc
+    dest: ~/.config/jgmenu/

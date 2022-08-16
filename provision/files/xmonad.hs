@@ -32,6 +32,7 @@ workspaceIds = map show $ [1..9]
 
 myKeys = [
     ("M-i", spawn "firefox")
+    , ("M-m", spawn "jgmenu_run")
     , ("M-o", spawn "mate-screenshot")
     , ("M-S-o", spawn "mate-screenshot -i")
     , ("M-u", spawn "caja --no-desktop $HOME")

@@ -1,0 +1,2 @@
+!#/usr/bin/zsh
+pkexec lightdm-settings
