@@ -10,33 +10,33 @@
     state: absent
   when: st.stat.exists and st.stat.isdir
 
-- name: Create Music mount directory
+- name: Create music mount directory
   ansible.builtin.file:
-    path: /mnt/data/Music
+    path: /mnt/data/music
     state: directory
   become: true
 
 - name: Create Music symlink
   ansible.builtin.file:
     path: ~/Music
-    src: /mnt/data/Music
+    src: /mnt/data/music
     state: link
 
-- name: Create Documents mount directory
+- name: Create documents mount directory
   ansible.builtin.file:
-    path: /mnt/data/Documents
+    path: /mnt/data/documents
     state: directory
   become: true
 
 - name: Create docs symlink
   ansible.builtin.file:
     path: ~/docs
-    src: /mnt/data/Documents
+    src: /mnt/data/documents
     state: link
 
-- name: Create Photos mount directory
+- name: Create photos mount directory
   ansible.builtin.file:
-    path: /mnt/data/Photos
+    path: /mnt/data/photos
     state: directory
   become: true
 
@@ -45,3 +45,14 @@
     path: /mnt/data/archive
     state: directory
   become: true
+
+- name: Create backup mount directory
+  ansible.builtin.file:
+    path: /mnt/data/backup
+    state: directory
+  become: true
+
+- name: Create pCloud sync directory
+  ansible.builtin.file:
+    path: ~/Sync
+    state: directory
