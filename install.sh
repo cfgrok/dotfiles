@@ -1,9 +1,5 @@
 #!/bin/sh
 
-if [ ! -f /etc/apt/sources.list.d/ansible-ansible-*.list ]; then
-    sudo apt-add-repository -y ppa:ansible/ansible
-fi
-
 sudo apt update
 sudo apt install -y ansible git
 
