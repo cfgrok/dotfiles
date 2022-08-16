@@ -2,12 +2,20 @@
 - name: Remove unwanted default packages
   ansible.builtin.apt:
     name:
+      - celluloid
       - compiz-core
+      - evolution-data-server
+      - evolution-data-server-common
       - flatpak
+      - gir1.2-flatpak-1.0
+      - hexchat
+      - libflatpak0
+      - rhythmbox
       - thunderbird
       - transmission-common
       - transmission-gtk
       - vim-tiny
+      - warpinator
     state: absent
     purge: true
   become: true

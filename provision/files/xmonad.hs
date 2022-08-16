@@ -13,12 +13,12 @@ import XMonad.StackSet (RationalRect(RationalRect))
 import XMonad.Util.EZConfig (additionalKeysP, removeKeysP)
 import XMonad.Util.NamedScratchpad (namedScratchpadAction, nonFloating, NamedScratchpad(NS))
 
-isKeepass = className =? "keepassx"
+isKeepass = className =? "KeePassXC"
 isMatePanel = className =? "Mate-panel"
 isMusicPlayer = className =? "Deadbeef"
 isScratchPad = (className =? "Mate-terminal") <&&> (stringProperty "WM_WINDOW_ROLE" =? "Scratchpad")
 
-keepassCommand = "keepassx"
+keepassCommand = "keepassxc"
 musicPlayerCommand = "/opt/deadbeef/bin/deadbeef"
 scratchCommand = "mate-terminal --role=Scratchpad"
 

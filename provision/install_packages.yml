@@ -4,7 +4,7 @@
     name: ttf-mscorefonts-installer
     question: msttcorefonts/accepted-mscorefonts-eula
     vtype: boolean
-    value: true
+    value: "true"
   become: true
 
 - name: Install standard packages
@@ -21,15 +21,16 @@
       - fonts-inconsolata
       - gimp
       - git-extras
+      - gnome-gmail
       - gnome-nettool
       - htop
       - kazam
-      - keepassx
+      - keepassxc
       - meld
+      - mint-backgrounds-uma
       - nethogs
       - nfs-common
       - nmap
-      - phantomjs
       - postgresql
       - postgresql-client
       - ripgrep

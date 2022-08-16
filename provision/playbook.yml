@@ -2,6 +2,16 @@
 - hosts: localhost
   tasks:
 
+    # Remove unwanted default packages
+    - ansible.builtin.import_tasks: clean_packages.yml
+      tags: clean_packages
+
+
+    # Install standard packages
+    - ansible.builtin.import_tasks: install_packages.yml
+      tags: install_packages
+
+
     # XMonad installation
     - name: See if XMonad is installed
       ansible.builtin.stat:
@@ -12,16 +22,6 @@
     - ansible.builtin.import_tasks: xmonad.yml
       when: not xmonad_installed.stat.exists
       tags: xmonad
-
-
-    # Remove unwanted default packages
-    - ansible.builtin.import_tasks: clean_packages.yml
-      tags: clean_packages
-
-
-    # Install standard packages
-    - ansible.builtin.import_tasks: install_packages.yml
-      tags: install_packages
 
 
     # Copy Git config
