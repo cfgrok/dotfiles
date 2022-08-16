@@ -1,0 +1,53 @@
+---
+- name: Install libusb dependency
+  ansible.builtin.apt:
+    name: libusb-0.1-4
+  become: true
+
+- name: Create Brother install directory
+  ansible.builtin.file:
+    path: /tmp/install_brother
+    state: directory
+
+- name: Download scanner driver
+  ansible.builtin.get_url:
+    url: https://download.brother.com/welcome/dlf006642/brscan3-0.2.13-1.amd64.deb
+    dest: /tmp/install_brother/brscan3.deb
+
+- name: Install scanner driver
+  ansible.builtin.command:
+    cmd: gdebi -n /tmp/install_brother/brscan3.deb
+  become: true
+
+- name: Download udev rule
+  ansible.builtin.get_url:
+    url: https://download.brother.com/welcome/dlf006654/brother-udev-rule-type1-1.0.2-0.all.deb
+    dest: /tmp/install_brother/udev-rule.deb
+
+- name: Install udev rule
+  ansible.builtin.command:
+    cmd: gdebi -n /tmp/install_brother/udev-rule.deb
+  become: true
+
+- name: Modify udev rule
+  ansible.builtin.lineinfile:
+    path: /etc/udev/rules.d/60-brother-libsane-type1.rules
+    regexp: '^SYSFS.+$'
+    state: absent
+  become: true
+
+- name: Create symlinks for driver files
+  ansible.builtin.file:
+    src: "/usr/lib64/{{ item }}"
+    dest: "/usr/lib/{{ item }}"
+    state: link
+  loop:
+    - libbrscandec3.so
+    - libbrscandec3.so.1
+    - libbrscandec3.so.1.0.0
+  become: true
+
+- name: Clean up Brother install directory
+  ansible.builtin.file:
+    path: /tmp/install_brother
+    state: absent
