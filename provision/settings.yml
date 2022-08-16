@@ -4,26 +4,32 @@
   gsetting:
     settings:
       com.linuxmint.report.ignored-reports: "['timeshift-no-setup']"
+      org.blueman.plugins.powermanager.auto-power-on: "@mb false"
       org.gnome.meld.custom-font: "'Inconsolata Medium 18'"
       org.gnome.meld.use-system-font: "false"
       org.gnome.nm-applet.disable-connected-notifications: "true"
       org.gnome.nm-applet.disable-disconnected-notifications: "true"
+      org.gnome.nm-applet.suppress-wireless-networks-available: "true"
       org.mate.background.picture-filename: "'/usr/share/backgrounds/linuxmint-uma/aholmes_canada.jpg'"
       org.mate.caja.desktop.computer-icon-visible: "false"
       org.mate.caja.desktop.font: "'Ubuntu 12'"
       org.mate.caja.desktop.home-icon-visible: "false"
       org.mate.caja.desktop.volumes-visible: "false"
       org.mate.interface.document-font-name: "'Sans 12'"
+      org.mate.interface.gtk-shell-shows-app-menu: "true"
       org.mate.interface.gtk-theme: "'Mint-Y-Dark-Aqua'"
       org.mate.interface.font-name: "'Ubuntu 12'"
       org.mate.interface.icon-theme: "'Mint-Y-Dark-Aqua'"
       org.mate.interface.monospace-font-name: "'Inconsolata Medium 18'"
       org.mate.Marco.general.titlebar-font: "'Ubuntu Medium 12'"
       org.mate.panel.object-id-list: "['menu-bar', 'separator', 'notification-area', 'xapp-status', 'clock']"
-      org.mate.peripherals-keyboard-xkb.kbd.options: "['terminate\tterminate:ctrl_alt_bksp', 'caps\tcaps:swapescape']"
+      org.mate.peripherals-keyboard-xkb.kbd.options: "['terminate\\tterminate:ctrl_alt_bksp', 'caps\\tcaps:swapescape']"
       org.mate.peripherals-mouse.cursor-theme: "'DMZ-Black'"
       org.mate.power-manager.action-critical-battery: "'suspend'"
       org.mate.session.idle-delay: "20"
+      org.mate.session.required-components-list: "['windowmanager', 'filemanager']"
+      org.mate.session.required-components.panel: "''"
+      org.mate.session.show-hidden-apps: "true"
       org.mate.SettingsDaemon.plugins.media-keys.logout: "'<Primary><Alt>semicolon'"
       org.mate.SettingsDaemon.plugins.media-keys.magnifier: "'disabled'"
       org.mate.SettingsDaemon.plugins.media-keys.next: "'disabled'"
@@ -38,7 +44,7 @@
 - name: Set background transparency shading for solarized-dark terminal profile
   community.general.dconf:
     key: /org/mate/terminal/profiles/solarized-dark/background-darkness
-    value: 0.8
+    value: "0.8"
 
 - name: Set background to transparent for solarized-dark terminal profile
   community.general.dconf:
