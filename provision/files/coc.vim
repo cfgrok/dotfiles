@@ -1,31 +1,34 @@
 " Set config home to XDG directory
 let g:coc_config_home = '~/.config/vim'
 
+" Install extensions
+let g:coc_global_extensions = [
+      \ '@yaegassy/coc-ansible',
+      \ 'coc-css',
+      \ 'coc-emmet',
+      \ 'coc-fzf-preview',
+      \ 'coc-html',
+      \ 'coc-html-css-support',
+      \ 'coc-json',
+      \ 'coc-snippets',
+      \ 'coc-solargraph',
+      \ 'coc-tsserver',
+      \ 'coc-vimlsp',
+      \ 'coc-yaml'
+      \ ]
+
 " Map filetype for ansible YAML files
 let g:coc_filetype_map = {
-  \ 'yaml.ansible': 'ansible',
-  \ }
-
-" Set internal encoding of vim, not needed on neovim, since coc.nvim using some
-" unicode characters in the file autoload/float.vim
-set encoding=utf-8
-
-" TextEdit might fail if hidden is not set.
-set hidden
+      \ 'yaml.ansible': 'ansible',
+      \ }
 
 " Some servers have issues with backup files, see #649.
 set nobackup
 set nowritebackup
 
-" Give more space for displaying messages.
-" set cmdheight=2
-
 " Having longer updatetime (default is 4000 ms = 4 s) leads to noticeable
 " delays and poor user experience.
 set updatetime=300
-
-" Don't pass messages to |ins-completion-menu|.
-set shortmess+=c
 
 " Always show the signcolumn, otherwise it would shift the text each time
 " diagnostics appear/become resolved.
@@ -40,10 +43,15 @@ endif
 " NOTE: Use command ':verbose imap <tab>' to make sure tab is not mapped by
 " other plugin before putting this into your config.
 inoremap <silent><expr> <TAB>
-      \ pumvisible() ? "\<C-n>" :
-      \ CheckBackspace() ? "\<TAB>" :
+      \ coc#pum#visible() ? coc#pum#next(1):
+      \ CheckBackspace() ? "\<Tab>" :
       \ coc#refresh()
-inoremap <expr><S-TAB> pumvisible() ? "\<C-p>" : "\<C-h>"
+inoremap <expr><S-TAB> coc#pum#visible() ? coc#pum#prev(1) : "\<C-h>"
+
+" Make <CR> to accept selected completion item or notify coc.nvim to format
+" <C-g>u breaks current undo, please make your own choice.
+inoremap <silent><expr> <CR> coc#pum#visible() ? coc#pum#confirm()
+                              \: "\<C-g>u\<CR>\<c-r>=coc#on_enter()\<CR>"
 
 function! CheckBackspace() abort
   let col = col('.') - 1
@@ -56,11 +64,6 @@ if has('nvim')
 else
   inoremap <silent><expr> <c-@> coc#refresh()
 endif
-
-" Make <CR> auto-select the first completion item and notify coc.nvim to
-" format on enter, <cr> could be remapped by other vim plugin
-inoremap <silent><expr> <cr> pumvisible() ? coc#_select_confirm()
-                              \: "\<C-g>u\<CR>\<c-r>=coc#on_enter()\<CR>"
 
 " Use `[g` and `]g` to navigate diagnostics
 " Use `:CocDiagnostics` to get all diagnostics of current buffer in location list.

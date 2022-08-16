@@ -4,12 +4,6 @@ let &runtimepath = substitute(&runtimepath, '\.vim', '.config/vim', 'g')
 " Set location of viminfo file to XDG config directory
 set viminfo+=n~/.config/vim/viminfo
 
-" Auto-install vim-plug and plugins if not present
-if empty(glob('~/.config/vim/autoload/plug.vim'))
-  silent execute '!curl -fLo ~/.config/vim/autoload/plug.vim --create-dirs https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim'
-  autocmd VimEnter * PlugInstall --sync | source $MYVIMRC
-endif
-
 call plug#begin('~/.config/vim/plugged')
 
 Plug 'AndrewRadev/splitjoin.vim'
@@ -72,7 +66,9 @@ call plug#end()
 
 
 " Coc configuration
-source ~/.config/vim/coc.vim
+if !empty(glob('~/.config/vim/plugged/coc.nvim')) && &rtp =~ 'coc.nvim'
+  source ~/.config/vim/coc.vim
+endif
 
 
 " Remap vim-textobj-erb from E to e
@@ -108,7 +104,7 @@ xmap iL <Plug>(textobj-wordcolumn-WORD-i)
 
 
 " Load NeoSolarized color scheme if installed
-if &rtp =~ 'NeoSolarized'
+if !empty(glob('~/.config/vim/plugged/NeoSolarized')) && &rtp =~ 'NeoSolarized'
   colorscheme NeoSolarized
 endif
 
@@ -209,7 +205,7 @@ endfunction
 
 
 " Load Emmet custom snippets
-if &rtp =~ 'webapi-vim' && !empty(glob('~/.config/vim/vim_snippets_custom.json'))
+if !empty(glob('~/.config/vim/plugged/webapi-vim')) && &rtp =~ 'webapi-vim' && !empty(glob('~/.config/vim/vim_snippets_custom.json'))
   let g:user_emmet_settings = webapi#json#decode(join(readfile(expand('~/.config/vim/vim_snippets_custom.json')), "\n"))
 endif
 
