@@ -19,12 +19,16 @@
     name: libssl-dev
   become: true
 
+- name: Define rbenv environment variable string
+  ansible.builtin.set_fact:
+    env_vars: export PATH=~/.local/rbenv/bin:$PATH; export RBENV_ROOT=~/.local/rbenv;
+
 - name: Install ruby 3.1.2
   ansible.builtin.shell:
     executable: /usr/bin/zsh
-    cmd: rbenv install 3.1.2
+    cmd: ({{ env_vars }} rbenv install 3.1.2)
 
 - name: Set ruby 3.1.2 as global version
   ansible.builtin.shell:
     executable: /usr/bin/zsh
-    cmd: rbenv global 3.1.2
+    cmd: ({{ env_vars }} rbenv global 3.1.2)
