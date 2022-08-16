@@ -161,6 +161,12 @@
     - ansible.builtin.import_tasks: settings.yml
       tags: settings
 
+
+    # Set up taskwarrior directories and config file
+    - ansible.builtin.import_tasks: tasks.yml
+      tags: tasks
+
+
     # Install Brother printer/scanner drivers
     - name: See if Brother driver is installed
       ansible.builtin.stat:

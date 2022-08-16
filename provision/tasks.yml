@@ -1,0 +1,21 @@
+---
+- name: Create taskwarrior config directory
+  ansible.builtin.file:
+    path: ~/.config/task/hooks
+    state: directory
+
+- name: See if taskwarrior config file exists
+  ansible.builtin.stat:
+    path: ~/.config/task/taskrc
+  register: taskrc_exists
+
+- name: Copy taskwarrior config file
+  ansible.builtin.copy:
+    src: files/taskrc
+    dest: ~/.config/task/
+  when: not taskrc_exists.stat.exists
+
+- name: Create taskwarrior data directory
+  ansible.builtin.file:
+    path: ~/.local/share/task
+    state: directory
