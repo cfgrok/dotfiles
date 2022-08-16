@@ -65,7 +65,7 @@
   become: true
 
 - name: Refresh font cache
-  ansible.builtin.shell:
+  ansible.builtin.command:
     cmd: fc-cache
 
 - name: "Install custom plugin: zsh-autosuggestions"

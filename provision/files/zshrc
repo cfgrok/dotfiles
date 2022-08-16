@@ -1,23 +1,26 @@
-XDG_CACHE="${XDG_CACHE_HOME:-$HOME/.cache}"
-XDG_CONFIG="${XDG_CONFIG_HOME:-$HOME/.config}"
+XDG_CACHE_HOME=$HOME/.cache
+XDG_CONFIG_HOME=$HOME/.config
+XDG_DATA_HOME=$HOME/.local/share
+XDG_STATE_HOME=$HOME/.local/state
 
 # Enable Powerlevel10k instant prompt. Should stay close to the top of ~/.zshrc.
 # Initialization code that may require console input (password prompts, [y/n]
 # confirmations, etc.) must go above this block; everything else may go below.
-if [ "$TERM" != "linux" ] && [ -r "$XDG_CACHE/p10k-instant-prompt-${(%):-%n}.zsh" ]; then
-  source "$XDG_CACHE/p10k-instant-prompt-${(%):-%n}.zsh"
-fi
+[[ $TERM != "linux" ]] && [[ -r $XDG_CACHE_HOME/p10k-instant-prompt-${(%):-%n}.zsh ]] && source $XDG_CACHE_HOME/p10k-instant-prompt-${(%):-%n}.zsh
+
+# Add local bin directory to path for scripting if not present
+[[ ! $PATH =~ $HOME/.local/bin ]] && export PATH=$HOME/.local/bin:$PATH
 
 # Path to your oh-my-zsh configuration.
-ZSH="$XDG_CONFIG/oh-my-zsh"
+ZSH=$XDG_CONFIG_HOME/oh-my-zsh
 
 # Disable PowerLevel10K theme & functionality in console
-[ "$TERM" != "linux" ] && ZSH_THEME=powerlevel10k/powerlevel10k
+[ $TERM != "linux" ] && ZSH_THEME=powerlevel10k/powerlevel10k
 
 # History settings
-HIST_IGNORE_SPACE="true"
+HIST_IGNORE_SPACE=true
 HIST_STAMPS="yyyy-mm-dd"
-HISTFILE="$XDG_CONFIG/zsh/.zsh_history"
+HISTFILE=$XDG_CONFIG_HOME/zsh/.zsh_history
 HISTSIZE=1000000
 SAVEHIST=1000000
 
@@ -71,7 +74,7 @@ plugins=(
 )
 
 # Load Oh My Zsh
-source "$ZSH/oh-my-zsh.sh"
+source $ZSH/oh-my-zsh.sh
 
 # Set up "fd" alias for fd-find
 alias fd=fdfind
@@ -93,32 +96,28 @@ alias gdtr="git diff-tree --no-commit-id --name-only -r"
 zstyle ':completion:*' special-dirs false
 
 # Solarized colors for ls commands
-if [ -f "$XDG_CONFIG/dircolors" ]; then
-  eval $(dircolors "$XDG_CONFIG/dircolors")
-fi
+[[ -f $XDG_CONFIG_HOME/dircolors ]] && eval $( dircolors $XDG_CONFIG_HOME/dircolors )
 
-# Powerlevel10K -- to customize prompt, run `p10k configure` or edit "$ZSH"/custom/powerlevel10k/p10k.zsh
-[ -f "$ZSH/custom/powerlevel10k/p10k.zsh" ] && [ "$TERM" != "linux" ] && source "$ZSH/custom/powerlevel10k/p10k.zsh"
+# Powerlevel10K -- to customize prompt, run `p10k configure` or edit $ZSH/custom/powerlevel10k/p10k.zsh
+[[ -f $ZSH/custom/powerlevel10k/p10k.zsh ]] && [[ $TERM != "linux" ]] && source $ZSH/custom/powerlevel10k/p10k.zsh
 
 # Initialize fzf if present
-[ -f "$XDG_CONFIG/fzf/fzf.zsh" ] && source "$XDG_CONFIG/fzf/fzf.zsh"
+[[ -f $XDG_CONFIG_HOME/fzf/fzf.zsh ]] && source $XDG_CONFIG_HOME/fzf/fzf.zsh
 
 # Set vim to use XDG config directory
-export VIMINIT="source $XDG_CONFIG/vim/vimrc"
-export MYVIMRC="$XDG_CONFIG/vim/vimrc"
+export VIMINIT="source $XDG_CONFIG_HOME/vim/vimrc"
+export MYVIMRC=$XDG_CONFIG_HOME/vim/vimrc
 
 # Alias for editing vimrc config
-alias vimrc="${=EDITOR} $XDG_CONFIG/vim/vimrc"
+alias vimrc="${=EDITOR} $XDG_CONFIG_HOME/vim/vimrc"
 
 # Add rbenv to PATH & initialize
-export PATH="$HOME/.local/rbenv/bin:$PATH"
-export RBENV_ROOT="$HOME/.local/rbenv"
-if [ -f "$HOME/.local/rbenv/bin/rbenv" ]; then
-  eval "$(rbenv init - zsh)"
-fi
+export PATH=$HOME/.local/rbenv/bin:$PATH
+export RBENV_ROOT=$HOME/.local/rbenv
+[[ -f $HOME/.local/rbenv/bin/rbenv ]] && eval "$( rbenv init - zsh )"
 
 # Custom function to swap names of 2 files
-function swap() { mv "$1" "$1".tmp && mv "$2" "$1" && mv "$1".tmp "$2" }
+function swap { mv $1 $1.tmp && mv $2 $1 && mv $1.tmp $2 }
 
 #Custom function to pipe stdout & stderr both to the screen and a log file
-function cmdlog() { ( echo "${@:2}" && "${@:2}" ) |& tee -a "$1" ;}
+function cmdlog { ( echo ${@:2} && ${@:2} ) |& tee -a $1 ;}
