@@ -84,6 +84,7 @@ main = xmonad
             startupHook mateConfig
             setWMName "LG3D"
             spawn "compton -b"
+            -- spawn "launch-xmobar"
     }
     `additionalKeysP` myKeys
     `removeKeysP` [("M-S-c")]

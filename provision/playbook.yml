@@ -24,6 +24,18 @@
       tags: xmonad
 
 
+    # xmobar installation
+    - name: See if xmobar is installed
+      ansible.builtin.stat:
+        path: ~/.config/xmobar/xmobarrc
+      register: xmobar_installed
+      tags: xmobar
+
+    - ansible.builtin.import_tasks: xmobar.yml
+      when: not xmobar_installed.stat.exists
+      tags: xmobar
+
+
     # Copy Git config
     - ansible.builtin.import_tasks: git_config.yml
       tags: git_config

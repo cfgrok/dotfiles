@@ -1,0 +1,9 @@
+#!/usr/bin/zsh
+
+updates=$( apt list --upgradable 2> /dev/null | sed '/Listing.../d' | wc -l )
+
+[[ $updates > 0 ]] && echo "<fc=#268BD2> $updates</fc> | "
+
+[[ -f /var/run/reboot-required ]] && echo "<fc=#DC322F>$( cat /var/run/reboot-required )</fc> | "
+
+exit 0

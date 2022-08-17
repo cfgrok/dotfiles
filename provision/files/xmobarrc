@@ -1,0 +1,109 @@
+Config { font = "xft:MesloLGS Nerd Font:size=12:antialias=true"
+       , borderColor = "#002B36"
+       , border = TopB
+       , bgColor = "#002B36"
+       , fgColor = "#93A1A1"
+       , alpha = 255
+       , position = Top
+       , textOffset = -1
+       , iconOffset = -1
+       , lowerOnStart = True
+       , pickBroadest = False
+       , persistent = False
+       , hideOnStart = False
+       , iconRoot = "."
+       , allDesktops = True
+       , overrideRedirect = True
+       , commands =
+          [ Run WeatherX        "KSEA"
+                                [ ("clear", "")
+                                , ("sunny", "")
+                                , ("mostly clear", "")
+                                , ("mostly sunny", "")
+                                , ("partly cloudy", "")
+                                , ("fair", "")
+                                , ("partly sunny", "")
+                                , ("mostly cloudy", "")
+                                , ("considerable cloudiness", "")
+                                , ("cloudy", "摒")
+                                , ("overcast", "摒")
+                                , ("obscured", "摒")
+                                ]
+                                [ "-t"
+                                , "<skyConditionS>  <tempF>F"
+                                , "-L", "40"
+                                , "-H", "80"
+                                , "--low", "#268BD2"
+                                , "--normal", "#4E9A06"
+                                , "--high", "#DC322F"
+                                ] 36000
+          , Run Wireless        ""
+                                [ "-t"
+                                , "  <ssid> <quality>"
+                                ] 10
+          , Run Network         "wlp3s0"
+                                [ "-t"
+                                , " <rx>KB  <tx>KB"
+                                , "-L", "512"
+                                , "-H", "409600"
+                                , "--normal", "#4E9A06"
+                                , "--high", "#DC322F"
+                                ] 10
+          , Run Cpu             [ "-t"
+                                , "   <total>%"
+                                , "-L", "5"
+                                , "-H", "50"
+                                , "--normal", "#4E9A06"
+                                , "--high", "#DC322F"
+                                ] 10
+          , Run Memory          [ "-t"
+                                , " <usedratio>%"
+                                ] 10
+          , Run Alsa            "default"
+                                "Master"
+                                [ "-t"
+                                , "<status><volume>%"
+                                , "--"
+                                , "-O", "墳 "
+                                , "-C", "#4E9A06"
+                                , "-o", "ﱝ "
+                                , "-c", "#DC322F"
+                                ]
+          , Run Mpris2          "DeaDBeeF"
+                                [ "-t"
+                                , " <artist> - <title> | "
+                                , "-x", ""
+                                ] 10
+          , Run Date            "%a %b %-d %Y %H:%M:%S" "date" 10
+          , Run BatteryP        [ "BAT0" ]
+                                [ "-t"
+                                , "<acstatus> <left> "
+                                , "-L", "20"
+                                , "-H", "80"
+                                , "--low", "#DC322F"
+                                , "--high", "#4E9A06"
+                                , "--"
+                                , "-A", "3"
+                                , "-a", "systemctl suspend"
+                                , "-P"
+                                , "-O", "<fc=#D9C62B> </fc>"
+                                , "-i", " "
+                                , "-o", ""
+                                , "--lows", " "
+                                , "--mediums", " "
+                                , "--highs", " "
+                                ] 600  
+          , Run MultiCoreTemp   [ "-t"
+                                , " <avg>C"
+                                , "-L", "45"
+                                , "-H", "65"
+                                , "-l", "#268BD2"
+                                , "-h", "#DC322F"
+                                ] 10
+          , Run Com             "apt-updates" [] "apt" 600
+          ]
+       , sepChar = "%"
+       , alignSep = "}{"
+       , template = "%cpu% | %memory% | %multicoretemp% | %wi% | %wlp3s0% }\
+                    \{ %mpris2%<fc=#F57900>%date%</fc> | %KSEA% | %apt%%alsa:default:Master% | %battery%"
+       }
