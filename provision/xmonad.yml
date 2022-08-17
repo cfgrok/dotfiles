@@ -26,7 +26,7 @@
     state: directory
 
 - name: Reset XMonad
-  ansible.builtin.shell:
+  ansible.builtin.command:
     cmd: xmonad --recompile
 
 - name: Set window manager
@@ -50,4 +50,74 @@
     path: /usr/lib/linuxmint/mintdesktop/mintdesktop.py
     regexp: '^(\s+)(settings.set_string\("windowmanager", "mint-window-manager"\))$'
     replace: '\1# \2'
+  become: true
+
+- name: Create dmenu2 install directory
+  ansible.builtin.file:
+    path: /tmp/install_dmenu2
+    state: directory
+
+- name: Download dmenu2 files
+  ansible.builtin.get_url:
+    url: https://github.com/spcmd/dmenu2/raw/0.2.1/dmenu2-0.2.1.tar.gz
+    dest: /tmp/install_dmenu2/dmenu2.tar.xz
+
+- name: Extract dmenu2 source
+  ansible.builtin.unarchive:
+    src: /tmp/install_dmenu2/dmenu2.tar.xz
+    dest: /tmp/install_dmenu2
+    remote_src: true
+
+- name: Copy dmenu2 executables
+  ansible.builtin.copy:
+    src: /tmp/install_dmenu2/dmenu2-0.2.1/{{ item }}
+    dest: /usr/local/bin/{{ item }}
+    remote_src: true
+    owner: root
+    group: root
+    mode: 0755
+  loop:
+    - dmenu
+    - dmenu_run
+    - stest
+  become: true
+
+- name: Modify input for dmenu_run script
+  ansible.builtin.replace:
+    path: /usr/local/bin/dmenu_run
+    regexp: 'sort -u \| tee'
+    replace: 'sort -u | sed "/\[/d" | tee'
+  become: true
+    
+- name: Create local man directory
+  ansible.builtin.file:
+    path: /usr/local/share/man/man1
+    state: directory
+  become: true
+
+- name: Copy dmenu2 man files
+  ansible.builtin.copy:
+    src: /tmp/install_dmenu2/dmenu2-0.2.1/{{ item }}
+    dest: /usr/local/share/man/man1/{{ item }}
+    remote_src: true
+    owner: root
+    group: root
+    mode: 0644
+  loop:
+    - dmenu.1
+    - stest.1
+  become: true
+
+- name: Clean up dmenu2 install directory
+  ansible.builtin.file:
+    path: /tmp/install_dmenu2
+    state: absent
+
+- name: Add wrapper script for dmenu file opening
+  ansible.builtin.copy:
+    src: files/user-shell-wrapper
+    dest: /usr/local/bin/
+    owner: root
+    group: root
+    mode: 0755
   become: true
