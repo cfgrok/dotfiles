@@ -36,9 +36,52 @@
       org.mate.SettingsDaemon.plugins.media-keys.on-screen-keyboard: "'disabled'"
       org.mate.SettingsDaemon.plugins.media-keys.previous: "'disabled'"
       org.mate.SettingsDaemon.plugins.media-keys.screenreader: "'disabled'"
-      org.mate.SettingsDaemon.plugins.media-keys.volume-mute: "'<Mod4>F4'"
-      org.mate.SettingsDaemon.plugins.media-keys.volume-down: "'<Mod4>F5'"
-      org.mate.SettingsDaemon.plugins.media-keys.volume-up: "'<Mod4>F6'"
+
+# Use dconf module to define custom keyboard shortcuts
+- name: Create custom volume mute shortcut name
+  community.general.dconf:
+    key: /org/mate/desktop/keybindings/custom0/name
+    value: "'Volume mute'"
+
+- name: Create custom volume mute shortcut binding
+  community.general.dconf:
+    key: /org/mate/desktop/keybindings/custom0/binding
+    value: "'<Mod4>F4'"
+
+- name: Create custom volume mute shortcut action
+  community.general.dconf:
+    key: /org/mate/desktop/keybindings/custom0/action
+    value: "'pactl set-sink-mute @DEFAULT_SINK@ toggle'"
+
+- name: Create custom volume down shortcut name
+  community.general.dconf:
+    key: /org/mate/desktop/keybindings/custom1/name
+    value: "'Volume down'"
+
+- name: Create custom volume down shortcut binding
+  community.general.dconf:
+    key: /org/mate/desktop/keybindings/custom1/binding
+    value: "'<Mod4>F5'"
+
+- name: Create custom volume down shortcut action
+  community.general.dconf:
+    key: /org/mate/desktop/keybindings/custom1/action
+    value: "'pactl set-sink-volume @DEFAULT_SINK@ -5%'"
+
+- name: Create custom volume up shortcut name
+  community.general.dconf:
+    key: /org/mate/desktop/keybindings/custom2/name
+    value: "'Volume up'"
+
+- name: Create custom volume up shortcut binding
+  community.general.dconf:
+    key: /org/mate/desktop/keybindings/custom2/binding
+    value: "'<Mod4>F6'"
+
+- name: Create custom volume up shortcut action
+  community.general.dconf:
+    key: /org/mate/desktop/keybindings/custom2/action
+    value: "'pactl set-sink-volume @DEFAULT_SINK@ +5%'"
 
 # Use dconf module to set terminal profile settings, as there is no schema to use gsettings
 - name: Set background transparency shading for solarized-dark terminal profile
