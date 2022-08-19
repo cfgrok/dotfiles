@@ -85,6 +85,20 @@
     path: /tmp/install_fonts
     state: absent
     
+- name: Get sound card configuration
+  ansible.builtin.shell:
+    executable: /usr/bin/zsh
+    cmd: cat /proc/asound/cards | grep '\[PCH' | awk '{print $1}'
+  register: card_id
+
+- name: Copy alsa config template
+  ansible.builtin.template:
+    src: files/asound.j2
+    dest: /etc/asound.conf
+    owner: root
+    group: root
+  become: true
+
 - name: Copy xmobar config file
   ansible.builtin.copy:
     src: files/xmobarrc
