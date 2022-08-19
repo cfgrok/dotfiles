@@ -18,3 +18,13 @@
   ansible.builtin.file:
     path: /tmp/install_deadbeef
     state: absent
+
+- name: Create DeaDBeeF config directory
+  ansible.builtin.file:
+    path: ~/.config/deadbeef
+    state: directory
+
+- name: Copy DeaDBeeF config file
+  ansible.builtin.copy:
+    src: files/deadbeef_config
+    dest: ~/.config/deadbeef/config
