@@ -2,6 +2,11 @@
 - hosts: localhost
   tasks:
 
+    # Temporary system fixes
+    - ansible.builtin.import_tasks: system_fixes.yml
+      tags: system_fixes
+
+
     # Remove unwanted default packages
     - ansible.builtin.import_tasks: clean_packages.yml
       tags: clean_packages
