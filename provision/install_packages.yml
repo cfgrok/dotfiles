@@ -24,16 +24,19 @@
       - gnome-gmail
       - gnome-nettool
       - htop
-      - kazam
       - keepassxc
       - meld
       - mint-backgrounds-uma
       - nethogs
       - nfs-common
       - nmap
+      - peek
       - postgresql
       - postgresql-client
       - ripgrep
+      - screenkey
+      - ssh-askpass-gnome
+      - simplescreenrecorder
       - taskwarrior
       - tree
       - ubuntu-restricted-extras

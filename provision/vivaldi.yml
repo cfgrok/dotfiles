@@ -7,8 +7,8 @@
 
 - name: Add Vivaldi repository
   ansible.builtin.apt_repository: 
-    repo: deb https://repo.vivaldi.com/archive/deb/ stable main
-    filename: vivaldi-stable
+    repo: deb https://repo.vivaldi.com/stable/deb/ stable main
+    filename: vivaldi
   become: true
 
 - name: Install Vivaldi
