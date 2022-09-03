@@ -14,13 +14,12 @@ import XMonad.Util.EZConfig (additionalKeysP, removeKeysP)
 import XMonad.Util.NamedScratchpad (namedScratchpadAction, nonFloating, NamedScratchpad(NS))
 
 isKeepass = className =? "KeePassXC"
-isMatePanel = className =? "Mate-panel"
 isMusicPlayer = className =? "Deadbeef"
-isScratchPad = (className =? "Mate-terminal") <&&> (stringProperty "WM_WINDOW_ROLE" =? "Scratchpad")
+isScratchPad = className =? "Alacritty_Scratchpad"
 
 keepassCommand = "keepassxc"
 musicPlayerCommand = "/opt/deadbeef/bin/deadbeef"
-scratchCommand = "mate-terminal --role=Scratchpad"
+scratchCommand = "alacritty --class Alacritty_Scratchpad"
 
 myModMask = mod4Mask
 
@@ -69,7 +68,6 @@ myScratchpads = [
 myManageHook = composeAll
     [
         isKeepass --> doCenterFloat
-        , isMatePanel --> doCenterFloat
         , isMusicPlayer --> doCenterFloat
         , isScratchPad --> doRectFloat (RationalRect (1/6) (1/6) (2/3) (2/3))
     ]
@@ -86,6 +84,7 @@ main = xmonad
             setWMName "LG3D"
             spawn "compton -b"
             -- spawn "launch-xmobar"
+        , terminal = "alacritty"
     }
     `additionalKeysP` myKeys
     `removeKeysP` [("M-S-c")]

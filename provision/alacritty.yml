@@ -1,0 +1,42 @@
+---
+- name: Download apt signing key for Alacritty
+  ansible.builtin.get_url:
+    url: https://keyserver.ubuntu.com/pks/lookup?op=get&search=0x3a160895cc2ce253085d08a552b24df7d43b5377
+    dest: /tmp/alacritty-key
+
+- name: Dearmor signing key and save in keyrings directory
+  ansible.builtin.command:
+    cmd: gpg --dearmor -o /usr/share/keyrings/alacritty.gpg /tmp/alacritty-key
+    creates: /usr/share/keyrings/alacritty.gpg
+  become: true
+
+- name: Remove downloaded key file
+  ansible.builtin.file:
+    path: /tmp/alacritty-key
+    state: absent
+
+- name: Create apt source file
+  ansible.builtin.copy:
+    dest: /etc/apt/sources.list.d/alacritty.list
+    content: "deb [signed-by=/usr/share/keyrings/alacritty.gpg] https://ppa.launchpadcontent.net/aslatter/ppa/ubuntu {{ ubuntu_release }} main"
+    force: false
+  become: true
+
+- name: Install Alacritty
+  ansible.builtin.apt:
+    name: alacritty
+    update_cache: true
+  become: true
+
+- name: Set Alacritty as default terminal emulator
+  ansible.builtin.command:
+    cmd: update-alternatives --set x-terminal-emulator /usr/bin/alacritty
+  become: true
+
+- name: Copy Alacritty config files
+  ansible.builtin.copy:
+    src: "files/{{ item }}"
+    dest: ~/.config/alacritty/
+  loop:
+    - alacritty.yml
+    - alacritty_solarized_dark.yml

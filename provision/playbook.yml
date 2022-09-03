@@ -2,6 +2,12 @@
 - hosts: localhost
   tasks:
 
+    # Set Ubuntu release variable for defining apt sources
+    - ansible.builtin.set_fact:
+        ubuntu_release: jammy
+      tags: always
+
+
     # Temporary system fixes
     - ansible.builtin.import_tasks: system_fixes.yml
       tags: system_fixes
@@ -15,6 +21,18 @@
     # Install standard packages
     - ansible.builtin.import_tasks: install_packages.yml
       tags: install_packages
+
+
+    # Alacritty installation
+    - name: See if Alacritty is installed
+      ansible.builtin.stat:
+        path: /usr/bin/alacritty
+      register: alacritty_installed
+      tags: alacritty
+
+    - ansible.builtin.import_tasks: alacritty.yml
+      when: not alacritty_installed.stat.exists
+      tags: alacritty
 
 
     # XMonad installation
