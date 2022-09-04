@@ -37,8 +37,8 @@ ZLE_RPROMPT_INDENT=0
 GLOBALIAS_FILTER_VALUES=(grep l la)
 
 # Set preferred text editor
-export EDITOR="vim"
-export VISUAL="vim"
+export EDITOR="nvim"
+export VISUAL="nvim"
 
 plugins=(
   aliases
@@ -104,12 +104,8 @@ zstyle ':completion:*' special-dirs false
 # Initialize fzf if present
 [[ -f $XDG_CONFIG_HOME/fzf/fzf.zsh ]] && source $XDG_CONFIG_HOME/fzf/fzf.zsh
 
-# Set vim to use XDG config directory
-export VIMINIT="source $XDG_CONFIG_HOME/vim/vimrc"
-export MYVIMRC=$XDG_CONFIG_HOME/vim/vimrc
-
-# Alias for editing vimrc config
-alias vimrc="${=EDITOR} $XDG_CONFIG_HOME/vim/vimrc"
+# Alias for editing init.vim config
+alias vimrc="${=EDITOR} $XDG_CONFIG_HOME/nvim/init.vim"
 
 # Add rbenv to PATH & initialize
 export PATH=$HOME/.local/rbenv/bin:$PATH

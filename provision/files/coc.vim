@@ -1,12 +1,11 @@
 " Set config home to XDG directory
-let g:coc_config_home = '~/.config/vim'
+let g:coc_config_home = '~/.config/nvim'
 
 " Install extensions
 let g:coc_global_extensions = [
       \ '@yaegassy/coc-ansible',
       \ 'coc-css',
       \ 'coc-emmet',
-      \ 'coc-fzf-preview',
       \ 'coc-html',
       \ 'coc-html-css-support',
       \ 'coc-json',
@@ -53,6 +52,9 @@ inoremap <expr><S-TAB> coc#pum#visible() ? coc#pum#prev(1) : "\<C-h>"
 inoremap <silent><expr> <CR> coc#pum#visible() ? coc#pum#confirm()
                               \: "\<C-g>u\<CR>\<c-r>=coc#on_enter()\<CR>"
 
+" Close completion menu with Esc
+inoremap <silent><expr> <Esc> coc#pum#visible() ? coc#pum#cancel() : "\<Esc>"
+
 function! CheckBackspace() abort
   let col = col('.') - 1
   return !col || getline('.')[col - 1]  =~# '\s'
@@ -94,8 +96,8 @@ autocmd CursorHold * silent call CocActionAsync('highlight')
 nmap <leader>rn <Plug>(coc-rename)
 
 " Formatting selected code.
-xmap <leader>f  <Plug>(coc-format-selected)
-nmap <leader>f  <Plug>(coc-format-selected)
+xmap <leader>fo  <Plug>(coc-format-selected)
+nmap <leader>fo  <Plug>(coc-format-selected)
 
 augroup mygroup
   autocmd!

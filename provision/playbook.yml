@@ -105,9 +105,16 @@
       tags: solarized
 
 
-    # Copy Vim configuration
-    - ansible.builtin.import_tasks: vim.yml
-      tags: vim
+    # Install Neovim
+    - name: See if Neovim config exists
+      ansible.builtin.stat:
+        path: ~/.config/nvim/init.vim
+      register: neovim_installed
+      tags: neovim
+
+    - ansible.builtin.import_tasks: neovim.yml
+      when: not neovim_installed.stat.exists
+      tags: neovim
 
 
     # Install rbenv and ruby

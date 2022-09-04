@@ -2,5 +2,8 @@
   "snippets.extends": {
     "ruby": ["rails"]
   },
-  "snippets.snipmate.enable": false
+  "snippets.snipmate.enable": false,
+  "suggest.floatConfig": {
+    "border": true
+  }
 }

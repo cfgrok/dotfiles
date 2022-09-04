@@ -1,58 +1,62 @@
 ---
-- name: See if vimrc is already present
-  ansible.builtin.stat:
-    path: ~/.config/vim/vimrc
-  register: vimrc_exists
+- name: Download apt signing key for Neovim
+  ansible.builtin.get_url:
+    url: https://keyserver.ubuntu.com/pks/lookup?op=get&search=0x9dbb0be9366964f134855e2255f96fcf8231b6dd
+    dest: /tmp/neovim-key
 
-- name: Copy vimrc config file
-  ansible.builtin.copy:
-    src: vimrc
-    dest: ~/.config/vim/
-  when: not vimrc_exists.stat.exists
+- name: Dearmor signing key and save in keyrings directory
+  ansible.builtin.command:
+    cmd: gpg --dearmor -o /usr/share/keyrings/neovim.gpg /tmp/neovim-key
+    creates: /usr/share/keyrings/neovim.gpg
+  become: true
 
-- name: Create undo directory
+- name: Remove downloaded key file
   ansible.builtin.file:
-    path: ~/.config/vim/undo
-    state: directory
+    path: /tmp/neovim-key
+    state: absent
 
-- name: Copy Emmet snippet file
+- name: Create apt source file
   ansible.builtin.copy:
-    src: vim_snippets_custom.json
-    dest: ~/.config/vim/vim_snippets_custom.json
+    dest: /etc/apt/sources.list.d/neovim.list
+    content: "deb [signed-by=/usr/share/keyrings/neovim.gpg] https://ppa.launchpadcontent.net/neovim-ppa/stable/ubuntu {{ ubuntu_release }} main"
+    force: false
+  become: true
 
-- name: See if coc.vim is already present
-  ansible.builtin.stat:
-    path: ~/.config/vim/coc.vim
-  register: cocvim_exists
+- name: Install Neovim
+  ansible.builtin.apt:
+    name: neovim
+    update_cache: true
+  become: true
 
-- name: Copy coc.vim config file
+- name: Set Neovim as default application for "vi" and "vim" commands
+  ansible.builtin.command:
+    cmd: "update-alternatives --set {{ item }} /usr/bin/nvim"
+  loop:
+    - vi
+    - vim
+  become: true
+
+- name: Copy Neovim config files
   ansible.builtin.copy:
-    src: coc.vim
-    dest: ~/.config/vim/coc.vim
-  when: not cocvim_exists.stat.exists
-
-- name: See if coc-settings.json is already present
-  ansible.builtin.stat:
-    path: ~/.config/vim/coc-settings.json
-  register: cocsettings_exists
-
-- name: Copy coc json settings file
-  ansible.builtin.copy:
-    src: coc-settings.json
-    dest: ~/.config/vim/coc-settings.json
-  when: not cocsettings_exists.stat.exists
+    src: "files/{{ item }}"
+    dest: ~/.config/nvim/
+  loop:
+    - init.vim
+    - coc.vim
+    - coc-settings.json
+    - vim-snippets-custom.json
 
 - name: Create plugin autoload directory
   ansible.builtin.file:
-    path: ~/.config/vim/autoload
+    path: ~/.local/share/nvim/site/autoload
     state: directory
 
 - name: Install vim-plug
   ansible.builtin.get_url:
     url: https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
-    dest: ~/.config/vim/autoload/plug.vim
+    dest: ~/.local/share/nvim/site/autoload/plug.vim
 
 - name: Install plugins
   ansible.builtin.shell:
     executable: /usr/bin/zsh
-    cmd: vim +'PlugInstall --sync' +qa
+    cmd: nvim --headless +PlugInstall +qa

@@ -41,7 +41,7 @@
       - tree
       - ubuntu-restricted-extras
       - vagrant
-      - vim-gtk
+      - vim-nox
       - virtualbox
       - vlc
     update_cache: true

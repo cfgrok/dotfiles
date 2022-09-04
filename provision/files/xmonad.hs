@@ -46,7 +46,7 @@ myKeys = [
     , ("M-C-k", namedScratchpadAction myScratchpads "keepass")
     , ("M-p", spawn ("dmenu_run " ++ dmenuConfig ++ " -p 'Run Executable:'"))
     , ("M-S-p", spawn ("p=`dmenu " ++ dmenuConfig ++ " -p 'Open File:'`"
-        ++ " && d=`fdfind -a -H -E '**/vim/undo/**' -E '*.swp' --mount $p / | dmenu " ++ dmenuConfig ++ " -p 'Path:'`"
+        ++ " && d=`fdfind -a -H -E '*.swp' --mount $p / | dmenu " ++ dmenuConfig ++ " -p 'Path:'`"
         ++ " && user-shell-wrapper xdg-open \"$d\""))
     ]
     ++
