@@ -6,7 +6,7 @@
 
 - name: Download DeaDBeeF
   ansible.builtin.get_url:
-    url: https://sourceforge.net/projects/deadbeef/files/travis/linux/1.9.1/deadbeef-static_1.9.1-1_amd64.deb/download
+    url: "https://sourceforge.net/projects/deadbeef/files/travis/linux/{{ deadbeef_version }}/deadbeef-static_{{ deadbeef_minor_version }}_amd64.deb/download"
     dest: /tmp/install_deadbeef/deadbeef.deb
 
 - name: Install DeaDBeeF
@@ -26,7 +26,7 @@
 
 - name: Download MPRIS2 plugin source
   ansible.builtin.get_url:
-    url: https://github.com/Serranya/deadbeef-mpris2-plugin/releases/download/v1.14/deadbeef-mpris2-plugin-1.14.tar.xz
+    url: "https://github.com/Serranya/deadbeef-mpris2-plugin/releases/download/v{{ deadbeef_plugin_version }}/deadbeef-mpris2-plugin-{{ deadbeef_plugin_version }}.tar.xz"
     dest: /tmp/install_deadbeef/plugin.tar.xz
 
 - name: Extract plugin source
@@ -40,29 +40,33 @@
     name: libglib2.0-dev
   become: true
 
+- name: Set plugin install directory variable
+  ansible.builtin.set_fact:
+    plugin_install_dir: "/tmp/install_deadbeef/deadbeef-{{ deadbeef_plugin_version }}"
+
 - name: Copy DeaDBeeF library files to plugin install directory
   ansible.builtin.copy:
     src: /opt/deadbeef/include/deadbeef
-    dest: /tmp/install_deadbeef/deadbeef-1.14
+    dest: "{{ plugin_install_dir }}"
     remote_src: true
 
 - name: Configure plugin
   ansible.builtin.shell:
     executable: /usr/bin/zsh
     cmd: ./configure
-    chdir: /tmp/install_deadbeef/deadbeef-1.14
+    chdir: "{{ plugin_install_dir }}"
 
 - name: Install plugin
   ansible.builtin.shell:
     executable: /usr/bin/zsh
     cmd: make install
-    chdir: /tmp/install_deadbeef/deadbeef-1.14
+    chdir: "{{ plugin_install_dir }}"
   become: true
 
 - name: Copy plugin files to DeaDBeeF library directory
   ansible.builtin.copy:
-    src: /usr/local/lib/deadbeef/{{ item }}
-    dest: /opt/deadbeef/lib/deadbeef/{{ item }}
+    src: "/usr/local/lib/deadbeef/{{ item }}"
+    dest: "/opt/deadbeef/lib/deadbeef/{{ item }}"
     remote_src: true
   loop:
     - mpris.la

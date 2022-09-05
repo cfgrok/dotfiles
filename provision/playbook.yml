@@ -2,8 +2,33 @@
 - hosts: localhost
   tasks:
 
-    # Set Ubuntu release variable for defining apt sources
+    # Set variables for git config
+    - ansible.builtin.pause:
+        prompt: Enter email for git config
+        echo: true
+      register: git_email_entry
+      tags: git_config
+
+    - ansible.builtin.pause:
+        prompt: Enter full name for git config
+        echo: true
+      register: git_name_entry
+      tags: git_config
+
     - ansible.builtin.set_fact:
+        git_email: "{{ git_email_entry.user_input }}"
+        git_name: "{{ git_name_entry.user_input }}"
+      tags: git_config
+
+
+    # Set variables for Ubuntu release and software versions
+    - ansible.builtin.set_fact:
+        deadbeef_version: 1.9.1
+        deadbeef_minor_version: 1.9.1-1
+        deadbeef_plugin_version: 1.14
+        dmenu2_version: 0.2.1
+        nerdfont_version: 2.1.0
+        ruby_version: 3.1.2
         ubuntu_release: jammy
       tags: always
 
@@ -118,9 +143,9 @@
 
 
     # Install rbenv and ruby
-    - name: See if rbenv is installed
+    - name: See if rbenv and ruby are installed
       ansible.builtin.stat:
-        path: ~/.local/rbenv/versions/3.1.2/bin/ruby
+        path: "~/.local/rbenv/versions/{{ ruby_version }}/bin/ruby"
       register: rbenv_installed
       tags: rbenv
 

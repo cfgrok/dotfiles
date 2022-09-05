@@ -50,7 +50,7 @@
 
 - name: Download Meslo LG S Nerd Font archive
   ansible.builtin.get_url:
-    url: https://github.com/ryanoasis/nerd-fonts/releases/download/v2.1.0/Meslo.zip
+    url: "https://github.com/ryanoasis/nerd-fonts/releases/download/v{{ nerdfont_version }}/Meslo.zip"
     dest: /tmp/install_fonts/Meslo.zip
 
 - name: Extract fonts

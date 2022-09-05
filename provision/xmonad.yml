@@ -59,7 +59,7 @@
 
 - name: Download dmenu2 files
   ansible.builtin.get_url:
-    url: https://github.com/spcmd/dmenu2/raw/0.2.1/dmenu2-0.2.1.tar.gz
+    url: "https://github.com/spcmd/dmenu2/raw/{{ dmenu2_version }}/dmenu2-{{ dmenu2_version }}.tar.gz"
     dest: /tmp/install_dmenu2/dmenu2.tar.xz
 
 - name: Extract dmenu2 source
@@ -70,8 +70,8 @@
 
 - name: Copy dmenu2 executables
   ansible.builtin.copy:
-    src: /tmp/install_dmenu2/dmenu2-0.2.1/{{ item }}
-    dest: /usr/local/bin/{{ item }}
+    src: "/tmp/install_dmenu2/dmenu2-{{ dmenu2_version }}/{{ item }}"
+    dest: "/usr/local/bin/{{ item }}"
     remote_src: true
     owner: root
     group: root
@@ -97,8 +97,8 @@
 
 - name: Copy dmenu2 man files
   ansible.builtin.copy:
-    src: /tmp/install_dmenu2/dmenu2-0.2.1/{{ item }}
-    dest: /usr/local/share/man/man1/{{ item }}
+    src: "/tmp/install_dmenu2/dmenu2-{{ dmenu2_version }}/{{ item }}"
+    dest: "/usr/local/share/man/man1/{{ item }}"
     remote_src: true
     owner: root
     group: root
