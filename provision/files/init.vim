@@ -2,6 +2,7 @@ call plug#begin()
 
 Plug 'AndrewRadev/splitjoin.vim'
 Plug 'Raimondi/delimitMate'
+Plug 'antoinemadec/coc-fzf'
 Plug 'godlygeek/tabular'
 Plug 'honza/vim-snippets'
 Plug 'itchyny/lightline.vim'
@@ -79,6 +80,11 @@ let g:fzf_preview_grep_command = 'rg --line-number --no-heading --color=never --
 let g:fzf_preview_lines_command = 'bat --theme="Solarized (dark)" --color=always --plain --number'
 let g:fzf_preview_preview_key_bindings = 'ctrl-f:preview-page-down,ctrl-b:preview-page-up,?:toggle-preview,alt-a:select-all,alt-d:deselect-all,btab:toggle+up'
 let g:fzf_preview_quit_map = 0
+
+
+" Coc-fzf configuration
+let g:coc_fzf_preview = 'down:50%'
+let g:coc_fzf_opts = []
 
 
 " Remap vim-textobj-erb from E to e
