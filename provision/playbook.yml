@@ -23,6 +23,7 @@
 
     # Set variables for Ubuntu release and software versions
     - ansible.builtin.set_fact:
+        bat_version: 0.21.0
         deadbeef_version: 1.9.1
         deadbeef_minor_version: 1.9.1-1
         deadbeef_plugin_version: 1.14
@@ -140,6 +141,11 @@
     - ansible.builtin.import_tasks: neovim.yml
       when: not neovim_installed.stat.exists
       tags: neovim
+
+
+    # Install bat
+    - ansible.builtin.import_tasks: bat.yml
+      tags: bat
 
 
     # Install rbenv and ruby

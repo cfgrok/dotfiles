@@ -1,0 +1,21 @@
+---
+- name: Create bat install directory
+  ansible.builtin.file:
+    path: /tmp/install_bat
+    state: directory
+
+- name: Download bat
+  ansible.builtin.get_url:
+    url: "https://github.com/sharkdp/bat/releases/download/v{{ bat_version }}/bat_{{ bat_version }}_amd64.deb"
+    dest: /tmp/install_bat/bat.deb
+
+- name: Install bat
+  ansible.builtin.command:
+    cmd: gdebi -n /tmp/install_bat/bat.deb
+  become: true
+
+- name: Clean up bat install directory
+  ansible.builtin.file:
+    path: /tmp/install_bat
+    state: absent
+  become: true
