@@ -120,6 +120,11 @@
       tags: zsh
 
 
+    # Install nvm and nodejs
+    - ansible.builtin.import_tasks: node.yml
+      tags: node
+
+
     # Install Neovim
     - name: See if Neovim config exists
       ansible.builtin.stat:
@@ -200,11 +205,6 @@
     # Set up PostgreSQL role
     - ansible.builtin.import_tasks: postgres.yml
       tags: postgres
-
-
-    # Install nvm and nodejs
-    - ansible.builtin.import_tasks: node.yml
-      tags: node
 
 
     # Update user settings
