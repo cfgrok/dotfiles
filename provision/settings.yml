@@ -10,6 +10,7 @@
       org.gnome.nm-applet.disable-connected-notifications: "true"
       org.gnome.nm-applet.disable-disconnected-notifications: "true"
       org.gnome.nm-applet.suppress-wireless-networks-available: "true"
+      org.mate.applications-terminal.exec: "'alacritty'"
       org.mate.background.picture-filename: "'/usr/share/backgrounds/linuxmint-uma/aholmes_canada.jpg'"
       org.mate.caja.desktop.computer-icon-visible: "false"
       org.mate.caja.desktop.font: "'Ubuntu 12'"
@@ -97,3 +98,10 @@
   community.general.dconf:
     key: /org/mate/desktop/keybindings/custom3/action
     value: "'alacritty'"
+
+- name: Copy mimeapps.list file to .config directory
+  ansible.builtin.copy:
+    src: files/mimeapps.list
+    dest: ~/.config/
+
+
