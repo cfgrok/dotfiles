@@ -54,7 +54,7 @@
 - name: Install neovim npm package
   ansible.builtin.shell:
     executable: /usr/bin/zsh
-    cmd: npm install -g neovim
+    cmd: source ~/.config/nvm/nvm.sh && npm install -g neovim
 
 - name: Install vim-plug
   ansible.builtin.get_url:
