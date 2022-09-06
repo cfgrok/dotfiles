@@ -40,3 +40,8 @@
   loop:
     - alacritty.yml
     - alacritty_solarized_dark.yml
+
+- name: Download dircolors-solarized file to .config directory
+  ansible.builtin.get_url:
+    url: https://raw.githubusercontent.com/seebi/dircolors-solarized/master/dircolors.256dark
+    dest: ~/.config/dircolors

@@ -120,18 +120,6 @@
       tags: zsh
 
 
-    # Install solarized color schemes for terminal and directory listings
-    - name: See if solarized projects are installed
-      ansible.builtin.stat:
-        path: ~/.config/dircolors
-      register: solarized_installed
-      tags: solarized
-
-    - ansible.builtin.import_tasks: solarize.yml
-      when: not solarized_installed.stat.exists
-      tags: solarized
-
-
     # Install Neovim
     - name: See if Neovim config exists
       ansible.builtin.stat:
