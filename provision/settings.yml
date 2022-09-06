@@ -104,4 +104,21 @@
     src: files/mimeapps.list
     dest: ~/.config/
 
-
+- name: Disable unnecessary/unwanted startup applications
+  ansible.builtin.include: autostart.yml
+  with_items:
+    - blueman.desktop
+    - geoclue-demo-agent.desktop
+    - im-launch.desktop
+    - mate-power-manager.desktop
+    - mate-volume-control-status-icon.desktop
+    - mintreport.desktop
+    - mintupdate.desktop
+    - mintwelcome.desktop
+    - nm-applet.desktop
+    - nvidia-prime.desktop
+    - nvidia-settings-autostart.desktop
+    - onboard-autostart.desktop
+    - orca-autostart.desktop
+    - print-applet.desktop
+    - sticky.desktop

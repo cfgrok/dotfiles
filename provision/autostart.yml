@@ -1,0 +1,14 @@
+---
+- name: Copy autostart files to .config/autostart directory
+  ansible.builtin.copy:
+    src: "/etc/xdg/autostart/{{ item }}"
+    dest: "~/.config/autostart/{{ item }}"
+    remote_src: true
+    owner: "{{ ansible_user_id }}"
+    group: "{{ ansible_user_id }}"
+    force: false
+
+- name: Append line to disable autostart items
+  ansible.builtin.lineinfile:
+    path: "~/.config/autostart/{{ item }}"
+    line: Hidden=true
