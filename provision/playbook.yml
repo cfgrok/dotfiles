@@ -28,8 +28,7 @@
         deadbeef_minor_version: 1.9.1-1
         deadbeef_plugin_version: 1.14
         dmenu2_version: 0.2.1
-        git_email: ezra@cfgrok.com
-        git_name: Ezra Parker
+        home_path: "/home/{{ ansible_user_id }}"
         nerdfont_version: 2.1.0
         ruby_version: 3.1.2
         ubuntu_release: jammy

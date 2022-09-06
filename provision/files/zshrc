@@ -102,6 +102,9 @@ zstyle ':completion:*' special-dirs false
 export BAT_THEME="Solarized (dark)"
 export FZF_PREVIEW_PREVIEW_BAT_THEME="Solarized (dark)"
 
+# Set config path for rg command
+export RIPGREP_CONFIG_PATH=$XDG_CONFIG_HOME/rg/rgrc
+
 # Powerlevel10K -- to customize prompt, run `p10k configure` or edit $ZSH/custom/powerlevel10k/p10k.zsh
 [[ -f $ZSH/custom/powerlevel10k/p10k.zsh ]] && [[ $TERM != "linux" ]] && source $ZSH/custom/powerlevel10k/p10k.zsh
 

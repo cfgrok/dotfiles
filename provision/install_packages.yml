@@ -60,3 +60,13 @@
     regexp: "data_home, 'autojump.txt"
     replace: "data_home, 'autojump', 'autojump.txt"
   become: true
+
+- name: Copy rg ignore file
+  ansible.builtin.copy:
+    src: files/rgignore
+    dest: ~/.config/rg/
+
+- name: Copy rg config file from template
+  ansible.builtin.template:
+    src: files/rgrc.j2
+    dest: ~/.config/rg/rgrc
