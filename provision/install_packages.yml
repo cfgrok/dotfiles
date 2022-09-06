@@ -46,3 +46,17 @@
       - vlc
     update_cache: true
   become: true
+
+- name: Correct autojump data_home path -- step 1
+  ansible.builtin.replace:
+    path: /usr/share/autojump/autojump
+    regexp: ',\n +''autojump''\)\)'
+    replace: '))'
+  become: true
+
+- name: Correct autojump data_home path -- step 2
+  ansible.builtin.replace:
+    path: /usr/share/autojump/autojump
+    regexp: "data_home, 'autojump.txt"
+    replace: "data_home, 'autojump', 'autojump.txt"
+  become: true
