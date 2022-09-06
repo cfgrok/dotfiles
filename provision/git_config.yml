@@ -5,8 +5,8 @@
     state: directory
 
 - name: Copy git config file
-  ansible.builtin.copy:
-    src: git_config
+  ansible.builtin.template:
+    src: files/git_config.j2
     dest: ~/.config/git/config
     mode: 0664
 
