@@ -87,7 +87,7 @@
     
 - name: Get sound card configuration
   ansible.builtin.shell:
-    executable: /usr/bin/zsh
+    executable: /usr/bin/bash
     cmd: cat /proc/asound/cards | grep '\[PCH' | awk '{print $1}'
   register: card_id
 
