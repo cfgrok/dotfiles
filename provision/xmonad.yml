@@ -121,3 +121,12 @@
     group: root
     mode: 0755
   become: true
+
+- name: Copy network-manager script
+  ansible.builtin.copy:
+    src: files/network-manager
+    dest: /usr/local/bin/network-manager
+    owner: root
+    group: root
+    mode: 0755
+  become: true
