@@ -1,7 +1,11 @@
 ---
 - name: Install python PostgresSQL adapter
   ansible.builtin.apt:
-    name: python3-psycopg2
+    name:
+      - libpq-dev
+      - postgresql
+      - postgresql-client
+      - python3-psycopg2
   become: true
 
 - name: Check for PostgreSQL role

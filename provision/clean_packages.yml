@@ -19,3 +19,12 @@
     state: absent
     purge: true
   become: true
+
+- name: Remove flatpak directories
+  ansible.builtin.file:
+    path: "{{ item }}"
+    state: absent
+  loop:
+    - ~/.local/share/flatpak
+    - /var/lib/flatpak
+  become: true

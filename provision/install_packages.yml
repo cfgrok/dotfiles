@@ -31,8 +31,6 @@
       - nfs-common
       - nmap
       - peek
-      - postgresql
-      - postgresql-client
       - ripgrep
       - screenkey
       - ssh-askpass-gnome
@@ -45,15 +43,6 @@
       - virtualbox
       - vlc
     update_cache: true
-  become: true
-
-- name: Remove flatpak directories
-  ansible.builtin.file:
-    path: "{{ item }}"
-    state: absent
-  loop:
-    - ~/.local/share/flatpak
-    - /var/lib/flatpak
   become: true
 
 - name: Set askpass path in sudo.conf
