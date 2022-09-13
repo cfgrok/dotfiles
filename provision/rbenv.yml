@@ -23,12 +23,48 @@
   ansible.builtin.set_fact:
     env_vars: export PATH=~/.local/rbenv/bin:$PATH; export RBENV_ROOT=~/.local/rbenv;
 
+- name: See if ruby is installed
+  ansible.builtin.stat:
+    path: "~/.local/rbenv/versions/{{ ruby_version }}/bin/ruby"
+  register: ruby_installed
+
 - name: Install ruby
   ansible.builtin.shell:
     executable: /usr/bin/zsh
     cmd: "({{ env_vars }} rbenv install {{ ruby_version }})"
+  when: not ruby_installed.stat.exists
 
 - name: Set global ruby version
   ansible.builtin.shell:
     executable: /usr/bin/zsh
     cmd: "({{ env_vars }} rbenv global {{ ruby_version }})"
+
+- name: Define rbenv initialization variable string
+  ansible.builtin.set_fact:
+    rbenv_init: eval "$( rbenv init - zsh )";
+
+- name: Install solargraph gem
+  ansible.builtin.shell:
+    executable: /usr/bin/zsh
+    cmd: "({{ env_vars }} {{ rbenv_init }} gem install solargraph)"
+
+- name: Clone reline repository
+  ansible.builtin.git:
+    repo: https://github.com/ruby/reline
+    dest: ~/Documents/workspace/reline
+
+- name: Build reline gem
+  ansible.builtin.shell:
+    executable: /usr/bin/zsh
+    cmd: rake build
+    chdir: ~/Documents/workspace/reline
+
+- name: Install reline gem
+  ansible.builtin.shell:
+    executable: /usr/bin/zsh
+    cmd: "({{ env_vars }} {{ rbenv_init }} gem install ~/Documents/workspace/reline/pkg/*.gem)"
+
+- name: Copy irbrc file
+  ansible.builtin.copy:
+    src: files/irbrc
+    dest: ~/.irbrc

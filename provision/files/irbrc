@@ -1,0 +1,3 @@
+Reline.dialog_default_bg_color = :black
+Reline.dialog_highlight_bg_color = :white
+Reline.dialog_highlight_fg_color = :black

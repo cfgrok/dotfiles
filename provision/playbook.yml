@@ -143,14 +143,7 @@
 
 
     # Install rbenv and ruby
-    - name: See if rbenv and ruby are installed
-      ansible.builtin.stat:
-        path: "~/.local/rbenv/versions/{{ ruby_version }}/bin/ruby"
-      register: rbenv_installed
-      tags: rbenv
-
     - ansible.builtin.import_tasks: rbenv.yml
-      when: not rbenv_installed.stat.exists
       tags: rbenv
 
 
