@@ -75,3 +75,47 @@
   ansible.builtin.template:
     src: files/rgrc.j2
     dest: ~/.config/rg/rgrc
+
+- name: Launch Firefox to create profile directory
+  ansible.builtin.command:
+    cmd: firefox
+
+- name: Find Firefox profile directory
+  ansible.builtin.find:
+    paths: ~/.mozilla/firefox
+    file_type: directory
+    patterns: '*default-release'
+  register: firefox_directory
+
+- name: Download arkenfox user.js file to Firefox profile directory
+  ansible.builtin.get_url:
+    url: https://raw.githubusercontent.com/arkenfox/user.js/master/user.js
+    dest: "{{ firefox_directory.files[0].path }}/user.js"
+
+- name: Download arkenfox scripts to Firefox profile directory
+  ansible.builtin.get_url:
+    url: "https://raw.githubusercontent.com/arkenfox/user.js/master/{{ item }}"
+    dest: "{{ firefox_directory.files[0].path }}/{{ item }}"
+    mode: 0775
+  loop:
+    - prefsCleaner.sh
+    - updater.sh
+
+- name: Copy user-overrides.js to Firefox profile directory
+  ansible.builtin.copy:
+    src: files/user-overrides.js
+    dest: "{{ firefox_directory.files[0].path }}/user-overrides.js"
+
+- name: Run arkenfox update script
+  ansible.builtin.shell:
+    cmd: ./updater.sh -su
+    chdir: "{{ firefox_directory.files[0].path }}"
+
+- name: Copy Firefox policies file
+  ansible.builtin.copy:
+    src: files/policies.json
+    dest: /usr/lib/firefox/distribution/policies.json
+    owner: root
+    group: root
+    mode: 0644
+  become: true
