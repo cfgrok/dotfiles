@@ -84,7 +84,7 @@
   ansible.builtin.file:
     path: /tmp/install_fonts
     state: absent
-    
+
 - name: Get sound card configuration
   ansible.builtin.shell:
     executable: /usr/bin/bash

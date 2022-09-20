@@ -88,7 +88,7 @@
     regexp: 'sort -u \| tee'
     replace: 'sort -u | sed "/\[/d" | tee'
   become: true
-    
+
 - name: Create local man directory
   ansible.builtin.file:
     path: /usr/local/share/man/man1
