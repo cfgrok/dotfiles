@@ -25,11 +25,11 @@
       org.mate.Marco.general.titlebar-font: "'Ubuntu Medium 12'"
       org.mate.panel.object-id-list: "['menu-bar', 'separator', 'notification-area', 'xapp-status', 'clock']"
       org.mate.peripherals-keyboard-xkb.kbd.options: "['terminate\\tterminate:ctrl_alt_bksp', 'caps\\tcaps:swapescape']"
-      org.mate.peripherals-mouse.cursor-theme: "'DMZ-Black'"
+      #org.mate.peripherals-mouse.cursor-theme: "'DMZ-Black'"
       org.mate.power-manager.action-critical-battery: "'suspend'"
       org.mate.session.idle-delay: "20"
-      org.mate.session.required-components-list: "['windowmanager', 'filemanager']"
-      org.mate.session.required-components.panel: "''"
+      #org.mate.session.required-components-list: "['windowmanager', 'filemanager']"
+      #org.mate.session.required-components.panel: "''"
       org.mate.session.show-hidden-apps: "true"
       org.mate.SettingsDaemon.plugins.media-keys.logout: "'<Primary><Alt>semicolon'"
       org.mate.SettingsDaemon.plugins.media-keys.magnifier: "'disabled'"
@@ -43,46 +43,55 @@
   community.general.dconf:
     key: /org/mate/desktop/keybindings/custom0/name
     value: "'Volume mute'"
+  when: false
 
 - name: Create custom volume mute shortcut binding
   community.general.dconf:
     key: /org/mate/desktop/keybindings/custom0/binding
     value: "'<Mod4>F4'"
+  when: false
 
 - name: Create custom volume mute shortcut action
   community.general.dconf:
     key: /org/mate/desktop/keybindings/custom0/action
     value: "'pactl set-sink-mute @DEFAULT_SINK@ toggle'"
+  when: false
 
 - name: Create custom volume down shortcut name
   community.general.dconf:
     key: /org/mate/desktop/keybindings/custom1/name
     value: "'Volume down'"
+  when: false
 
 - name: Create custom volume down shortcut binding
   community.general.dconf:
     key: /org/mate/desktop/keybindings/custom1/binding
     value: "'<Mod4>F5'"
+  when: false
 
 - name: Create custom volume down shortcut action
   community.general.dconf:
     key: /org/mate/desktop/keybindings/custom1/action
     value: "'pactl set-sink-volume @DEFAULT_SINK@ -5%'"
+  when: false
 
 - name: Create custom volume up shortcut name
   community.general.dconf:
     key: /org/mate/desktop/keybindings/custom2/name
     value: "'Volume up'"
+  when: false
 
 - name: Create custom volume up shortcut binding
   community.general.dconf:
     key: /org/mate/desktop/keybindings/custom2/binding
     value: "'<Mod4>F6'"
+  when: false
 
 - name: Create custom volume up shortcut action
   community.general.dconf:
     key: /org/mate/desktop/keybindings/custom2/action
     value: "'pactl set-sink-volume @DEFAULT_SINK@ +5%'"
+  when: false
 
 - name: Create custom launch terminal shortcut name
   community.general.dconf:
@@ -122,3 +131,4 @@
     - orca-autostart.desktop
     - print-applet.desktop
     - sticky.desktop
+  when: false

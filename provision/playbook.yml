@@ -80,9 +80,10 @@
         path: ~/.config/xmobar/xmobarrc
       register: xmobar_installed
       tags: xmobar
+      when: false
 
     - ansible.builtin.import_tasks: xmobar.yml
-      when: not xmobar_installed.stat.exists
+      when: false # not xmobar_installed.stat.exists
       tags: xmobar
 
 

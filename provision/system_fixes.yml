@@ -12,6 +12,7 @@
     dest: /etc/systemd/system/systemd-pstore.service
     remote_src: true
   become: true
+  when: false
 
 - name: Fix mtd error on startup - remove email address that triggers message
   ansible.builtin.replace:
@@ -19,3 +20,4 @@
     regexp: 'modprobe@mtdpstore.service '
     replace: ''
   become: true
+  when: false
