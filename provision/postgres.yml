@@ -1,5 +1,5 @@
 ---
-- name: Install python PostgresSQL adapter
+- name: Install PostgresSQL packages
   ansible.builtin.apt:
     name:
       - libpq-dev
