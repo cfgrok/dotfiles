@@ -1,0 +1,8 @@
+---
+- hosts: localhost
+  tasks:
+
+    - ansible.builtin.set_fact:
+        t1: "X"
+
+    - ansible.builtin.include_tasks: test2.yml

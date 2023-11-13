@@ -1,0 +1,8 @@
+- ansible.builtin.pause:
+    prompt: "Testing\ntest"
+    echo: true
+  register: selection
+
+- ansible.builtin.debug:
+    var: t1
+- ansible.builtin.include_tasks: test3.yml

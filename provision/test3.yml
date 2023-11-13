@@ -1,0 +1,19 @@
+- ansible.builtin.debug:
+    var: t1
+
+- ansible.builtin.set_fact:
+    selected: false
+
+- ansible.builtin.set_fact:
+    selected: true
+    t1: " "
+  when: selection.user_input == "1" and t1 == "X" and not selected
+
+- ansible.builtin.set_fact:
+    selected: true
+    t1: "X"
+  when: selection.user_input == "1" and t1 == " " and not selected
+
+- ansible.builtin.include_tasks:
+    test2.yml
+  when: selection.user_input != "2"
