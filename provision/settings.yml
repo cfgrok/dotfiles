@@ -33,9 +33,7 @@
       org.mate.session.show-hidden-apps: "true"
       org.mate.SettingsDaemon.plugins.media-keys.logout: "'<Primary><Alt>semicolon'"
       org.mate.SettingsDaemon.plugins.media-keys.magnifier: "'disabled'"
-      org.mate.SettingsDaemon.plugins.media-keys.next: "'disabled'"
       org.mate.SettingsDaemon.plugins.media-keys.on-screen-keyboard: "'disabled'"
-      org.mate.SettingsDaemon.plugins.media-keys.previous: "'disabled'"
       org.mate.SettingsDaemon.plugins.media-keys.screenreader: "'disabled'"
 
 # Use dconf module to define custom keyboard shortcuts
@@ -47,7 +45,7 @@
 - name: Create custom volume mute shortcut binding
   community.general.dconf:
     key: /org/mate/desktop/keybindings/custom0/binding
-    value: "'<Mod4>F4'"
+    value: "'<Mod4>F1'"
 
 - name: Create custom volume mute shortcut action
   community.general.dconf:
@@ -62,7 +60,7 @@
 - name: Create custom volume down shortcut binding
   community.general.dconf:
     key: /org/mate/desktop/keybindings/custom1/binding
-    value: "'<Mod4>F5'"
+    value: "'<Mod4>F2'"
 
 - name: Create custom volume down shortcut action
   community.general.dconf:
@@ -77,26 +75,71 @@
 - name: Create custom volume up shortcut binding
   community.general.dconf:
     key: /org/mate/desktop/keybindings/custom2/binding
-    value: "'<Mod4>F6'"
+    value: "'<Mod4>F3'"
 
 - name: Create custom volume up shortcut action
   community.general.dconf:
     key: /org/mate/desktop/keybindings/custom2/action
     value: "'pactl set-sink-volume @DEFAULT_SINK@ +5%'"
 
-- name: Create custom launch terminal shortcut name
+- name: Create custom previous track shortcut name
   community.general.dconf:
     key: /org/mate/desktop/keybindings/custom3/name
+    value: "'Previous track'"
+
+- name: Create custom previous track shortcut binding
+  community.general.dconf:
+    key: /org/mate/desktop/keybindings/custom3/binding
+    value: "'<Mod4>F5'"
+
+- name: Create custom previous track shortcut action
+  community.general.dconf:
+    key: /org/mate/desktop/keybindings/custom3/action
+    value: "'playerctl previous'"
+
+- name: Create custom play/pause shortcut name
+  community.general.dconf:
+    key: /org/mate/desktop/keybindings/custom4/name
+    value: "'Play/pause'"
+
+- name: Create custom play/pause shortcut binding
+  community.general.dconf:
+    key: /org/mate/desktop/keybindings/custom4/binding
+    value: "'<Mod4>F6'"
+
+- name: Create custom play/pause shortcut action
+  community.general.dconf:
+    key: /org/mate/desktop/keybindings/custom4/action
+    value: "'playerctl play-pause'"
+
+- name: Create custom next track shortcut name
+  community.general.dconf:
+    key: /org/mate/desktop/keybindings/custom5/name
+    value: "'Next track'"
+
+- name: Create custom next track shortcut binding
+  community.general.dconf:
+    key: /org/mate/desktop/keybindings/custom5/binding
+    value: "'<Mod4>F7'"
+
+- name: Create custom next track shortcut action
+  community.general.dconf:
+    key: /org/mate/desktop/keybindings/custom5/action
+    value: "'playerctl next'"
+
+- name: Create custom launch terminal shortcut name
+  community.general.dconf:
+    key: /org/mate/desktop/keybindings/custom6/name
     value: "'Launch Terminal'"
 
 - name: Create custom launch terminal shortcut binding
   community.general.dconf:
-    key: /org/mate/desktop/keybindings/custom3/binding
+    key: /org/mate/desktop/keybindings/custom6/binding
     value: "'<Ctrl><Alt>t'"
 
 - name: Create custom launch terminal shortcut action
   community.general.dconf:
-    key: /org/mate/desktop/keybindings/custom3/action
+    key: /org/mate/desktop/keybindings/custom6/action
     value: "'alacritty'"
 
 - name: Copy mimeapps.list file to .config directory
