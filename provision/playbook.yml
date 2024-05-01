@@ -154,28 +154,16 @@
       tags: pcloud
 
 
-    # Install Vivaldi
-    - name: See if Vivaldi is installed
+    # Install Brave
+    - name: See if Brave is installed
       ansible.builtin.stat:
-        path: /usr/bin/vivaldi
-      register: vivaldi_installed
-      tags: vivaldi
+        path: /usr/bin/brave-browser
+      register: brave_installed
+      tags: brave
 
-    - ansible.builtin.import_tasks: vivaldi.yml
-      when: not vivaldi_installed.stat.exists or not vivaldi_installed.stat.executable
-      tags: vivaldi
-
-
-    # Install Google Chrome
-    - name: See if Chrome is installed
-      ansible.builtin.stat:
-        path: /opt/google/chrome/chrome
-      register: chrome_installed
-      tags: chrome
-
-    - ansible.builtin.import_tasks: google_chrome.yml
-      when: not chrome_installed.stat.exists or not chrome_installed.stat.executable
-      tags: chrome
+    - ansible.builtin.import_tasks: brave.yml
+      when: not brave_installed.stat.exists or not brave_installed.stat.executable
+      tags: brave
 
 
     # Install DeaDBeeF
