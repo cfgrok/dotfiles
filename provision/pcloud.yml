@@ -7,7 +7,7 @@
 
 - name: Get JSON from API
   ansible.builtin.uri:
-    url: https://api.pcloud.com/getpublinkdownload?code=XZWTVkVZQM0GNXA4hrFGPkefzUUWVLKOpPIX
+    url: https://api.pcloud.com/getpublinkdownload?code=XZAwMrVZidapyDxpd2pCNlGy3BcjdbYCf1Yk
     method: GET
     return_content: true
   register: json_response
