@@ -13,7 +13,6 @@
       - abcde
       - audacity
       - autojump
-      - brasero
       - dconf-editor
       - exuberant-ctags
       - fd-find
@@ -31,6 +30,7 @@
       - nfs-common
       - nmap
       - peek
+      - playerctl
       - ripgrep
       - screenkey
       - ssh-askpass-gnome

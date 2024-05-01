@@ -2,18 +2,13 @@
 - name: Remove unwanted default packages
   ansible.builtin.apt:
     name:
-      - celluloid
-      - compiz-core
+      - brasero
       - evolution-data-server
       - evolution-data-server-common
       - flatpak
       - gir1.2-flatpak-1.0
       - hexchat
       - libflatpak0
-      - rhythmbox
-      - thunderbird
-      - transmission-common
-      - transmission-gtk
       - vim-tiny
       - warpinator
     state: absent
@@ -27,4 +22,11 @@
   loop:
     - ~/.local/share/flatpak
     - /var/lib/flatpak
+  become: true
+
+- name: Remove /snap/bin from PATH
+  ansible.builtin.replace:
+    path: /etc/environment
+    regexp: ':/snap/bin'
+    replace: ''
   become: true
