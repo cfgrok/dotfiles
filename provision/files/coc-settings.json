@@ -1,9 +1,12 @@
 {
+  "coc.source.omni.filetypes": [ "cf" ],
   "snippets.extends": {
-    "ruby": ["rails"]
+    "ruby": [ "rails" ]
   },
   "snippets.snipmate.enable": false,
+  "snippets.textmateSnippetsRoots": [ "/home/ezra/.config/nvim/snippets" ],
   "suggest.floatConfig": {
     "border": true
-  }
+  },
+  "snippets.ultisnips.pythonPrompt": false
 }
