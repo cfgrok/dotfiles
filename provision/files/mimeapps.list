@@ -18,6 +18,7 @@ video/x-matroska=vlc.desktop
 video/x-mpeg=vlc.desktop
 video/x-ogm+ogg=vlc.desktop
 text/plain=nvim.desktop
+text/x-csrc=nvim.desktop
 x-scheme-handler/http=firefox.desktop
 x-scheme-handler/https=firefox.desktop
 text/html=firefox.desktop
@@ -44,5 +45,11 @@ x-scheme-handler/irc=io.github.Hexchat.desktop
 x-scheme-handler/ircs=io.github.Hexchat.desktop
 x-scheme-handler/sip=io.github.Hexchat.desktop
 x-scheme-handler/xmpp=io.github.Hexchat.desktop
+application/coldfusion-template=code.desktop
+application/coldfusion-component=code.desktop
 
 [Added Associations]
+application/coldfusion-template=nvim.desktop;code.desktop;
+application/coldfusion-component=nvim.desktop;code.desktop;
+text/markdown=nvim.desktop;
+text/plain=libreoffice-calc.desktop;
