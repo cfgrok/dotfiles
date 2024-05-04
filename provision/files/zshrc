@@ -82,10 +82,6 @@ bindkey '\el' down-case-word
 # Set up "fd" alias for fd-find
 alias fd=fdfind
 
-# Work around "acs" alias/command conflict between alias (cheat sheet) and ubuntu plugins
-unalias acs
-alias acse="apt-cache search"
-
 # Remove confirmation aliases for cp, mv & rm from common-aliases plugin
 unalias cp
 unalias mv
