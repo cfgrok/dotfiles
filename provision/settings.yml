@@ -20,16 +20,13 @@
       org.mate.interface.gtk-shell-shows-app-menu: "true"
       org.mate.interface.gtk-theme: "'Mint-Y-Dark-Aqua'"
       org.mate.interface.font-name: "'Ubuntu 12'"
-      org.mate.interface.icon-theme: "'Mint-Y-Dark-Aqua'"
+      org.mate.interface.icon-theme: "'Mint-Y-Aqua'"
       org.mate.interface.monospace-font-name: "'Inconsolata Medium 18'"
       org.mate.Marco.general.titlebar-font: "'Ubuntu Medium 12'"
       org.mate.panel.object-id-list: "['menu-bar', 'separator', 'notification-area', 'xapp-status', 'clock']"
       org.mate.peripherals-keyboard-xkb.kbd.options: "['terminate\\tterminate:ctrl_alt_bksp', 'caps\\tcaps:swapescape']"
-      org.mate.peripherals-mouse.cursor-theme: "'DMZ-Black'"
       org.mate.power-manager.action-critical-battery: "'suspend'"
       org.mate.session.idle-delay: "20"
-      org.mate.session.required-components-list: "['windowmanager', 'filemanager']"
-      org.mate.session.required-components.panel: "''"
       org.mate.session.show-hidden-apps: "true"
       org.mate.SettingsDaemon.plugins.media-keys.logout: "'<Primary><Alt>semicolon'"
       org.mate.SettingsDaemon.plugins.media-keys.magnifier: "'disabled'"
@@ -150,18 +147,9 @@
 - name: Disable unnecessary/unwanted startup applications
   ansible.builtin.include: autostart.yml
   with_items:
-    - blueman.desktop
     - geoclue-demo-agent.desktop
     - im-launch.desktop
-    - mate-power-manager.desktop
-    - mate-volume-control-status-icon.desktop
-    - mintreport.desktop
-    - mintupdate.desktop
     - mintwelcome.desktop
-    - nm-applet.desktop
-    - nvidia-prime.desktop
-    - nvidia-settings-autostart.desktop
     - onboard-autostart.desktop
     - orca-autostart.desktop
-    - print-applet.desktop
     - sticky.desktop

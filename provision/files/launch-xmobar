@@ -1,5 +1,0 @@
-pkill -1 xmobar
-pkill -1 alsactl
-xmobar ~/.config/xmobar/xmobarrc -r &
-sleep 0.1
-xdotool windowreparent $(xdotool search --onlyvisible --classname xmobar) $(xdotool search --onlyvisible --classname Desktop)
