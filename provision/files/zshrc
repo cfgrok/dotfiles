@@ -118,6 +118,9 @@ export PATH=$HOME/.local/rbenv/bin:$PATH
 export RBENV_ROOT=$HOME/.local/rbenv
 [[ -f $HOME/.local/rbenv/bin/rbenv ]] && eval "$( rbenv init - zsh )"
 
+# Add nvim to PATH
+export PATH=/opt/nvim-linux64/bin:$PATH
+
 # Custom function to swap names of 2 files
 function swap { mv $1 $1.tmp && mv $2 $1 && mv $1.tmp $2 }
 

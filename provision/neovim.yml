@@ -1,36 +1,29 @@
 ---
-- name: Download apt signing key for Neovim
-  ansible.builtin.get_url:
-    url: https://keyserver.ubuntu.com/pks/lookup?op=get&search=0x9dbb0be9366964f134855e2255f96fcf8231b6dd
-    dest: /tmp/neovim-key
-
-- name: Dearmor signing key and save in keyrings directory
-  ansible.builtin.command:
-    cmd: gpg --dearmor -o /usr/share/keyrings/neovim.gpg /tmp/neovim-key
-    creates: /usr/share/keyrings/neovim.gpg
-  become: true
-
-- name: Remove downloaded key file
+- name: Create Neovim install directory
   ansible.builtin.file:
-    path: /tmp/neovim-key
-    state: absent
+    path: /tmp/install_nvim
+    state: directory
 
-- name: Create apt source file
-  ansible.builtin.copy:
-    dest: /etc/apt/sources.list.d/neovim.list
-    content: "deb [signed-by=/usr/share/keyrings/neovim.gpg] https://ppa.launchpadcontent.net/neovim-ppa/stable/ubuntu {{ ubuntu_release }} main"
-    force: false
-  become: true
+- name: Download Neovim
+  ansible.builtin.get_url:
+    url: "https://github.com/neovim/neovim/releases/download/v{{ neovim_version }}/nvim-linux64.tar.gz"
+    dest: /tmp/install_nvim/nvim-linux64.tar.gz
 
 - name: Install Neovim
-  ansible.builtin.apt:
-    name: neovim
-    update_cache: true
+  ansible.builtin.unarchive:
+    src: /tmp/install_nvim/nvim-linux64.tar.gz
+    dest: /opt
+  become: true
+
+- name: Clean up Neovim install directory
+  ansible.builtin.file:
+    path: /tmp/install_nvim
+    state: absent
   become: true
 
 - name: Set Neovim as default application for "vi" and "vim" commands
   ansible.builtin.command:
-    cmd: "update-alternatives --set {{ item }} /usr/bin/nvim"
+    cmd: "update-alternatives --install /usr/bin/{{ item }} {{ item }} /opt/nvim-linux64/bin/nvim 100"
   loop:
     - vi
     - vim

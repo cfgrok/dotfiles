@@ -30,6 +30,7 @@
         dmenu2_version: 0.2.1
         home_path: "/home/{{ ansible_user_id }}"
         nerdfont_version: 2.1.0
+        neovim_version: 0.9.5
         ruby_version: 3.2.2
         ubuntu_release: jammy
       tags: always
