@@ -9,7 +9,7 @@ Includes install scripts, Ansible playbook, configuration files and more.
 
 ## License
 
-Forked version copyright 2017-2022 Ezra Parker\
+Forked version copyright 2017-2024 Ezra Parker\
 Original code copyright 2015 Mark Mandel
 
 Licensed under the Apache License, Version 2.0 (the "License");
