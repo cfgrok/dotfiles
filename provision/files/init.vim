@@ -1,8 +1,8 @@
 call plug#begin()
 
-Plug 'AndrewRadev/splitjoin.vim'
 Plug 'Raimondi/delimitMate'
 Plug 'antoinemadec/coc-fzf'
+Plug 'frazrepo/vim-rainbow'
 Plug 'godlygeek/tabular'
 Plug 'honza/vim-snippets'
 Plug 'itchyny/lightline.vim'
@@ -10,17 +10,13 @@ Plug 'itchyny/vim-gitbranch'
 Plug 'jenterkin/vim-autosource'
 Plug 'junegunn/fzf', { 'dir': '~/.config/fzf', 'do': './install --all --xdg --no-update-rc --no-bash' }
 Plug 'junegunn/fzf.vim'
-Plug 'kana/vim-textobj-user'
 Plug 'mattn/emmet-vim'
 Plug 'mattn/webapi-vim'
-Plug 'nelstrom/vim-visual-star-search'
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
 Plug 'overcache/NeoSolarized'
 Plug 'p0deje/vim-ruby-interpolation'
 Plug 'pearofducks/ansible-vim'
-Plug 'tpope/vim-abolish'
 Plug 'tpope/vim-bundler'
-Plug 'tpope/vim-commentary'
 Plug 'tpope/vim-dadbod'
 Plug 'tpope/vim-dispatch'
 Plug 'tpope/vim-endwise'
@@ -29,21 +25,26 @@ Plug 'tpope/vim-fugitive'
 Plug 'tpope/vim-jdaddy'
 Plug 'tpope/vim-obsession'
 Plug 'tpope/vim-projectionist'
-Plug 'tpope/vim-ragtag'
 Plug 'tpope/vim-rails'
 Plug 'tpope/vim-rake'
 Plug 'tpope/vim-rbenv'
 Plug 'tpope/vim-repeat'
 Plug 'tpope/vim-rhubarb'
 Plug 'tpope/vim-rsi'
-Plug 'tpope/vim-sensible'
 Plug 'tpope/vim-sleuth'
-Plug 'tpope/vim-speeddating'
-Plug 'tpope/vim-surround'
-Plug 'tpope/vim-unimpaired'
 Plug 'vim-ruby/vim-ruby'
 Plug 'vim-test/vim-test'
 Plug 'yuki-yano/fzf-preview.vim', { 'branch': 'release/remote', 'do': ':UpdateRemotePlugins' }
+
+" Plugins limited to text editing
+Plug 'AndrewRadev/splitjoin.vim'
+Plug 'kana/vim-textobj-user'
+Plug 'nelstrom/vim-visual-star-search'
+Plug 'tpope/vim-abolish'
+Plug 'tpope/vim-ragtag'
+Plug 'tpope/vim-sensible'
+Plug 'tpope/vim-speeddating'
+Plug 'tpope/vim-unimpaired'
 
 " User-defined text objects
 Plug 'Julian/vim-textobj-variable-segment' " [ai]v
@@ -52,6 +53,7 @@ Plug 'idbrii/textobj-word-column.vim' " [ai]c [ai]C -- remapped from c/C to l/L
 Plug 'jceb/vim-textobj-uri' " [ai]u go
 Plug 'kana/vim-textobj-lastpat' " [ai]/
 Plug 'tek/vim-textobj-ruby' " [ai]r [ai]c [ai]f [ai]n
+Plug 'wellle/targets.vim'
 Plug 'whatyouhide/vim-textobj-erb' " [ai]e -- remapped from E to e
 Plug 'whatyouhide/vim-textobj-xmlattr' " [ai]x
 
@@ -59,13 +61,44 @@ Plug 'whatyouhide/vim-textobj-xmlattr' " [ai]x
 " https://github.com/kana/vim-textobj-indent
 " https://github.com/vimtaku/vim-textobj-keyvalue
 
+" PLUGIN TESTING
+" See initialization code at bottom for Lua plugin configuration
+Plug 'airblade/vim-gitgutter'
+Plug 'ggandor/flit.nvim'
+Plug 'ggandor/leap.nvim'
+Plug 'jreybert/vimagit'
+Plug 'kylechui/nvim-surround', { 'tag': '*' }
+Plug 'numToStr/Comment.nvim'
+Plug 'rhysd/git-messenger.vim'
+
 call plug#end()
+
+
+" Set leader to space
+nnoremap <Space> <Nop>
+let mapleader=' '
 
 
 " Coc configuration
 if !empty(glob('~/.local/share/nvim/plugged/coc.nvim')) && &rtp =~ 'coc.nvim'
   source ~/.config/nvim/coc.vim
 endif
+
+
+" Settings for Magit, GitGutter and Git-Messenger testing
+nnoremap <silent> <Leader>ma :Magit<CR>
+nnoremap <silent> <Leader>mo :MagitOnly<CR>
+nnoremap <silent> <Leader>gg :GitGutterLineHighlightsToggle\|GitGutterLineNrHighlightsToggle<CR>
+let g:gitgutter_sign_modified = '>'
+let g:gitgutter_sign_removed = '-'
+let g:gitgutter_sign_removed_first_line = '^'
+let g:gitgutter_sign_removed_above_and_below = '^-'
+let g:gitgutter_sign_modified_removed = '<'
+let g:git_messenger_floating_win_opts = { 'border': 'single' }
+
+
+" Suppress health check message for Perl provider
+let g:loaded_perl_provider = 0
 
 
 " Automatic filetype detection for jsonc files
@@ -129,13 +162,21 @@ if !empty(glob('~/.local/share/nvim/plugged/NeoSolarized')) && &rtp =~ 'NeoSolar
 endif
 
 
+" Load & configure rainbow parentheses if installed
+if !empty(glob('~/.local/share/nvim/plugged/vim-rainbow')) && &rtp =~ 'vim-rainbow'
+  let g:rainbow_active = 1
+
+  let g:rainbow_ctermfgs = ['red', 'darkgreen', 'darkblue']
+endif
+
+
 " Base options
 set clipboard^=unnamed,unnamedplus
 set history=10000
 set nohlsearch
 set ignorecase
 set nojoinspaces
-set mouse=a
+set mouse=
 set number
 set scrolloff=3
 set noshowmode
@@ -170,75 +211,75 @@ cnoremap <C-p> <Up>
 
 " Map Alt key for all window commands, excluding a few redundant keys:
 " S, :, gt, gT, g<Tab>, <Down>, <Up>, <Left>, <Right>
-nnoremap <A-+>           <C-w>+|              "increase current window height N lines
-nnoremap <A-->           <C-w>-|              "decrease current window height N lines
-nnoremap <A-_>           <C-w>_|              "set current window height to N (default: very high)
-nnoremap <A-\>           <C-w><Bar>|          "set window width to N columns
-nnoremap <A-<>           <C-w><|              "decrease current window width N columns
-nnoremap <A->>           <C-w>>|              "increase current window width N columns
-nnoremap <A-=>           <C-w>=|              "make all windows the same height & width
+nnoremap <A-+>           <C-w>+             | "increase current window height N lines
+nnoremap <A-->           <C-w>-             | "decrease current window height N lines
+nnoremap <A-_>           <C-w>_             | "set current window height to N (default: very high)
+nnoremap <A-\>           <C-w><Bar>         | "set window width to N columns
+nnoremap <A-<>           <C-w><             | "decrease current window width N columns
+nnoremap <A->>           <C-w>>             | "increase current window width N columns
+nnoremap <A-=>           <C-w>=             | "make all windows the same height & width
 
-nnoremap <A-H>           <C-w>H|              "move current window to the far left
-nnoremap <A-J>           <C-w>J|              "move current window to the very bottom
-nnoremap <A-K>           <C-w>K|              "move current window to the very top
-nnoremap <A-L>           <C-w>L|              "move current window to the far right
-nnoremap <A-R>           <C-w>R|              "rotate windows upwards N times
-nnoremap <A-r>           <C-w>r|              "rotate windows downwards N times
-nnoremap <A-T>           <C-w>T|              "move current window to a new tab page
-nnoremap <A-x>           <C-w>x|              "exchange current window with window N (default: next window)
+nnoremap <A-H>           <C-w>H             | "move current window to the far left
+nnoremap <A-J>           <C-w>J             | "move current window to the very bottom
+nnoremap <A-K>           <C-w>K             | "move current window to the very top
+nnoremap <A-L>           <C-w>L             | "move current window to the far right
+nnoremap <A-R>           <C-w>R             | "rotate windows upwards N times
+nnoremap <A-r>           <C-w>r             | "rotate windows downwards N times
+nnoremap <A-T>           <C-w>T             | "move current window to a new tab page
+nnoremap <A-x>           <C-w>x             | "exchange current window with window N (default: next window)
 
-nnoremap <A-W>           <C-w>W|              "go to N previous window (wrap around)
-nnoremap <A-w>           <C-w>w|              "go to N next window (wrap around)
-nnoremap <A-b>           <C-w>b|              "go to bottom window
-nnoremap <A-t>           <C-w>t|              "go to top window
-nnoremap <A-h>           <C-w>h|              "go to Nth left window (stop at first window)
-nnoremap <A-j>           <C-w>j|              "go N windows down (stop at last window)
-nnoremap <A-k>           <C-w>k|              "go N windows up (stop at first window)
-nnoremap <A-l>           <C-w>l|              "go to Nth right window (stop at last window)
-nnoremap <A-p>           <C-w>p|              "go to previous (last accessed) window
-nnoremap <A-P>           <C-w>P|              "go to preview window
+nnoremap <A-W>           <C-w>W             | "go to N previous window (wrap around)
+nnoremap <A-w>           <C-w>w             | "go to N next window (wrap around)
+nnoremap <A-b>           <C-w>b             | "go to bottom window
+nnoremap <A-t>           <C-w>t             | "go to top window
+nnoremap <A-h>           <C-w>h             | "go to Nth left window (stop at first window)
+nnoremap <A-j>           <C-w>j             | "go N windows down (stop at last window)
+nnoremap <A-k>           <C-w>k             | "go N windows up (stop at first window)
+nnoremap <A-l>           <C-w>l             | "go to Nth right window (stop at last window)
+nnoremap <A-p>           <C-w>p             | "go to previous (last accessed) window
+nnoremap <A-P>           <C-w>P             | "go to preview window
 
-nnoremap <A-c>           <C-w>c|              "close current window (like :close)
-nnoremap <A-o>           <C-w>o|              "close all but current window (like :only)
-nnoremap <A-q>           <C-w>q|              "quit current window (like :quit)
-nnoremap <A-z>           <C-w>z|              "close preview window
-nnoremap <silent> <A-Q>  :bd!<CR>|            "close buffer
+nnoremap <A-c>           <C-w>c             | "close current window (like :close)
+nnoremap <A-o>           <C-w>o             | "close all but current window (like :only)
+nnoremap <A-q>           <C-w>q             | "quit current window (like :quit)
+nnoremap <A-z>           <C-w>z             | "close preview window
+nnoremap <silent> <A-Q>  :bd!<CR>           | "close buffer
 
-nnoremap <silent> <A-O>  <C-w>n:ter<CR>|      "open new terminal in split window
-nnoremap <A-n>           <C-w>n|              "open new window, N lines high
-nnoremap <A-s>           <C-w>s|              "split current window in two parts, new window N lines high
-nnoremap <A-v>           <C-w>v|              "split current window vertically, new window N columns wide
-nnoremap <A-^>           <C-w>^|              "split current window and edit alternate file N
+nnoremap <silent> <A-O>  <C-w>n:ter<CR>     | "open new terminal in split window
+nnoremap <A-n>           <C-w>n             | "open new window, N lines high
+nnoremap <A-s>           <C-w>s             | "split current window in two parts, new window N lines high
+nnoremap <A-v>           <C-w>v             | "split current window vertically, new window N columns wide
+nnoremap <A-^>           <C-w>^             | "split current window and edit alternate file N
 
-nnoremap <A-d>           <C-w>d|              "split window and jump to definition under the cursor
-nnoremap <A-i>           <C-w>i|              "split window and jump to declaration of identifier under the cursor
+nnoremap <A-d>           <C-w>d             | "split window and jump to definition under the cursor
+nnoremap <A-i>           <C-w>i             | "split window and jump to declaration of identifier under the cursor
 
-nnoremap <A-]>           <C-w>]|              "split window and jump to tag under cursor
-nnoremap <A-g>]          <C-w>g]|             "split window and do :tselect for tag under cursor
-nnoremap <A-g><C-]>      <C-w>g<C-]>|         "split window and do :tjump to tag under cursor
-nnoremap <A-g>}          <C-w>g}|             "do a :ptjump to the tag under the cursor
-nnoremap <A-}>           <C-w>}|              "show tag under cursor in preview window
+nnoremap <A-]>           <C-w>]             | "split window and jump to tag under cursor
+nnoremap <A-g>]          <C-w>g]            | "split window and do :tselect for tag under cursor
+nnoremap <A-g><C-]>      <C-w>g<C-]>        | "split window and do :tjump to tag under cursor
+nnoremap <A-g>}          <C-w>g}            | "do a :ptjump to the tag under the cursor
+nnoremap <A-}>           <C-w>}             | "show tag under cursor in preview window
 
-nnoremap <A-f>           <C-w>f|              "split window and edit file name under the cursor
-nnoremap <A-F>           <C-w>F|              "split window and edit file name under the cursor and jump to the line number following the file name
-nnoremap <A-g>f          <C-w>gf|             "edit file name under the cursor in a new tab page
-nnoremap <A-g>F          <C-w>gF|             "edit file name under the cursor in a new tab page and jump to the line number following the file name
+nnoremap <A-f>           <C-w>f             | "split window and edit file name under the cursor
+nnoremap <A-F>           <C-w>F             | "split window and edit file name under the cursor and jump to the line number following the file name
+nnoremap <A-g>f          <C-w>gf            | "edit file name under the cursor in a new tab page
+nnoremap <A-g>F          <C-w>gF            | "edit file name under the cursor in a new tab page and jump to the line number following the file name
 
 " Map Alt key in insert mode for switching windows
-inoremap <A-h>           <C-o><C-w>h|         "go to Nth left window (stop at first window)
-inoremap <A-j>           <C-o><C-w>j|         "go N windows down (stop at last window)
-inoremap <A-k>           <C-o><C-w>k|         "go N windows up (stop at first window)
-inoremap <A-l>           <C-o><C-w>l|         "go to Nth right window (stop at last window)
+inoremap <A-h>           <C-o><C-w>h        | "go to Nth left window (stop at first window)
+inoremap <A-j>           <C-o><C-w>j        | "go N windows down (stop at last window)
+inoremap <A-k>           <C-o><C-w>k        | "go N windows up (stop at first window)
+inoremap <A-l>           <C-o><C-w>l        | "go to Nth right window (stop at last window)
 
 " Map Esc and Alt keys in terminal mode for exiting to normal mode and
 " switching windows -- custom command and function used to close floating
 " windows in terminal mode, e.g. fzf-preview
 tnoremap <silent> <Esc>  <C-\><C-n>:CloseFloat<CR>
-tnoremap <A-h>           <C-\><C-n><C-w>h|    "go to Nth left window (stop at first window)
-tnoremap <A-j>           <C-\><C-n><C-w>j|    "go N windows down (stop at last window)
-tnoremap <A-k>           <C-\><C-n><C-w>k|    "go N windows up (stop at first window)
-tnoremap <A-l>           <C-\><C-n><C-w>l|    "go to Nth right window (stop at last window)
-tnoremap <silent> <A-Q>  <C-\><C-n>:bd!<CR>|  "close terminal buffer
+tnoremap <A-h>           <C-\><C-n><C-w>h   | "go to Nth left window (stop at first window)
+tnoremap <A-j>           <C-\><C-n><C-w>j   | "go N windows down (stop at last window)
+tnoremap <A-k>           <C-\><C-n><C-w>k   | "go N windows up (stop at first window)
+tnoremap <A-l>           <C-\><C-n><C-w>l   | "go to Nth right window (stop at last window)
+tnoremap <silent> <A-Q>  <C-\><C-n>:bd!<CR> | "close terminal buffer
 
 command! CloseFloat call CloseFloatWindow()
 
@@ -290,10 +331,14 @@ endif
 
 
 " delimitMate autoclosing configuration
+let delimitMate_matchpairs = '(:),[:],{:},<:>'
 let delimitMate_quotes = "\" ' ` * |"
 let delimitMate_expand_cr = 1
 let delimitMate_expand_space = 1
 let delimitMate_jump_expansion = 1
+
+" Support for hashes in CFML
+autocmd FileType cf let b:delimitMate_quotes = "\" ' ` * | #"
 
 if empty(maparg('<CR>', 'i'))
   imap <CR> <Plug>delimitMateCR
@@ -361,8 +406,89 @@ endif
 
 
 " Use Dispatch for running tests
-let test#strategy = "dispatch"
+let test#strategy = 'dispatch'
 
 
 " Custom command to save & source current file
-command! Ws write | source %
+command! WS write | source %
+
+
+" Custom command to edit init.vim file
+command! VM edit $MYVIMRC
+
+
+" Custom command to toggle CFML/CFScript commentstring
+command! CF call v:lua.toggle_cf_commentstring()
+
+
+" Enable highlight on yank Lua functionality
+au TextYankPost * silent! lua vim.highlight.on_yank()
+
+
+" Script to initialize/configure Lua plugins -- placing at the end as the
+" heredoc format screws up syntax highlighting
+lua << EOF
+
+  -- Replacing default 's/S' keymaps with 'z/Z' to avoid conflict with leap
+  require('nvim-surround').setup({
+    keymaps = {
+      normal = 'yz',
+      normal_cur = 'yzz',
+      normal_line = 'yZ',
+      normal_cur_line = 'yZZ',
+      visual = 'Z',
+      visual_line = 'gZ',
+      delete = 'dz',
+      change = 'cz',
+      change_line = 'cZ',
+    }
+  })
+
+  require('leap').add_default_mappings()
+  require('leap').add_repeat_mappings(';', ',', {
+    -- False by default. If set to true, the keys will work like the
+    -- native semicolon/comma, i.e., forward/backward is understood in
+    -- relation to the last motion.
+    relative_directions = true,
+    -- By default, all modes are included.
+    modes = {'n', 'x', 'o'},
+  })
+  vim.api.nvim_set_hl(0, 'LeapBackdrop', { link = 'Comment' })
+  vim.api.nvim_create_autocmd(
+    'User',
+    { callback = function()
+        vim.cmd.hi('Cursor', 'blend=100')
+        vim.opt.guicursor:append { 'a:Cursor/lCursor' }
+      end,
+      pattern = 'LeapEnter'
+    }
+  )
+  vim.api.nvim_create_autocmd(
+    'User',
+    { callback = function()
+        vim.cmd.hi('Cursor', 'blend=0')
+        vim.opt.guicursor:remove { 'a:Cursor/lCursor' }
+      end,
+      pattern = 'LeapLeave'
+    }
+  )
+
+  require('flit').setup()
+
+  require('Comment').setup()
+
+  -- Set up manual commentstring support for CFML/CFScript
+  local ft = require('Comment.ft')
+  local cfscript_comment = {'//%s', '/*%s*/'}
+
+  ft.cf = cfscript_comment
+
+  toggle_cf_commentstring = function()
+    if ft.get('cf')[1] == cfscript_comment[1] then
+      ft.cf = '<!---%s--->'
+    else
+      ft.cf = cfscript_comment
+    end
+  end
+
+EOF
