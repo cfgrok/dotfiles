@@ -37,6 +37,7 @@
     - init.vim
     - coc.vim
     - coc-settings.json
+    - jsonc.vim
     - vim-snippets-custom.json
 
 - name: Create plugin autoload directory

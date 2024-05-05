@@ -68,6 +68,10 @@ if !empty(glob('~/.local/share/nvim/plugged/coc.nvim')) && &rtp =~ 'coc.nvim'
 endif
 
 
+" Automatic filetype detection for jsonc files
+source ~/.config/nvim/jsonc.vim
+
+
 " Fzf.vim configuration
 let $FZF_DEFAULT_OPTS='--reverse'
 let g:fzf_layout = { 'window': { 'width': 0.9, 'height': 0.9, 'relative': v:true } }
