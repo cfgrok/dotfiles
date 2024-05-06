@@ -2,7 +2,7 @@ call plug#begin()
 
 Plug 'Raimondi/delimitMate'
 Plug 'antoinemadec/coc-fzf'
-Plug 'frazrepo/vim-rainbow'
+" Plug 'frazrepo/vim-rainbow'
 Plug 'godlygeek/tabular'
 Plug 'honza/vim-snippets'
 Plug 'itchyny/lightline.vim'
@@ -12,7 +12,7 @@ Plug 'junegunn/fzf', { 'dir': '~/.config/fzf', 'do': './install --all --xdg --no
 Plug 'junegunn/fzf.vim'
 Plug 'mattn/emmet-vim'
 Plug 'mattn/webapi-vim'
-Plug 'neoclide/coc.nvim', {'branch': 'release'}
+Plug 'neoclide/coc.nvim', { 'branch': 'release' }
 Plug 'overcache/NeoSolarized'
 Plug 'p0deje/vim-ruby-interpolation'
 Plug 'pearofducks/ansible-vim'
@@ -70,6 +70,11 @@ Plug 'jreybert/vimagit'
 Plug 'kylechui/nvim-surround', { 'tag': '*' }
 Plug 'numToStr/Comment.nvim'
 Plug 'rhysd/git-messenger.vim'
+
+Plug 'nvim-treesitter/nvim-treesitter', { 'do': ':TSUpdate' }
+Plug 'hiphish/rainbow-delimiters.nvim'
+
+Plug 'ishan9299/nvim-solarized-lua'
 
 call plug#end()
 
@@ -157,17 +162,32 @@ xmap iL <Plug>(textobj-wordcolumn-WORD-i)
 
 
 " Load NeoSolarized color scheme if installed
-if !empty(glob('~/.local/share/nvim/plugged/NeoSolarized')) && &rtp =~ 'NeoSolarized'
-  colorscheme NeoSolarized
-endif
+" if !empty(glob('~/.local/share/nvim/plugged/NeoSolarized')) && &rtp =~ 'NeoSolarized'
+"   colorscheme NeoSolarized
+" endif
+
+colorscheme solarized-flat
 
 
 " Load & configure rainbow parentheses if installed
-if !empty(glob('~/.local/share/nvim/plugged/vim-rainbow')) && &rtp =~ 'vim-rainbow'
-  let g:rainbow_active = 1
+" if !empty(glob('~/.local/share/nvim/plugged/vim-rainbow')) && &rtp =~ 'vim-rainbow'
+"   let g:rainbow_active = 1
+"
+"   let g:rainbow_ctermfgs = ['red', 'darkgreen', 'darkblue']
+" endif
 
-  let g:rainbow_ctermfgs = ['red', 'darkgreen', 'darkblue']
-endif
+let g:rainbow_delimiters = {
+    \ 'highlight': [
+    \   'RainbowDelimiterRed',
+    \   'RainbowDelimiterGreen',
+    \   'RainbowDelimiterViolet',
+    \   'RainbowDelimiterOrange',
+    \ ]
+    \ }
+
+hi RainbowDelimiterGreen ctermfg=2
+hi RainbowDelimiterViolet ctermfg=5
+hi RainbowDelimiterOrange ctermfg=3
 
 
 " Base options
@@ -490,5 +510,14 @@ lua << EOF
       ft.cf = cfscript_comment
     end
   end
+
+  require('nvim-treesitter.configs').setup ({
+    ensure_installed = { 'c', 'lua', 'query', 'vim', 'vimdoc', },
+    auto_install = true,
+    highlight = { 
+      enable = true,
+      disable = { 'gitcommit' },
+    },
+  })
 
 EOF
