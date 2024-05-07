@@ -1,14 +1,8 @@
 ---
-- name: Get info for original Music directory
-  ansible.builtin.stat:
-    path: ~/Music
-  register: st
-
 - name: Delete the original Music folder
   ansible.builtin.file:
     path: ~/Music
     state: absent
-  when: st.stat.exists and st.stat.isdir
 
 - name: Create music mount directory
   ansible.builtin.file:
