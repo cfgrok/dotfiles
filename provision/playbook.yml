@@ -14,32 +14,34 @@
 
   tasks:
 
-    # Set variables for git config
-    - ansible.builtin.pause:
+    - name: Prompt for git config email
+      ansible.builtin.pause:
         prompt: Enter email for git config
         echo: true
       register: git_email_entry
       tags: git_config
 
-    - ansible.builtin.pause:
+    - name: Prompt for git config name
+      ansible.builtin.pause:
         prompt: Enter full name for git config
         echo: true
       register: git_name_entry
       tags: git_config
 
-    - ansible.builtin.set_fact:
+    - name: Set variables for git config
+      ansible.builtin.set_fact:
         git_email: "{{ git_email_entry.user_input }}"
         git_name: "{{ git_name_entry.user_input }}"
       tags: git_config
 
 
-    # Remove unwanted default packages
-    - ansible.builtin.import_tasks: clean_packages.yml
+    - name: Remove unwanted default packages
+      ansible.builtin.import_tasks: clean_packages.yml
       tags: clean_packages
 
 
-    # Install standard packages
-    - ansible.builtin.import_tasks: install_packages.yml
+    - name: Install standard packages
+      ansible.builtin.import_tasks: install_packages.yml
       tags: install_packages
 
 
@@ -79,13 +81,13 @@
       tags: jgmenu
 
 
-    # Copy Git config
-    - ansible.builtin.import_tasks: git_config.yml
+    - name: Copy Git config
+      ansible.builtin.import_tasks: git_config.yml
       tags: git_config
 
 
-    # Create mount directories and home folder links
-    - ansible.builtin.import_tasks: link_dirs.yml
+    - name: Create mount directories and home folder links
+      ansible.builtin.import_tasks: link_dirs.yml
       tags: link_dirs
 
 
@@ -101,8 +103,8 @@
       tags: zsh
 
 
-    # Install nvm and nodejs
-    - ansible.builtin.import_tasks: node.yml
+    - name: Install nvm and nodejs
+      ansible.builtin.import_tasks: node.yml
       tags: node
 
 
@@ -118,13 +120,13 @@
       tags: neovim
 
 
-    # Install bat
-    - ansible.builtin.import_tasks: bat.yml
+    - name: Install bat
+      ansible.builtin.import_tasks: bat.yml
       tags: bat
 
 
-    # Install rbenv and ruby
-    - ansible.builtin.import_tasks: rbenv.yml
+    - name: Install rbenv and ruby
+      ansible.builtin.import_tasks: rbenv.yml
       tags: rbenv
 
 
@@ -164,18 +166,18 @@
       tags: deadbeef
 
 
-    # Set up PostgreSQL role
-    - ansible.builtin.import_tasks: postgres.yml
+    - name: Install PostgreSQL
+      ansible.builtin.import_tasks: postgres.yml
       tags: postgres
 
 
-    # Update user settings
-    - ansible.builtin.import_tasks: settings.yml
+    - name: Update user settings
+      ansible.builtin.import_tasks: settings.yml
       tags: settings
 
 
-    # Set up taskwarrior directories and config file
-    - ansible.builtin.import_tasks: tasks.yml
+    - name: Set up taskwarrior directories and config file
+      ansible.builtin.import_tasks: tasks.yml
       tags: tasks
 
 
