@@ -55,15 +55,8 @@
       tags: xmonad
 
 
-    # jgmenu installation
-    - name: See if jgmenu is installed
-      ansible.builtin.stat:
-        path: ~/.config/jgmenu/jgmenurc
-      register: jgmenu_installed
-      tags: jgmenu
-
-    - ansible.builtin.import_tasks: jgmenu.yml
-      when: not jgmenu_installed.stat.exists
+    - name: Install jgmenu
+      ansible.builtin.import_tasks: jgmenu.yml
       tags: jgmenu
 
 

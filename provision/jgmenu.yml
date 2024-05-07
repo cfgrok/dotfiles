@@ -17,7 +17,8 @@
     - mintsources-pkexec
   become: true
 
-- name: Copy jgmenu config file
-  ansible.builtin.copy:
-    src: files/jgmenurc
-    dest: ~/.config/jgmenu/
+- name: Symlink jgmenu config file
+  ansible.builtin.file:
+    src: "{{ playbook_dir }}/files/jgmenurc"
+    path: ~/.config/jgmenu/jgmenurc
+    state: link
