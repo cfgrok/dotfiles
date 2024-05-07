@@ -95,15 +95,8 @@
       tags: rbenv
 
 
-    # Install pCloud
-    - name: See if pCloud is installed
-      ansible.builtin.stat:
-        path: /opt/pcloud/pcloud
-      register: pcloud_installed
-      tags: pcloud
-
-    - ansible.builtin.import_tasks: pcloud.yml
-      when: not pcloud_installed.stat.exists or not pcloud_installed.stat.executable
+    - name: Install pCloud
+      ansible.builtin.import_tasks: pcloud.yml
       tags: pcloud
 
 
