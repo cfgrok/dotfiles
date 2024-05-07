@@ -4,16 +4,11 @@
     path: ~/.config/task/hooks
     state: directory
 
-- name: See if taskwarrior config file exists
-  ansible.builtin.stat:
+- name: Symlink taskwarrior config file
+  ansible.builtin.file:
+    src: "{{ playbook_dir }}/files/taskrc"
     path: ~/.config/task/taskrc
-  register: taskrc_exists
-
-- name: Copy taskwarrior config file
-  ansible.builtin.copy:
-    src: files/taskrc
-    dest: ~/.config/task/
-  when: not taskrc_exists.stat.exists
+    state: link
 
 - name: Create taskwarrior data directory
   ansible.builtin.file:
