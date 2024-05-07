@@ -1,31 +1,10 @@
 ---
-- name: See if nvm is installed
-  ansible.builtin.stat:
-    path: ~/.config/nvm/nvm-exec
-  register: nvm_installed
-
 - name: Install nvm
   ansible.builtin.git:
     repo: https://github.com/nvm-sh/nvm
     dest: ~/.config/nvm
-  when: not nvm_installed.stat.exists or not nvm_installed.stat.executable
-
-- name: Find node executable directory
-  ansible.builtin.find:
-    paths: ~/.config/nvm/versions/node
-    file_type: directory
-    recurse: true
-    patterns: 'bin'
-  register: node_directory
-
-- name: See if node is installed
-  ansible.builtin.stat:
-    path: "{{ node_directory.files[0].path + '/node' }}"
-  register: node_installed
-  when: node_directory.matched > 0
 
 - name: Install node
   ansible.builtin.shell:
     executable: /usr/bin/zsh
     cmd: source ~/.config/nvm/nvm.sh && nvm install --lts
-  when: node_directory.matched == 0 or not node_installed.stat.exists or not node_installed.stat.executable
