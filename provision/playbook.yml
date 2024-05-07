@@ -125,13 +125,6 @@
       tags: tasks
 
 
-    # Install Brother printer/scanner drivers
-    - name: See if Brother driver is installed
-      ansible.builtin.stat:
-        path: /usr/lib/libbrscandec3.so
-      register: brother_installed
-      tags: brother
-
-    - ansible.builtin.import_tasks: brother.yml
-      when: not brother_installed.stat.exists or not brother_installed.stat.islnk
+    - name: Install Brother printer/scanner drivers
+      ansible.builtin.import_tasks: brother.yml
       tags: brother
