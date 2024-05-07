@@ -1,5 +1,17 @@
 ---
 - hosts: localhost
+  vars:
+    bat_version: 0.21.0
+    deadbeef_version: 1.9.1
+    deadbeef_minor_version: 1.9.1-1
+    deadbeef_plugin_version: 1.14
+    dmenu2_version: 0.2.1
+    home_path: "/home/{{ ansible_user_id }}"
+    nerdfont_version: 2.1.0
+    neovim_version: 0.9.5
+    ruby_version: 3.2.2
+    ubuntu_release: jammy
+
   tasks:
 
     # Set variables for git config
@@ -19,21 +31,6 @@
         git_email: "{{ git_email_entry.user_input }}"
         git_name: "{{ git_name_entry.user_input }}"
       tags: git_config
-
-
-    # Set variables for Ubuntu release and software versions
-    - ansible.builtin.set_fact:
-        bat_version: 0.21.0
-        deadbeef_version: 1.9.1
-        deadbeef_minor_version: 1.9.1-1
-        deadbeef_plugin_version: 1.14
-        dmenu2_version: 0.2.1
-        home_path: "/home/{{ ansible_user_id }}"
-        nerdfont_version: 2.1.0
-        neovim_version: 0.9.5
-        ruby_version: 3.2.2
-        ubuntu_release: jammy
-      tags: always
 
 
     # Remove unwanted default packages
