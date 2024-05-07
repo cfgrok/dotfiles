@@ -139,10 +139,11 @@
     key: /org/mate/desktop/keybindings/custom6/action
     value: "'alacritty'"
 
-- name: Copy mimeapps.list file to .config directory
-  ansible.builtin.copy:
-    src: files/mimeapps.list
-    dest: ~/.config/
+- name: Symlink mimeapps.list file to .config directory
+  ansible.builtin.file:
+    src: "{{ playbook_dir }}/files/mimeapps.list"
+    path: ~/.config/mimeapps.list
+    state: link
 
 - name: Disable unnecessary/unwanted startup applications
   ansible.builtin.include: autostart.yml
