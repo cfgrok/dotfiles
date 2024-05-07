@@ -1,5 +1,5 @@
 ---
-- name: Install python PostgresSQL adapter
+- name: Install PostgresSQL server, client and python adapter
   ansible.builtin.apt:
     name:
       - libpq-dev
@@ -8,17 +8,9 @@
       - python3-psycopg2
   become: true
 
-- name: Check for PostgreSQL role
-  community.postgresql.postgresql_info:
-    filter: roles
-  become: true
-  become_user: postgres
-  register: role_check
-
 - name: Set up PostgreSQL role
   community.postgresql.postgresql_user:
     name: "{{ ansible_user_id }}"
     role_attr_flags: SUPERUSER,CREATEROLE,CREATEDB,REPLICATION,BYPASSRLS
   become: true
   become_user: postgres
-  when: ansible_user_id not in role_check.roles
