@@ -36,16 +36,10 @@
   ansible.builtin.set_fact:
     env_vars: export PATH=~/.local/rbenv/bin:$PATH; export RBENV_ROOT=~/.local/rbenv;
 
-- name: See if ruby is installed
-  ansible.builtin.stat:
-    path: "~/.local/rbenv/versions/{{ ruby_version }}/bin/ruby"
-  register: ruby_installed
-
 - name: Install ruby
   ansible.builtin.shell:
     executable: /usr/bin/zsh
-    cmd: "({{ env_vars }} rbenv install {{ ruby_version }})"
-  when: not ruby_installed.stat.exists
+    cmd: "({{ env_vars }} rbenv install -s {{ ruby_version }})"
 
 - name: Set global ruby version
   ansible.builtin.shell:
@@ -77,7 +71,8 @@
     executable: /usr/bin/zsh
     cmd: "({{ env_vars }} {{ rbenv_init }} gem install ~/Documents/workspace/reline/pkg/*.gem)"
 
-- name: Copy irbrc file
-  ansible.builtin.copy:
-    src: files/irbrc
-    dest: ~/.irbrc
+- name: Symlink irbrc file
+  ansible.builtin.file:
+    src: "{{ playbook_dir }}/files/irbrc"
+    path: ~/.irbrc
+    state: link
