@@ -70,15 +70,8 @@
       tags: link_dirs
 
 
-    # Install zsh and Oh My Zsh
-    - name: See if Oh My Zsh is installed
-      ansible.builtin.stat:
-        path: ~/.config/oh-my-zsh/custom/plugins/zsh-syntax-highlighting
-      register: oh_my_zsh_installed
-      tags: zsh
-
-    - ansible.builtin.import_tasks: oh_my_zsh.yml
-      when: not oh_my_zsh_installed.stat.exists
+    - name: Install zsh and Oh My Zsh
+      ansible.builtin.import_tasks: oh_my_zsh.yml
       tags: zsh
 
 
