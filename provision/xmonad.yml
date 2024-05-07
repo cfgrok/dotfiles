@@ -10,10 +10,11 @@
     - xmonad
   become: true
 
-- name: Copy XMonad config
-  ansible.builtin.copy:
-    src: xmonad.hs
-    dest: ~/.config/xmonad/
+- name: Symlink XMonad config
+  ansible.builtin.file:
+    src: "{{ playbook_dir }}/files/xmonad.hs"
+    path: ~/.config/xmonad/xmonad.hs
+    state: link
 
 - name: Create XMonad cache directory
   ansible.builtin.file:

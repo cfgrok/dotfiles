@@ -50,15 +50,8 @@
       tags: alacritty
 
 
-    # XMonad installation
-    - name: See if XMonad is installed
-      ansible.builtin.stat:
-        path: ~/.config/xmonad/xmonad.hs
-      register: xmonad_installed
-      tags: xmonad
-
-    - ansible.builtin.import_tasks: xmonad.yml
-      when: not xmonad_installed.stat.exists
+    - name: Install XMonad
+      ansible.builtin.import_tasks: xmonad.yml
       tags: xmonad
 
 
