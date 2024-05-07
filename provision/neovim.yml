@@ -1,23 +1,18 @@
 ---
-- name: Create Neovim install directory
-  ansible.builtin.file:
-    path: /tmp/install_nvim
-    state: directory
-
-- name: Download Neovim
+- name: Download Neovim tarball
   ansible.builtin.get_url:
     url: "https://github.com/neovim/neovim/releases/download/v{{ neovim_version }}/nvim-linux64.tar.gz"
-    dest: /tmp/install_nvim/nvim-linux64.tar.gz
+    dest: /tmp/nvim-linux64.tar.gz
 
-- name: Install Neovim
+- name: Install Neovim from tarball
   ansible.builtin.unarchive:
-    src: /tmp/install_nvim/nvim-linux64.tar.gz
+    src: /tmp/nvim-linux64.tar.gz
     dest: /opt
   become: true
 
-- name: Clean up Neovim install directory
+- name: Clean up Neovim tarball
   ansible.builtin.file:
-    path: /tmp/install_nvim
+    path: /tmp/nvim-linux64.tar.gz
     state: absent
   become: true
 
@@ -29,14 +24,20 @@
     - vim
   become: true
 
-- name: Copy Neovim config files
-  ansible.builtin.copy:
-    src: "files/{{ item }}"
-    dest: ~/.config/nvim/
+- name: Create Neovim config directory
+  ansible.builtin.file:
+    path: ~/.config/nvim
+    state: directory
+
+- name: Symlink Neovim config files
+  ansible.builtin.file:
+    src: "{{ playbook_dir }}/files/{{ item }}"
+    path: "~/.config/nvim/{{ item }}"
+    state: link
   loop:
-    - init.vim
-    - coc.vim
     - coc-settings.json
+    - coc.vim
+    - init.vim
     - jsonc.vim
     - vim-snippets-custom.json
 

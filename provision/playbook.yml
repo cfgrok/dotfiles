@@ -108,15 +108,8 @@
       tags: node
 
 
-    # Install Neovim
-    - name: See if Neovim config exists
-      ansible.builtin.stat:
-        path: ~/.config/nvim/init.vim
-      register: neovim_installed
-      tags: neovim
-
-    - ansible.builtin.import_tasks: neovim.yml
-      when: not neovim_installed.stat.exists
+    - name: Install Neovim
+      ansible.builtin.import_tasks: neovim.yml
       tags: neovim
 
 
