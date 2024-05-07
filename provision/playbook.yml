@@ -105,15 +105,8 @@
       tags: brave
 
 
-    # Install DeaDBeeF
-    - name: See if DeaDBeeF is installed
-      ansible.builtin.stat:
-        path: /opt/deadbeef/bin/deadbeef
-      register: deadbeef_installed
-      tags: deadbeef
-
-    - ansible.builtin.import_tasks: deadbeef.yml
-      when: not deadbeef_installed.stat.exists or not deadbeef_installed.stat.executable
+    - name: Install DeaDBeeF
+      ansible.builtin.import_tasks: deadbeef.yml
       tags: deadbeef
 
 

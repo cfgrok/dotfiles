@@ -78,7 +78,7 @@ myManageHook = composeAll
         , isCalculator --> doCenterFloat
         , isGimp --> doCenterFloat
         , isKeepass --> doCenterFloat
-        , isMusicPlayer --> doCenterFloat
+        , isMusicPlayer --> doRectFloat (RationalRect (1/8) (1/8) (3/4) (3/4))
         , isScratchPad --> doRectFloat (RationalRect (1/8) (1/8) (3/4) (3/4))
     ]
 
