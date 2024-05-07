@@ -100,15 +100,8 @@
       tags: pcloud
 
 
-    # Install Brave
-    - name: See if Brave is installed
-      ansible.builtin.stat:
-        path: /usr/bin/brave-browser
-      register: brave_installed
-      tags: brave
-
-    - ansible.builtin.import_tasks: brave.yml
-      when: not brave_installed.stat.exists or not brave_installed.stat.executable
+    - name: Install Brave
+      ansible.builtin.import_tasks: brave.yml
       tags: brave
 
 
