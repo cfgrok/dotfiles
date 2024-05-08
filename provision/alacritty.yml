@@ -33,13 +33,19 @@
     cmd: update-alternatives --set x-terminal-emulator /usr/bin/alacritty
   become: true
 
-- name: Copy Alacritty config files
-  ansible.builtin.copy:
-    src: "files/{{ item }}"
-    dest: ~/.config/alacritty/
+- name: Create Alacritty config directory
+  ansible.builtin.file:
+    path: ~/.config/alacritty
+    state: directory
+
+- name: Symlink Alacritty config files
+  ansible.builtin.file:
+    src: "{{ playbook_dir }}/files/{{ item }}"
+    dest: "~/.config/alacritty/{{ item }}"
+    state: link
   loop:
-    - alacritty.yml
-    - alacritty_solarized_dark.yml
+    - alacritty.toml
+    - alacritty_solarized_dark.toml
 
 - name: Download dircolors-solarized file to .config directory
   ansible.builtin.get_url:

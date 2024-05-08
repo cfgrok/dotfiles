@@ -45,15 +45,8 @@
       tags: install_packages
 
 
-    # Alacritty installation
-    - name: See if Alacritty is installed
-      ansible.builtin.stat:
-        path: /usr/bin/alacritty
-      register: alacritty_installed
-      tags: alacritty
-
-    - ansible.builtin.import_tasks: alacritty.yml
-      when: not alacritty_installed.stat.exists
+    - name: Install Alacritty
+      ansible.builtin.import_tasks: alacritty.yml
       tags: alacritty
 
 
