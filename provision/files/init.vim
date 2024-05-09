@@ -503,7 +503,7 @@ lua << EOF
 
   ft.cf = cfscript_comment
 
-  toggle_cf_commentstring = function()
+  function toggle_cf_commentstring()
     if ft.get('cf')[1] == cfscript_comment[1] then
       ft.cf = '<!---%s--->'
     else
@@ -514,10 +514,22 @@ lua << EOF
   require('nvim-treesitter.configs').setup ({
     ensure_installed = { 'c', 'lua', 'query', 'vim', 'vimdoc', },
     auto_install = true,
-    highlight = { 
+    highlight = {
       enable = true,
-      disable = { 'gitcommit' },
+      disable = function(lang)
+        local ft = vim.bo.filetype
+        local disabled_types = create_set{ 'gitcommit', 'gitrebase', 'yaml.ansible' }
+        if disabled_types[ft] then
+          return true
+        end
+      end
     },
   })
+
+  function create_set(list)
+    local set = {}
+    for _, i in ipairs(list) do set[i] = true end
+    return set
+  end
 
 EOF
