@@ -162,11 +162,11 @@ xmap iL <Plug>(textobj-wordcolumn-WORD-i)
 
 
 " Load NeoSolarized color scheme if installed
-" if !empty(glob('~/.local/share/nvim/plugged/NeoSolarized')) && &rtp =~ 'NeoSolarized'
-"   colorscheme NeoSolarized
-" endif
+if !empty(glob('~/.local/share/nvim/plugged/NeoSolarized')) && &rtp =~ 'NeoSolarized'
+  colorscheme NeoSolarized
+endif
 
-colorscheme solarized-flat
+" colorscheme solarized-flat
 
 
 " Load & configure rainbow parentheses if installed
@@ -515,7 +515,7 @@ lua << EOF
     ensure_installed = { 'c', 'lua', 'query', 'vim', 'vimdoc', },
     auto_install = true,
     highlight = {
-      enable = true,
+      enable = false,
       disable = function(lang)
         local ft = vim.bo.filetype
         local disabled_types = create_set{ 'gitcommit', 'gitrebase', 'yaml.ansible' }
