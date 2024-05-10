@@ -2,7 +2,6 @@ call plug#begin()
 
 Plug 'Raimondi/delimitMate'
 Plug 'antoinemadec/coc-fzf'
-" Plug 'frazrepo/vim-rainbow'
 Plug 'godlygeek/tabular'
 Plug 'honza/vim-snippets'
 Plug 'itchyny/lightline.vim'
@@ -48,11 +47,10 @@ Plug 'tpope/vim-unimpaired'
 
 " User-defined text objects
 Plug 'Julian/vim-textobj-variable-segment' " [ai]v
-Plug 'beloglazov/vim-textobj-quotes' " [ai]q -- evaluate, behavior seems sketchy if unmatched quotes are present in file
-Plug 'idbrii/textobj-word-column.vim' " [ai]c [ai]C -- remapped from c/C to l/L
+Plug 'idbrii/textobj-word-column.vim' " [ai]c [ai]C -- remapped from c/C to m/M
 Plug 'jceb/vim-textobj-uri' " [ai]u go
-Plug 'kana/vim-textobj-lastpat' " [ai]/
-Plug 'tek/vim-textobj-ruby' " [ai]r [ai]c [ai]f [ai]n
+Plug 'kana/vim-textobj-lastpat' " [ai]/ [ai]?
+" Plug 'tek/vim-textobj-ruby' " [ai]r [ai]c [ai]f [ai]n
 Plug 'wellle/targets.vim'
 Plug 'whatyouhide/vim-textobj-erb' " [ai]e -- remapped from E to e
 Plug 'whatyouhide/vim-textobj-xmlattr' " [ai]x
@@ -63,18 +61,29 @@ Plug 'whatyouhide/vim-textobj-xmlattr' " [ai]x
 
 " PLUGIN TESTING
 " See initialization code at bottom for Lua plugin configuration
-Plug 'airblade/vim-gitgutter'
+Plug 'lewis6991/gitsigns.nvim'
 Plug 'ggandor/flit.nvim'
 Plug 'ggandor/leap.nvim'
+Plug 'ggandor/leap-spooky.nvim'
 Plug 'jreybert/vimagit'
 Plug 'kylechui/nvim-surround', { 'tag': '*' }
 Plug 'numToStr/Comment.nvim'
 Plug 'rhysd/git-messenger.vim'
 
+Plug 'sindrets/diffview.nvim'
+Plug 'nvim-tree/nvim-web-devicons'
+
 Plug 'nvim-treesitter/nvim-treesitter', { 'do': ':TSUpdate' }
+Plug 'nvim-treesitter/nvim-treesitter-textobjects'
+
+Plug 'https://gitlab.com/HiPhish/resolarized.nvim'
 Plug 'hiphish/rainbow-delimiters.nvim'
 
-Plug 'ishan9299/nvim-solarized-lua'
+Plug 'folke/which-key.nvim'
+
+Plug 'nvim-lua/plenary.nvim'
+Plug 'nvim-telescope/telescope.nvim', { 'tag': '0.1.6' }
+" or                                , { 'branch': '0.1.x' }
 
 call plug#end()
 
@@ -90,16 +99,17 @@ if !empty(glob('~/.local/share/nvim/plugged/coc.nvim')) && &rtp =~ 'coc.nvim'
 endif
 
 
-" Settings for Magit, GitGutter and Git-Messenger testing
-nnoremap <silent> <Leader>ma :Magit<CR>
+" Testing settings
+let g:magit_show_magit_mapping='<Leader>ma'
 nnoremap <silent> <Leader>mo :MagitOnly<CR>
-nnoremap <silent> <Leader>gg :GitGutterLineHighlightsToggle\|GitGutterLineNrHighlightsToggle<CR>
-let g:gitgutter_sign_modified = '>'
-let g:gitgutter_sign_removed = '-'
-let g:gitgutter_sign_removed_first_line = '^'
-let g:gitgutter_sign_removed_above_and_below = '^-'
-let g:gitgutter_sign_modified_removed = '<'
+nnoremap <silent> <Leader>gg :Gitsigns toggle_linehl<CR>:Gitsigns toggle_numhl<CR>
+
+nnoremap <silent> <Leader>gm :GitMessenger<CR>
 let g:git_messenger_floating_win_opts = { 'border': 'single' }
+
+nnoremap <silent> <Leader>do :DiffviewOpen<CR>
+
+nnoremap <silent> <Leader>ff :Telescope find_files<CR>
 
 
 " Suppress health check message for Perl provider
@@ -130,10 +140,7 @@ let g:coc_fzf_opts = []
 
 
 " Remap vim-textobj-erb from E to e
-silent! ounmap aE
-silent! ounmap iE
-silent! xunmap aE
-silent! xunmap iE
+let g:textobj_erb_no_default_key_mappings = 1
 
 omap ae <Plug>(textobj-erb-a)
 omap ie <Plug>(textobj-erb-i)
@@ -141,53 +148,33 @@ xmap ae <Plug>(textobj-erb-a)
 xmap ie <Plug>(textobj-erb-i)
 
 
-" Remap idbrii/textobj-word-column.vim from [cC] to [lL]
-silent! ounmap ac
-silent! ounmap aC
-silent! ounmap ic
-silent! ounmap iC
-silent! xunmap ac
-silent! xunmap aC
-silent! xunmap ic
-silent! xunmap iC
+" Remap idbrii/textobj-word-column.vim from [cC] to [mM]
+let g:textobj_wordcolumn_no_default_key_mappings = 1
 
-omap al <Plug>(textobj-wordcolumn-word-a)
-omap aL <Plug>(textobj-wordcolumn-WORD-a)
-omap il <Plug>(textobj-wordcolumn-word-i)
-omap iL <Plug>(textobj-wordcolumn-WORD-i)
-xmap al <Plug>(textobj-wordcolumn-word-a)
-xmap aL <Plug>(textobj-wordcolumn-WORD-a)
-xmap il <Plug>(textobj-wordcolumn-word-i)
-xmap iL <Plug>(textobj-wordcolumn-WORD-i)
+call textobj#user#map('wordcolumn', {
+  \ 'word' : {
+  \   'select-i' : 'im',
+  \   'select-a' : 'am',
+  \   },
+  \ 'WORD' : {
+  \   'select-i' : 'iM',
+  \   'select-a' : 'aM',
+  \   },
+  \ })
+
+
+" Remove / separator mapping from targets plugin
+autocmd User targets#mappings#user call targets#mappings#extend({
+  \ '/': {},
+  \ })
 
 
 " Load NeoSolarized color scheme if installed
-if !empty(glob('~/.local/share/nvim/plugged/NeoSolarized')) && &rtp =~ 'NeoSolarized'
-  colorscheme NeoSolarized
-endif
-
-" colorscheme solarized-flat
-
-
-" Load & configure rainbow parentheses if installed
-" if !empty(glob('~/.local/share/nvim/plugged/vim-rainbow')) && &rtp =~ 'vim-rainbow'
-"   let g:rainbow_active = 1
-"
-"   let g:rainbow_ctermfgs = ['red', 'darkgreen', 'darkblue']
+" if !empty(glob('~/.local/share/nvim/plugged/NeoSolarized')) && &rtp =~ 'NeoSolarized'
+"   colorscheme NeoSolarized
 " endif
 
-let g:rainbow_delimiters = {
-    \ 'highlight': [
-    \   'RainbowDelimiterRed',
-    \   'RainbowDelimiterGreen',
-    \   'RainbowDelimiterViolet',
-    \   'RainbowDelimiterOrange',
-    \ ]
-    \ }
-
-hi RainbowDelimiterGreen ctermfg=2
-hi RainbowDelimiterViolet ctermfg=5
-hi RainbowDelimiterOrange ctermfg=3
+colorscheme solarized
 
 
 " Base options
@@ -202,15 +189,19 @@ set scrolloff=3
 set noshowmode
 set smartcase
 set nostartofline
+set termguicolors
 set undofile
+set virtualedit=block
 
 
-" Transparent background for main window and line number column
-highlight! Normal ctermbg=NONE
-highlight! LineNr ctermbg=NONE
-
-" Cancel color reversal and use transparent background for PUM
-highlight! Pmenu cterm=NONE ctermbg=NONE
+" Use transparent background for main window, line number column, PUM and
+" gitsigns symbols
+hi Normal guibg=NONE
+hi LineNr guibg=NONE
+hi CocFloating guibg=NONE
+hi DiffAdd guibg=NONE
+hi DiffChange guibg=NONE
+hi DiffDelete guibg=NONE
 
 
 " Close all but the current buffer
@@ -226,8 +217,12 @@ nnoremap <silent> <C-_> G<C-f>gg:call lightline#disable()<CR>:call lightline#ena
 cnoremap <expr> %% getcmdtype() == ':' ? expand('%:h') . '/' : '%%'
 
 " Filter command history previous/next scrolling
-cnoremap <C-n> <Down>
-cnoremap <C-p> <Up>
+cnoremap <C-N> <Down>
+cnoremap <C-P> <Up>
+
+" Remap CTRL-Q to quit
+nnoremap <C-Q> :qa<CR>
+nnoremap <C-S-Q> :qa!<CR>
 
 " Map Alt key for all window commands, excluding a few redundant keys:
 " S, :, gt, gT, g<Tab>, <Down>, <Up>, <Left>, <Right>
@@ -311,6 +306,7 @@ endfunction
 
 " Enter terminal mode automatically in new terminal buffer
 autocmd TermOpen * startinsert
+autocmd TermEnter * startinsert
 
 
 " Mappings for fzf-preview
@@ -456,11 +452,30 @@ lua << EOF
       normal_cur = 'yzz',
       normal_line = 'yZ',
       normal_cur_line = 'yZZ',
-      visual = 'Z',
-      visual_line = 'gZ',
+      visual = 'z',
+      visual_line = 'Z',
       delete = 'dz',
       change = 'cz',
       change_line = 'cZ',
+    },
+    move_cursor = false,
+    surrounds = {
+      ["-"] = {
+        add = function()
+          return { { "<% " }, { " %>" } }
+        end,
+        find = "<%%%s*.-%s*%%>",
+        delete = "^(<%%%s*)().-(%s*%%>)()$",
+        change = { target = "^(<%%%s*)().-(%s*%%>)()$" },
+      },
+      ["="] = {
+        add = function()
+          return { { "<%= " }, { " %>" } }
+        end,
+        find = "<%%=%s*.-%s*%%>",
+        delete = "^(<%%=%s*)().-(%s*%%>)()$",
+        change = { target = "^(<%%=%s*)().-(%s*%%>)()$" },
+      }
     }
   })
 
@@ -493,6 +508,7 @@ lua << EOF
     }
   )
 
+  -- require('leap-spooky').setup()
   require('flit').setup()
 
   require('Comment').setup()
@@ -511,18 +527,84 @@ lua << EOF
     end
   end
 
-  require('nvim-treesitter.configs').setup ({
+  require('nvim-treesitter.configs').setup({
     ensure_installed = { 'c', 'lua', 'query', 'vim', 'vimdoc', },
     auto_install = true,
     highlight = {
-      enable = false,
+      enable = true,
       disable = function(lang)
         local ft = vim.bo.filetype
-        local disabled_types = create_set{ 'gitcommit', 'gitrebase', 'yaml.ansible' }
+        local disabled_types = create_set{ 'gitcommit', 'gitrebase', 'html', 'yaml.ansible' }
         if disabled_types[ft] then
           return true
         end
       end
+    },
+    incremental_selection = {
+      enable = true,
+      keymaps = {
+        init_selection = "<Leader>ts",
+        node_incremental = "<Leader>ti",
+        scope_incremental = "<Leader>ts",
+        node_decremental = "<Leader>td",
+      },
+    },
+    textobjects = {
+      select = {
+        enable = true,
+
+        -- Automatically jump forward to textobj, similar to targets.vim
+        lookahead = true,
+
+        keymaps = {
+          -- You can use the capture groups defined in textobjects.scm
+          ["af"] = "@function.outer",
+          ["if"] = "@function.inner",
+          ["ac"] = "@class.outer",
+          -- You can optionally set descriptions to the mappings (used in the desc parameter of
+          -- nvim_buf_set_keymap) which plugins like which-key display
+          ["ic"] = { query = "@class.inner", desc = "Select inner part of a class region" },
+          -- You can also use captures from other query groups like `locals.scm`
+          ["as"] = { query = "@scope", query_group = "locals", desc = "Select language scope" },
+          ["ar"] = "@block.outer",
+          ["ir"] = "@block.inner",
+          ["aa"] = "@parameter.outer",
+          ["ia"] = "@parameter.inner",
+          },
+          -- You can choose the select mode (default is charwise 'v')
+          --
+          -- Can also be a function which gets passed a table with the keys
+          -- * query_string: eg '@function.inner'
+          -- * method: eg 'v' or 'o'
+          -- and should return the mode ('v', 'V', or '<c-v>') or a table
+          -- mapping query_strings to modes.
+        selection_modes = {
+          ['@parameter.outer'] = 'v', -- charwise
+          ['@function.outer'] = 'V', -- linewise
+          ['@class.outer'] = '<c-v>', -- blockwise
+          },
+          -- If you set this to `true` (default is `false`) then any textobject is
+          -- extended to include preceding or succeeding whitespace. Succeeding
+          -- whitespace has priority in order to act similarly to eg the built-in
+          -- `ap`.
+          --
+          -- Can also be a function which gets passed a table with the keys
+          -- * query_string: eg '@function.inner'
+          -- * selection_mode: eg 'v'
+          -- and should return true or false
+          include_surrounding_whitespace = true,
+      },
+      {
+        swap = {
+          enable = true,
+          swap_next = {
+            ["<leader>j"] = "@parameter.inner",
+          },
+          swap_previous = {
+            ["<leader>J"] = "@parameter.inner",
+          },
+        },
+      },
     },
   })
 
@@ -531,5 +613,26 @@ lua << EOF
     for _, i in ipairs(list) do set[i] = true end
     return set
   end
+
+  require('which-key').setup()
+  require('gitsigns').setup({
+    signs = {
+      add          = { text = '+' },
+      change       = { text = '>' },
+      delete       = { text = '-' },
+      topdelete    = { text = '‾' },
+      changedelete = { text = '<' },
+      untracked    = { text = '┆' },
+    }
+  })
+
+  local actions = require("telescope.actions")
+
+  require('telescope').setup({
+    defaults = {
+      layout_config = { height = 0.99, width = 0.99, preview_width = 0.5 },
+      -- mappings = { i = { ["<esc>"] = actions.close } },
+    }
+  })
 
 EOF
