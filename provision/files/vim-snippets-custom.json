@@ -1,7 +1,7 @@
 {
   "eruby" : {
     "snippets" : {
-      "erb": "<%= | %>\n\t${child}<% end %>"
+      "erb": "<% | %>\n\t${child}<% end %>"
     }
   }
 }
