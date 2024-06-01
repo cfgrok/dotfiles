@@ -47,6 +47,21 @@
     - alacritty.toml
     - alacritty_solarized_dark.toml
 
+- name: Download terminfo file for Alacritty
+  ansible.builtin.get_url:
+    url: https://raw.githubusercontent.com/alacritty/alacritty/master/extra/alacritty.info
+    dest: /tmp/alacritty.info
+
+- name: Install Alacritty terminfo entries
+  ansible.builtin.command:
+    cmd: tic -xe alacritty,alacritty-direct /tmp/alacritty.info
+  become: true
+  
+- name: Remove downloaded terminfo file
+  ansible.builtin.file:
+    path: /tmp/alacritty.info
+    state: absent
+
 - name: Download dircolors-solarized file to .config directory
   ansible.builtin.get_url:
     url: https://raw.githubusercontent.com/seebi/dircolors-solarized/master/dircolors.256dark
