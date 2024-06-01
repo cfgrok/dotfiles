@@ -21,3 +21,11 @@ style = "Regular"
 
 [window]
 opacity = 0.75
+
+[keyboard]
+bindings = [
+  { key = "A", mods = "Alt", chars = "\u001bOH" },
+  { key = "Home", mods = "Alt", chars = "\u001bOH" },
+  { key = "E", mods = "Alt", chars = "\u001bOF" },
+  { key = "End", mods = "Alt", chars = "\u001bOF" },
+]
