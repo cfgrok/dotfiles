@@ -66,15 +66,14 @@
     replace: "data_home, 'autojump', 'autojump.txt"
   become: true
 
-- name: Copy rg ignore file
-  ansible.builtin.copy:
-    src: files/rgignore
-    dest: ~/.config/rg/
-
-- name: Copy rg config file from template
-  ansible.builtin.template:
-    src: files/rgrc.j2
-    dest: ~/.config/rg/rgrc
+- name: Symlink rg config files
+  ansible.builtin.file:
+    src: "{{ playbook_dir }}/files/{{ item }}"
+    path: "~/.config/rg/{{ item }}"
+    state: link
+  loop:
+    - rgignore
+    - rgrc
 
 - name: Launch Firefox to create profile directory
   ansible.builtin.command:
