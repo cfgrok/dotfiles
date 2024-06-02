@@ -2,4 +2,4 @@
 
 user=$( users | cut -d" " -f1 )
 
-source /home/$user/.config/zsh/.zshrc && $1 $2
+source /home/$user/.config/zsh/.zshrc && "$@"
