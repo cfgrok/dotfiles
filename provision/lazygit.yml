@@ -1,0 +1,54 @@
+---
+- name: Retrieve latest Lazygit release information from GitHub API
+  ansible.builtin.uri:
+    url: https://api.github.com/repos/jesseduffield/lazygit/releases/latest
+    method: GET
+    return_content: true
+  register: api_response
+
+- name: Set tag name
+  ansible.builtin.set_fact:
+    tag_name: "{{ api_response.json.tag_name | regex_search('[\\d\\.]+') }}"
+    
+- name: Find and set checksum file URL
+  ansible.builtin.set_fact:
+    checksum_url: "{{ api_response.json | json_query('assets[?name == `checksums.txt`] | [0].browser_download_url') }}"
+
+- name: Retrieve checksum file content
+  ansible.builtin.uri:
+    url: "{{ checksum_url }}"
+    method: GET
+    return_content: true
+  register: checksum_response
+
+- name: Find and set checksum
+  ansible.builtin.set_fact:
+    checksum: "{{ checksum_response.content | regex_search('(?<=\n)[\\da-f]+(?=\\s+lazygit_[\\d\\.]+_Linux_x86_64)') }}"
+
+- name: Download Lazygit tarfile
+  ansible.builtin.get_url:
+    url: "https://github.com/jesseduffield/lazygit/releases/latest/download/lazygit_{{ tag_name }}_Linux_x86_64.tar.gz"
+    dest: /tmp/lazygit.tar.gz
+    checksum: "sha256:{{ checksum }}"
+
+- name: Extract Lazygit executable
+  ansible.builtin.unarchive:
+    src: /tmp/lazygit.tar.gz
+    dest: /tmp
+    remote_src: true
+    exclude:
+      - LICENSE
+      - README.md
+
+- name: Install Lazygit executable
+  ansible.builtin.command:
+    cmd: install /tmp/lazygit /usr/local/bin
+  become: true
+
+- name: Remove downloaded tarfile and executable
+  ansible.builtin.file:
+    path: /tmp/{{ item }}
+    state: absent
+  loop:
+    - lazygit.tar.gz
+    - lazygit

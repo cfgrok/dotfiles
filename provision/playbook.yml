@@ -65,6 +65,11 @@
       tags: git_config
 
 
+    - name: Install Lazygit
+      ansible.builtin.import_tasks: lazygit.yml
+      tags: lazygit
+
+
     - name: Create mount directories and home folder links
       ansible.builtin.import_tasks: link_dirs.yml
       tags: link_dirs
