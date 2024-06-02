@@ -75,6 +75,12 @@
     - rgignore
     - rgrc
 
+- name: Symlink fd ignore file
+  ansible.builtin.file:
+    src: "{{ playbook_dir }}/files/fdignore"
+    path: ~/.fdignore
+    state: link
+
 - name: Launch Firefox to create profile directory
   ansible.builtin.command:
     cmd: firefox

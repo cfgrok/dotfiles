@@ -34,7 +34,7 @@ ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE=fg=10
 ZLE_RPROMPT_INDENT=0
 
 # Prevent expansion for listed aliases
-GLOBALIAS_FILTER_VALUES=(grep l la rg)
+GLOBALIAS_FILTER_VALUES=(fd grep l la rg)
 
 # Set preferred text editor
 export EDITOR="nvim"
@@ -79,8 +79,8 @@ source $ZSH/oh-my-zsh.sh
 # Reset "Alt-l" keybinding to downcase word rather than execute ls command
 bindkey '\el' down-case-word
 
-# Set up "fd" alias for fd-find
-alias fd=fdfind
+# Set up "fd" alias for fdfind with hidden, follow, mount options
+alias fd="fdfind -HL --mount"
 
 # Remove confirmation aliases for cp, mv & rm from common-aliases plugin
 unalias cp

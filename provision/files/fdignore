@@ -1,0 +1,5 @@
+# Exclude home .cache directory
+.cache
+
+# Include rbenv ruby versions/gems
+!.local/rbenv/versions
