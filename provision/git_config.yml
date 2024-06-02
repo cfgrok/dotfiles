@@ -4,11 +4,17 @@
     path: ~/.config/git
     state: directory
 
-- name: Copy git config file
+- name: Copy git user file
   ansible.builtin.template:
-    src: files/git_config.j2
-    dest: ~/.config/git/config
+    src: files/git_user.j2
+    dest: ~/.config/git/user
     mode: 0664
+
+- name: Symlink git config file
+  ansible.builtin.file:
+    src: "{{ playbook_dir }}/files/git_config"
+    path: "~/.config/git/config"
+    state: link
 
 - name: Update remote url for dotfiles repo
   ansible.builtin.command:
