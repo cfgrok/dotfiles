@@ -9,7 +9,6 @@
       - gir1.2-flatpak-1.0
       - hexchat
       - libflatpak0
-      - vim-tiny
       - warpinator
     state: absent
     purge: true

@@ -39,7 +39,6 @@
       - tree
       - ubuntu-restricted-extras
       - vagrant
-      - vim-nox
       - virtualbox
       - vlc
     update_cache: true
@@ -64,6 +63,12 @@
     path: /usr/share/autojump/autojump
     regexp: "data_home, 'autojump.txt"
     replace: "data_home, 'autojump', 'autojump.txt"
+  become: true
+
+- name: Fix missing defaults error when launching vim-tiny
+  ansible.builtin.file:
+    path: /usr/share/vim/vim82/defaults.vim
+    state: touch
   become: true
 
 - name: Symlink rg config files

@@ -1,62 +1,181 @@
 ---
-- name: Download Neovim tarball
-  ansible.builtin.get_url:
-    url: "https://github.com/neovim/neovim/releases/download/v{{ neovim_version }}/nvim-linux64.tar.gz"
-    dest: /tmp/nvim-linux64.tar.gz
+- name: Set task variables
+  ansible.builtin.set_fact:
+    config_dir: ~/.config/nvim
+    install_dir: /tmp/nvim-linux64
+    tarfile: nvim-linux64.tar.gz
 
-- name: Install Neovim from tarball
+- name: Retrieve latest Neovim release information from GitHub API
+  ansible.builtin.uri:
+    url: https://api.github.com/repos/neovim/neovim/releases/latest
+    method: GET
+    return_content: true
+  register: api_response
+
+- name: Find and set checksum file URL
+  ansible.builtin.set_fact:
+    checksum_url: "{{ api_response.json | json_query('assets[?name == `{}.sha256sum`] | [0].browser_download_url'.format(tarfile)) }}"
+
+- name: Retrieve checksum file content
+  ansible.builtin.uri:
+    url: "{{ checksum_url }}"
+    method: GET
+    return_content: true
+  register: checksum_response
+
+- name: Find and set checksum
+  ansible.builtin.set_fact:
+    checksum: "{{ checksum_response.content | regex_search('[\\da-f]+') }}"
+
+- name: Find and set tarfile download URL
+  ansible.builtin.set_fact:
+    download_url: "{{ api_response.json | json_query('assets[?name == `{}`] | [0].browser_download_url'.format(tarfile)) }}"
+
+- name: Download Neovim tarfile
+  ansible.builtin.get_url:
+    url: "{{ download_url }}"
+    dest: "/tmp/{{ tarfile }}"
+    checksum: "sha256:{{ checksum }}"
+
+- name: Ensure old install directory is not present
+  ansible.builtin.file:
+    path: "{{ install_dir }}"
+    state: absent
+
+- name: Extract Neovim install directory
   ansible.builtin.unarchive:
-    src: /tmp/nvim-linux64.tar.gz
-    dest: /opt
+    src: "/tmp/{{ tarfile }}"
+    dest: /tmp
+    creates: "{{ install_dir }}"
+    remote_src: true
+
+- name: Remove previous Neovim install
+  ansible.builtin.file:
+    path: "{{ item }}"
+    state: absent
+  loop:
+    - /usr/bin/nvim
+    - /usr/lib/nvim
+    - /usr/share/nvim
+    - /usr/share/applications/nvim.desktop
+    - /usr/share/icons/hicolor/128x128/apps/nvim.png
+    - /usr/share/locale/en_GB/LC_MESSAGES/nvim.mo
+    - /usr/share/man/man1/nvim.1
   become: true
 
-- name: Clean up Neovim tarball
-  ansible.builtin.file:
-    path: /tmp/nvim-linux64.tar.gz
+- name: Install downloaded release
+  ansible.builtin.copy:
+    src: "{{ install_dir }}/{{ item.src }}"
+    dest: "{{ item.dest }}"
+    mode: "{{ item.mode }}"
+    owner: root
+    group: root
+    remote_src: true
+  loop:
+    - { src: bin/nvim, dest: /usr/bin/nvim, mode: "a+x" }
+    - { src: lib/nvim/parser, dest: /usr/lib/nvim/, mode: "0755" }
+    - {
+      src: share/applications/nvim.desktop,
+      dest: /usr/share/applications/nvim.desktop,
+      mode: "0644",
+    }
+    - {
+      src: share/icons/hicolor/128x128/apps/nvim.png,
+      dest: /usr/share/icons/hicolor/128x128/apps/nvim.png,
+      mode: "0644",
+    }
+    - {
+      src: share/locale/en_GB/LC_MESSAGES/nvim.mo,
+      dest: /usr/share/locale/en_GB/LC_MESSAGES/nvim.mo,
+      mode: "0644",
+    }
+    - {
+      src: share/man/man1/nvim.1,
+      dest: /usr/share/man/man1/nvim.1,
+      mode: "0644",
+    }
+    - { src: share/nvim/runtime, dest: /usr/share/nvim/, mode: "0755" }
+  become: true
+
+- name: Correct checkhealth command error for ruby provider -- step 1
+  ansible.builtin.lineinfile:
+    path: /usr/share/nvim/runtime/lua/provider/ruby/health.lua
+    regexp: "local ruby_detect_table = vim.provider.ruby.detect\\(\\)"
     state: absent
   become: true
 
-- name: Set Neovim as default application for "vi" and "vim" commands
-  ansible.builtin.command:
-    cmd: "update-alternatives --install /usr/bin/{{ item }} {{ item }} /opt/nvim-linux64/bin/nvim 100"
-  loop:
-    - vi
-    - vim
+- name: Correct checkhealth command error for ruby provider -- step 2
+  ansible.builtin.lineinfile:
+    path: /usr/share/nvim/runtime/lua/provider/ruby/health.lua
+    regexp: "local host(, _)? = (ruby_detect_table\\[1\\]|vim.provider.ruby.detect\\(\\))"
+    line: "  local host, _ = vim.provider.ruby.detect()"
+    state: present
   become: true
 
-- name: Create Neovim config directory
-  ansible.builtin.file:
-    path: ~/.config/nvim
-    state: directory
+- name: Set Neovim to open in Alacritty when launched -- step 1
+  ansible.builtin.lineinfile:
+    path: /usr/share/applications/nvim.desktop
+    regexp: "Exec=(alacritty -e )?nvim %F"
+    line: "Exec=alacritty -e nvim %F"
+    state: present
+  become: true
 
-- name: Symlink Neovim config files
+- name: Set Neovim to open in Alacritty when launched -- step 2
+  ansible.builtin.lineinfile:
+    path: /usr/share/applications/nvim.desktop
+    regexp: "Terminal=(true|false)"
+    line: "Terminal=false"
+    state: present
+  become: true
+
+- name: Clean up Neovim install files
   ansible.builtin.file:
-    src: "{{ playbook_dir }}/files/{{ item }}"
-    path: "~/.config/nvim/{{ item }}"
-    state: link
+    path: "{{ item }}"
+    state: absent
   loop:
-    - coc-settings.json
-    - coc.vim
-    - init.vim
-    - jsonc.vim
-    - vim-snippets-custom.json
+    - "{{ install_dir }}"
+    - "/tmp/{{ tarfile }}"
+  become: true
 
-- name: Create plugin autoload directory
-  ansible.builtin.file:
-    path: ~/.local/share/nvim/site/autoload
-    state: directory
+- name: Set Neovim as default application for "editor", "vi" and "vim" commands
+  ansible.builtin.command:
+    cmd: "{{ item }}"
+  loop:
+    - "update-alternatives --install /usr/bin/editor editor /usr/bin/nvim 100"
+    - "update-alternatives --install /usr/bin/vi vi /usr/bin/nvim 100"
+    - "update-alternatives --install /usr/bin/vim vim /usr/bin/nvim 100"
+    - "update-alternatives --set editor /usr/bin/nvim"
+    - "update-alternatives --set vi /usr/bin/nvim"
+    - "update-alternatives --set vim /usr/bin/nvim"
+  become: true
 
 - name: Install neovim npm package
   ansible.builtin.shell:
     executable: /usr/bin/zsh
     cmd: source ~/.config/nvm/nvm.sh && npm install -g neovim
 
-- name: Install vim-plug
-  ansible.builtin.get_url:
-    url: https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
-    dest: ~/.local/share/nvim/site/autoload/plug.vim
+- name: Check whether Neovim config directory exists
+  ansible.builtin.stat:
+    path: "{{ config_dir }}"
+  register: git_dir
 
-- name: Install plugins and update remote plugins
+- name: Clone repository to config directory if it doesn't exist
+  ansible.builtin.git:
+    repo: git@github.com:cfgrok/nvim-config.git
+    dest: "{{ config_dir }}"
+  when: not git_dir.stat.exists
+
+- name: Check whether upstream remote exists
   ansible.builtin.shell:
-    executable: /usr/bin/zsh
-    cmd: nvim --headless +PlugInstall +UpdateRemotePlugins +qa
+    cmd: git remote | grep upstream | cat
+    chdir: "{{ config_dir }}"
+  register: upstream_remote
+
+- name: Set up "upstream" remote in config directory if it doesn't exist
+  ansible.builtin.command:
+    cmd: "{{ item }}"
+    chdir: "{{ config_dir }}"
+  loop:
+    - git remote add upstream https://github.com/LazyVim/starter
+    - git remote set-url upstream --push no-push
+  when: upstream_remote.stdout | length == 0
