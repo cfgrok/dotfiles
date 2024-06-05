@@ -1,6 +1,7 @@
 import XMonad
 import XMonad.Actions.CopyWindow (copy, kill1)
 import XMonad.Actions.CycleRecentWS (cycleRecentWS)
+import XMonad.Actions.CycleWS (prevScreen)
 import XMonad.Actions.GridSelect (goToSelected, gridselectWindow)
 import XMonad.Actions.DwmPromote (dwmpromote)
 import XMonad.Actions.SwapWorkspaces (swapWithCurrent)
@@ -45,6 +46,7 @@ myKeys = [
     , ("M-g", gotoMenuArgs dmenuGotoArgs)
     , ("M-S-g", goToSelected def)
     , ("M-S-b", bringMenuArgs dmenuBringArgs)
+    , ("M-j", prevScreen)
     , ("M-'", cycleRecentWS [xK_Super_L, xK_Super_R] xK_semicolon xK_apostrophe)
     , ("M-<Return>", dwmpromote)
     , ("M-f", toggleFloatNext)
