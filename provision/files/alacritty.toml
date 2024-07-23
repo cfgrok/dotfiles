@@ -1,4 +1,5 @@
 import = ["/home/ezra/.config/alacritty/alacritty_solarized_dark.toml"]
+# import = ["/home/ezra/.config/alacritty/solarized-osaka.toml"]
 
 [font]
 size = 17.0
@@ -20,7 +21,7 @@ family = "MesloLGS NF"
 style = "Regular"
 
 [window]
-opacity = 0.75
+opacity = 0.8
 
 [keyboard]
 bindings = [
