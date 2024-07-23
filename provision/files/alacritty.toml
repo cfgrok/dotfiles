@@ -25,8 +25,11 @@ opacity = 0.8
 
 [keyboard]
 bindings = [
-  { key = "A", mods = "Alt", chars = "\u001bOH" },
   { key = "Home", mods = "Alt", chars = "\u001bOH" },
-  { key = "E", mods = "Alt", chars = "\u001bOF" },
   { key = "End", mods = "Alt", chars = "\u001bOF" },
+  # { key = "A", mods = "Alt", chars = "\u001bOH" },
+  # { key = "E", mods = "Alt", chars = "\u001bOF" },
+  { key = "Enter", mods = "Shift", chars = "\u001b[13;2u" },
+  { key = "Space", mods = "Shift", chars = "\u001b[32;2u" },
+  { key = ")", mods = "Alt|Shift", chars = "\u001b[41;3u" },
 ]
