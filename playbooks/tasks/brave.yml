@@ -8,7 +8,7 @@
 - name: Create apt source file
   ansible.builtin.copy:
     dest: /etc/apt/sources.list.d/brave-browser-release.list
-    content: "deb [signed-by=/usr/share/keyrings/brave-browser-archive-keyring.gpg] https://brave-browser-apt-release.s3.brave.com/ stable main"
+    content: "deb [signed-by=/usr/share/keyrings/brave-browser-archive-keyring.gpg arch=amd64] https://brave-browser-apt-release.s3.brave.com/ stable main"
     force: false
   become: true
 
