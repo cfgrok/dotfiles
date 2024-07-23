@@ -8,7 +8,7 @@
   ansible.builtin.template:
     src: files/git_user.j2
     dest: ~/.config/git/user
-    mode: 0664
+    mode: "0664"
 
 - name: Symlink git config file
   ansible.builtin.file:

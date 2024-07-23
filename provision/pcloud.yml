@@ -27,4 +27,4 @@
   ansible.builtin.copy:
     src: pcloud.desktop
     dest: ~/.config/autostart/
-    mode: 0644
+    mode: "0644"

@@ -10,7 +10,7 @@
     dest: "/usr/local/bin/{{ item }}"
     owner: root
     group: root
-    mode: 0755
+    mode: "0755"
   loop:
     - driver-manager-pkexec
     - lightdm-settings-pkexec

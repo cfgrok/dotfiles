@@ -76,7 +76,7 @@
     remote_src: true
     owner: root
     group: root
-    mode: 0755
+    mode: "0755"
   loop:
     - dmenu
     - dmenu_run
@@ -103,7 +103,7 @@
     remote_src: true
     owner: root
     group: root
-    mode: 0644
+    mode: "0644"
   loop:
     - dmenu.1
     - stest.1
@@ -120,5 +120,5 @@
     dest: /usr/local/bin/
     owner: root
     group: root
-    mode: 0755
+    mode: "0755"
   become: true
