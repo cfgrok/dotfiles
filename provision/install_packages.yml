@@ -7,6 +7,35 @@
     value: "true"
   become: true
 
+# TODO: possible additional packages
+# apache
+# build-essential
+# darktable
+# dunst
+# fzf
+# gcolor3
+# gh
+# kopia
+# lolcat
+# mkchromecast
+# libsqlite-dev
+# lsb-release
+# jq
+# obsidian
+# openjdk
+# pandoc
+# python3-neovim
+# python3-pip
+# python3-venv
+# sqlite
+# sqlite-doc
+# syncthing
+# tlp
+# vim-tiny
+# vorta
+# wezterm
+# wget
+# workrave
 - name: Install standard packages
   ansible.builtin.apt:
     name:

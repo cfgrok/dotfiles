@@ -13,6 +13,7 @@
     ubuntu_release: jammy
 
   tasks:
+    # TODO: install redis from ppa
 
     - name: Prompt for git config email
       ansible.builtin.pause:
