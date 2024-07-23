@@ -6,7 +6,7 @@
 
 - name: Copy git user file
   ansible.builtin.template:
-    src: files/git_user.j2
+    src: templates/git_user.j2
     dest: ~/.config/git/user
     mode: "0664"
 

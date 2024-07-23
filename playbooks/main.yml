@@ -37,81 +37,81 @@
       tags: git_config
 
     - name: Remove unwanted default packages
-      ansible.builtin.import_tasks: clean_packages.yml
+      ansible.builtin.import_tasks: tasks/clean_packages.yml
       tags: clean_packages
 
     - name: Install standard packages
-      ansible.builtin.import_tasks: install_packages.yml
+      ansible.builtin.import_tasks: tasks/install_packages.yml
       tags: install_packages
 
     - name: Install Alacritty
-      ansible.builtin.import_tasks: alacritty.yml
+      ansible.builtin.import_tasks: tasks/alacritty.yml
       tags: alacritty
 
     - name: Install XMonad
-      ansible.builtin.import_tasks: xmonad.yml
+      ansible.builtin.import_tasks: tasks/xmonad.yml
       tags: xmonad
 
     - name: Install jgmenu
-      ansible.builtin.import_tasks: jgmenu.yml
+      ansible.builtin.import_tasks: tasks/jgmenu.yml
       tags: jgmenu
 
     - name: Copy Git config
-      ansible.builtin.import_tasks: git_config.yml
+      ansible.builtin.import_tasks: tasks/git_config.yml
       tags: git_config
 
     - name: Install Lazygit
-      ansible.builtin.import_tasks: lazygit.yml
+      ansible.builtin.import_tasks: tasks/lazygit.yml
       tags: lazygit
 
     - name: Create mount directories and home folder links
-      ansible.builtin.import_tasks: link_dirs.yml
+      ansible.builtin.import_tasks: tasks/link_dirs.yml
       tags: link_dirs
 
     - name: Install zsh and Oh My Zsh
-      ansible.builtin.import_tasks: oh_my_zsh.yml
+      ansible.builtin.import_tasks: tasks/oh_my_zsh.yml
       tags: zsh
 
     - name: Install nvm and nodejs
-      ansible.builtin.import_tasks: node.yml
+      ansible.builtin.import_tasks: tasks/node.yml
       tags: node
 
     - name: Install Neovim
-      ansible.builtin.import_tasks: neovim.yml
+      ansible.builtin.import_tasks: tasks/neovim.yml
       tags: neovim
 
     - name: Install bat
-      ansible.builtin.import_tasks: bat.yml
+      ansible.builtin.import_tasks: tasks/bat.yml
       tags: bat
 
     - name: Install rbenv and ruby
-      ansible.builtin.import_tasks: rbenv.yml
+      ansible.builtin.import_tasks: tasks/rbenv.yml
       tags: rbenv
 
     - name: Install pCloud
-      ansible.builtin.import_tasks: pcloud.yml
+      ansible.builtin.import_tasks: tasks/pcloud.yml
       tags: pcloud
 
     - name: Install Brave
-      ansible.builtin.import_tasks: brave.yml
+      ansible.builtin.import_tasks: tasks/brave.yml
       tags: brave
 
     - name: Install DeaDBeeF
-      ansible.builtin.import_tasks: deadbeef.yml
+      ansible.builtin.import_tasks: tasks/deadbeef.yml
       tags: deadbeef
 
     - name: Install PostgreSQL
-      ansible.builtin.import_tasks: postgres.yml
+      ansible.builtin.import_tasks: tasks/postgres.yml
       tags: postgres
 
     - name: Update user settings
-      ansible.builtin.import_tasks: settings.yml
+      ansible.builtin.import_tasks: tasks/settings.yml
       tags: settings
 
     - name: Set up taskwarrior directories and config file
-      ansible.builtin.import_tasks: tasks.yml
+      ansible.builtin.import_tasks: tasks/tasks.yml
       tags: tasks
 
     - name: Install Brother printer/scanner drivers
-      ansible.builtin.import_tasks: brother.yml
+      ansible.builtin.import_tasks: tasks/brother.yml
       tags: brother
