@@ -34,7 +34,7 @@ ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE=fg=10
 ZLE_RPROMPT_INDENT=0
 
 # Prevent expansion for listed aliases
-GLOBALIAS_FILTER_VALUES=(fd grep l la rg)
+GLOBALIAS_FILTER_VALUES=(fd grep l la ls rg)
 
 # Set preferred text editor
 export EDITOR="nvim"
