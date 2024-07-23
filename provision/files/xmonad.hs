@@ -89,7 +89,7 @@ main = xmonad
     $ mateConfig {
         modMask = myModMask
         , focusedBorderColor = "#008db8"
-        , layoutHook = smartBorders $ smartSpacing 5 $ layoutHook mateConfig
+        , layoutHook = smartBorders $ smartSpacing 2 $ layoutHook mateConfig
         , manageHook = manageHook mateConfig <+> myManageHook
         , startupHook = do
             startupHook mateConfig
