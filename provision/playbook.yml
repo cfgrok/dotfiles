@@ -1,5 +1,6 @@
 ---
-- hosts: localhost
+- name: Primary machine install
+  hosts: localhost
   vars:
     bat_version: 0.21.0
     deadbeef_version: 1.9.1
