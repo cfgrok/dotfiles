@@ -6,7 +6,11 @@
 
 - name: Download DeaDBeeF
   ansible.builtin.get_url:
-    url: "https://sourceforge.net/projects/deadbeef/files/travis/linux/{{ deadbeef_version }}/deadbeef-static_{{ deadbeef_minor_version }}_amd64.deb/download"
+    url: "https://sourceforge.net/projects/deadbeef/files/travis/linux/\
+      {{ deadbeef_version }}\
+      /deadbeef-static_\
+      {{ deadbeef_minor_version }}\
+      _amd64.deb/download"
     dest: /tmp/install_deadbeef/deadbeef.deb
 
 - name: Install DeaDBeeF
@@ -26,7 +30,10 @@
 
 - name: Download MPRIS2 plugin source
   ansible.builtin.get_url:
-    url: "https://github.com/Serranya/deadbeef-mpris2-plugin/releases/download/v{{ deadbeef_plugin_version }}/deadbeef-mpris2-plugin-{{ deadbeef_plugin_version }}.tar.xz"
+    url: "https://github.com/Serranya/deadbeef-mpris2-plugin/releases/download/\
+      v{{ deadbeef_plugin_version }}\
+      /deadbeef-mpris2-plugin-\
+      {{ deadbeef_plugin_version }}.tar.xz"
     dest: /tmp/install_deadbeef/plugin.tar.xz
 
 - name: Extract plugin source

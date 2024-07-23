@@ -2,12 +2,12 @@
 - name: Install XMonad
   ansible.builtin.apt:
     name:
-    - libghc-xmonad-contrib-dev
-    - libghc-xmonad-contrib-doc
-    - libghc-xmonad-dev
-    - libghc-xmonad-doc
-    - suckless-tools
-    - xmonad
+      - libghc-xmonad-contrib-dev
+      - libghc-xmonad-contrib-doc
+      - libghc-xmonad-dev
+      - libghc-xmonad-doc
+      - suckless-tools
+      - xmonad
   become: true
 
 - name: Symlink XMonad config

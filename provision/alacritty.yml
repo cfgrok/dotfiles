@@ -56,7 +56,7 @@
   ansible.builtin.command:
     cmd: tic -xe alacritty,alacritty-direct /tmp/alacritty.info
   become: true
-  
+
 - name: Remove downloaded terminfo file
   ansible.builtin.file:
     path: /tmp/alacritty.info

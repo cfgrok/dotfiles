@@ -9,7 +9,7 @@
 - name: Set tag name
   ansible.builtin.set_fact:
     tag_name: "{{ api_response.json.tag_name | regex_search('[\\d\\.]+') }}"
-    
+
 - name: Find and set checksum file URL
   ansible.builtin.set_fact:
     checksum_url: "{{ api_response.json | json_query('assets[?name == `checksums.txt`] | [0].browser_download_url') }}"
