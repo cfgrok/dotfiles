@@ -3,7 +3,7 @@
 - name: Set all gsettings settings
   gsetting:
     settings:
-      com.linuxmint.report.ignored-reports: "['timeshift-no-setup']"
+      com.linuxmint.report.ignored-reports: "['timeshift-no-setup', 'new-release']"
       org.blueman.plugins.powermanager.auto-power-on: "@mb false"
       org.gnome.meld.custom-font: "'Inconsolata Medium 18'"
       org.gnome.meld.use-system-font: "false"
