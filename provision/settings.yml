@@ -146,7 +146,7 @@
     state: link
 
 - name: Disable unnecessary/unwanted startup applications
-  ansible.builtin.include: autostart.yml
+  ansible.builtin.include_tasks: autostart.yml
   with_items:
     - geoclue-demo-agent.desktop
     - im-launch.desktop
