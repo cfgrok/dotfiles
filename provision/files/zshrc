@@ -91,6 +91,9 @@ unalias rm
 alias gdt="git difftool --dir-diff"
 alias gdtr="git diff-tree --no-commit-id --name-only -r"
 
+# Add alias for LazyGit
+alias lg=lazygit
+
 # Disable completion for implicit dot and double dot directories
 zstyle ':completion:*' special-dirs false
 
