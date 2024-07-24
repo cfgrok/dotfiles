@@ -116,8 +116,14 @@
     state: link
 
 - name: Launch Firefox to create profile directory
+  ansible.builtin.shell:
+    cmd: firefox & sleep 5
+  changed_when: false
+
+- name: Kill Firefox
   ansible.builtin.command:
-    cmd: firefox
+    cmd: pkill -f firefox
+  changed_when: false
 
 - name: Find Firefox profile directory
   ansible.builtin.find:
