@@ -26,6 +26,6 @@
 - name: Remove /snap/bin from PATH
   ansible.builtin.replace:
     path: /etc/environment
-    regexp: ':/snap/bin'
-    replace: ''
+    regexp: ":/snap/bin"
+    replace: ""
   become: true

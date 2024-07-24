@@ -49,8 +49,8 @@
 - name: Modify Mint desktop management script
   ansible.builtin.replace:
     path: /usr/lib/linuxmint/mintdesktop/mintdesktop.py
-    regexp: '^(\s+)(settings.set_string\("windowmanager", "mint-window-manager"\))$'
-    replace: '\1# \2'
+    regexp: "^(\\s+)(settings.set_string\\(\"windowmanager\", \"mint-window-manager\"\\))$"
+    replace: "\\1# \\2"
   become: true
 
 - name: Create dmenu2 install directory
@@ -86,8 +86,8 @@
 - name: Modify input for dmenu_run script
   ansible.builtin.replace:
     path: /usr/local/bin/dmenu_run
-    regexp: 'sort -u \| tee'
-    replace: 'sort -u | sed "/\[/d" | tee'
+    regexp: "sort -u \\| tee"
+    replace: "sort -u | sed \"/\\[/d\" | tee"
   become: true
 
 - name: Create local man directory

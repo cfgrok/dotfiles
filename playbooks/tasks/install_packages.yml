@@ -83,8 +83,8 @@
 - name: Correct autojump data_home path -- step 1
   ansible.builtin.replace:
     path: /usr/share/autojump/autojump
-    regexp: ',\n +''autojump''\)\)'
-    replace: '))'
+    regexp: ",\\n +'autojump'\\)\\)"
+    replace: "))"
   become: true
 
 - name: Correct autojump data_home path -- step 2
@@ -123,7 +123,7 @@
   ansible.builtin.find:
     paths: ~/.mozilla/firefox
     file_type: directory
-    patterns: '*default-release'
+    patterns: "*default-release"
   register: firefox_directory
 
 - name: Download arkenfox user.js file to Firefox profile directory

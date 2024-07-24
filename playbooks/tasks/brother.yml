@@ -32,7 +32,7 @@
 - name: Modify udev rule
   ansible.builtin.lineinfile:
     path: /etc/udev/rules.d/60-brother-libsane-type1.rules
-    regexp: '^SYSFS.+$'
+    regexp: "^SYSFS.+$"
     state: absent
   become: true
 
