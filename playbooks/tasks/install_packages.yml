@@ -132,11 +132,6 @@
     patterns: "*default-release"
   register: firefox_directory
 
-- name: Download arkenfox user.js file to Firefox profile directory
-  ansible.builtin.get_url:
-    url: https://raw.githubusercontent.com/arkenfox/user.js/master/user.js
-    dest: "{{ firefox_directory.files[0].path }}/user.js"
-
 - name: Download arkenfox scripts to Firefox profile directory
   ansible.builtin.get_url:
     url: "https://raw.githubusercontent.com/arkenfox/user.js/master/{{ item }}"
@@ -150,6 +145,7 @@
   ansible.builtin.copy:
     src: files/user-overrides.js
     dest: "{{ firefox_directory.files[0].path }}/user-overrides.js"
+    mode: "0644"
 
 - name: Run arkenfox update script
   ansible.builtin.shell:
