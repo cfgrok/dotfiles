@@ -50,7 +50,6 @@ plugins=(
   copyfile
   copypath
   dirhistory
-  fd
   git
   git-extras
   globalias
@@ -60,7 +59,6 @@ plugins=(
   rails
   rake
   rake-fast
-  ripgrep
   rsync
   sudo
   taskwarrior
