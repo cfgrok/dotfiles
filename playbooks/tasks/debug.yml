@@ -1,0 +1,8 @@
+- name: Debug
+  ansible.builtin.debug:
+    var: debug_var
+  tags: debug
+
+- name: Abort
+  ansible.builtin.meta: end_play
+  tags: debug

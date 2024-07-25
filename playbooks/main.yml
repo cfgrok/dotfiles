@@ -115,3 +115,7 @@
     - name: Install Brother printer/scanner drivers
       ansible.builtin.import_tasks: tasks/brother.yml
       tags: brother
+
+    - name: Include debugging
+      ansible.builtin.include_tasks: tasks/debug.yml
+      tags: debug
