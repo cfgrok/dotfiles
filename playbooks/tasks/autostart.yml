@@ -4,8 +4,7 @@
     src: "/etc/xdg/autostart/{{ item }}"
     dest: "~/.config/autostart/{{ item }}"
     remote_src: true
-    owner: "{{ ansible_user_id }}"
-    group: "{{ ansible_user_id }}"
+    mode: "0664"
     force: false
 
 - name: Append line to disable autostart items

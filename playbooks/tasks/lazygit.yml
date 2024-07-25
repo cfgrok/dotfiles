@@ -30,6 +30,7 @@
     url: "https://github.com/jesseduffield/lazygit/releases/latest/download/lazygit_{{ tag_name }}_Linux_x86_64.tar.gz"
     dest: /tmp/lazygit.tar.gz
     checksum: "sha256:{{ checksum }}"
+    mode: "0600"
 
 - name: Extract Lazygit executable
   ansible.builtin.unarchive:

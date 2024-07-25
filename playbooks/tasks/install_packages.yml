@@ -97,6 +97,9 @@
 - name: Fix missing defaults error when launching vim-tiny
   ansible.builtin.file:
     path: /usr/share/vim/vim82/defaults.vim
+    owner: root
+    group: root
+    mode: "0644"
     state: touch
   become: true
 
@@ -145,7 +148,7 @@
   ansible.builtin.copy:
     src: files/user-overrides.js
     dest: "{{ firefox_directory.files[0].path }}/user-overrides.js"
-    mode: "0644"
+    mode: "0664"
 
 - name: Run arkenfox update script
   ansible.builtin.shell:

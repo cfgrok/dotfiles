@@ -3,6 +3,7 @@
   ansible.builtin.file:
     path: /tmp/install_deadbeef
     state: directory
+    mode: "0700"
 
 - name: Download DeaDBeeF
   ansible.builtin.get_url:
@@ -12,6 +13,7 @@
       {{ deadbeef_minor_version }}\
       _amd64.deb/download"
     dest: /tmp/install_deadbeef/deadbeef.deb
+    mode: "0600"
 
 - name: Install DeaDBeeF
   ansible.builtin.command:
@@ -22,11 +24,13 @@
   ansible.builtin.file:
     path: ~/.config/deadbeef
     state: directory
+    mode: "0775"
 
 - name: Copy DeaDBeeF config file
   ansible.builtin.copy:
     src: files/deadbeef_config
     dest: ~/.config/deadbeef/config
+    mode: "0664"
 
 - name: Download MPRIS2 plugin source
   ansible.builtin.get_url:
@@ -35,6 +39,7 @@
       /deadbeef-mpris2-plugin-\
       {{ deadbeef_plugin_version }}.tar.xz"
     dest: /tmp/install_deadbeef/plugin.tar.xz
+    mode: "0600"
 
 - name: Extract plugin source
   ansible.builtin.unarchive:
@@ -56,6 +61,7 @@
     src: /opt/deadbeef/include/deadbeef
     dest: "{{ plugin_install_dir }}"
     remote_src: true
+    mode: "0644"
 
 - name: Configure plugin
   ansible.builtin.shell:
@@ -72,12 +78,15 @@
 
 - name: Copy plugin files to DeaDBeeF library directory
   ansible.builtin.copy:
-    src: "/usr/local/lib/deadbeef/{{ item }}"
-    dest: "/opt/deadbeef/lib/deadbeef/{{ item }}"
+    src: "/usr/local/lib/deadbeef/{{ item.name }}"
+    dest: "/opt/deadbeef/lib/deadbeef/{{ item.name }}"
     remote_src: true
+    owner: root
+    group: root
+    mode: "{{ item.mode }}"
   loop:
-    - mpris.la
-    - mpris.so
+    - { name: mpris.la, mode: "0644" }
+    - { name: mpris.so, mode: "0755" }
   become: true
 
 - name: Remove plugin installation target directory

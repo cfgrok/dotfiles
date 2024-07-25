@@ -36,6 +36,7 @@
     url: "{{ download_url }}"
     dest: "/tmp/{{ tarfile }}"
     checksum: "sha256:{{ checksum }}"
+    mode: "0600"
 
 - name: Ensure old install directory is not present
   ansible.builtin.file:
@@ -67,12 +68,12 @@
   ansible.builtin.copy:
     src: "{{ install_dir }}/{{ item.src }}"
     dest: "{{ item.dest }}"
-    mode: "{{ item.mode }}"
     owner: root
     group: root
+    mode: "{{ item.mode }}"
     remote_src: true
   loop:
-    - { src: bin/nvim, dest: /usr/bin/nvim, mode: "a+x" }
+    - { src: bin/nvim, dest: /usr/bin/nvim, mode: "0755" }
     - { src: lib/nvim/parser, dest: /usr/lib/nvim/, mode: "0755" }
     - {
       src: share/applications/nvim.desktop,

@@ -25,6 +25,7 @@
   ansible.builtin.file:
     path: ~/.config/zsh
     state: directory
+    mode: "0775"
 
 - name: Symlink .zshrc config
   ansible.builtin.file:
@@ -48,6 +49,9 @@
   ansible.builtin.file:
     path: /usr/share/fonts/truetype/MesloLGS NF
     state: directory
+    owner: root
+    group: root
+    mode: "0755"
   become: true
 
 - name: Download powerlevel10k fonts

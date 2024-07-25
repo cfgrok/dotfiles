@@ -3,6 +3,7 @@
   ansible.builtin.file:
     path: ~/.config/git
     state: directory
+    mode: "0775"
 
 - name: Copy git user file
   ansible.builtin.template:

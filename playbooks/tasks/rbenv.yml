@@ -8,6 +8,7 @@
   ansible.builtin.file:
     path: ~/.local/rbenv/plugins
     state: directory
+    mode: "0775"
 
 - name: Clone ruby-build repository into plugins directory
   ansible.builtin.git:

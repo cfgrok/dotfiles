@@ -3,6 +3,7 @@
   ansible.builtin.get_url:
     url: https://keyserver.ubuntu.com/pks/lookup?op=get&search=0x3a160895cc2ce253085d08a552b24df7d43b5377
     dest: /tmp/alacritty-key
+    mode: "0600"
 
 - name: Dearmor signing key and save in keyrings directory
   ansible.builtin.command:
@@ -19,6 +20,9 @@
   ansible.builtin.copy:
     dest: /etc/apt/sources.list.d/alacritty.list
     content: "deb [signed-by=/usr/share/keyrings/alacritty.gpg] https://ppa.launchpadcontent.net/aslatter/ppa/ubuntu {{ ubuntu_release }} main"
+    owner: root
+    group: root
+    mode: "0644"
     force: false
   become: true
 
@@ -37,6 +41,7 @@
   ansible.builtin.file:
     path: ~/.config/alacritty
     state: directory
+    mode: "0775"
 
 - name: Symlink Alacritty config files
   ansible.builtin.file:
@@ -51,6 +56,7 @@
   ansible.builtin.get_url:
     url: https://raw.githubusercontent.com/alacritty/alacritty/master/extra/alacritty.info
     dest: /tmp/alacritty.info
+    mode: "0600"
 
 - name: Install Alacritty terminfo entries
   ansible.builtin.command:
@@ -66,3 +72,4 @@
   ansible.builtin.get_url:
     url: https://raw.githubusercontent.com/seebi/dircolors-solarized/master/dircolors.256dark
     dest: ~/.config/dircolors
+    mode: "0664"

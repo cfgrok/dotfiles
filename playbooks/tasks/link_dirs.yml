@@ -8,6 +8,9 @@
   ansible.builtin.file:
     path: /mnt/data/music
     state: directory
+    owner: root
+    group: root
+    mode: "0755"
   become: true
 
 - name: Create Music symlink
@@ -20,6 +23,9 @@
   ansible.builtin.file:
     path: /mnt/data/documents
     state: directory
+    owner: root
+    group: root
+    mode: "0755"
   become: true
 
 - name: Create docs symlink
@@ -32,21 +38,31 @@
   ansible.builtin.file:
     path: /mnt/data/photos
     state: directory
+    owner: root
+    group: root
+    mode: "0755"
   become: true
 
 - name: Create archive mount directory
   ansible.builtin.file:
     path: /mnt/data/archive
     state: directory
+    owner: root
+    group: root
+    mode: "0755"
   become: true
 
 - name: Create backup mount directory
   ansible.builtin.file:
     path: /mnt/data/backup
     state: directory
+    owner: root
+    group: root
+    mode: "0755"
   become: true
 
 - name: Create pCloud sync directory
   ansible.builtin.file:
     path: ~/Sync
     state: directory
+    mode: "0775"

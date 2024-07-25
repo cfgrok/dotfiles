@@ -2,6 +2,9 @@
 - name: Create install dir
   ansible.builtin.file:
     path: /opt/pcloud
+    owner: root
+    group: root
+    mode: "0755"
     state: directory
   become: true
 
@@ -20,11 +23,13 @@
   ansible.builtin.get_url:
     url: "{{ download_url }}"
     dest: /opt/pcloud/pcloud
-    mode: a+x
+    owner: root
+    group: root
+    mode: "0755"
   become: true
 
 - name: Add autostart file for pCloud
   ansible.builtin.copy:
     src: pcloud.desktop
     dest: ~/.config/autostart/
-    mode: "0644"
+    mode: "0664"

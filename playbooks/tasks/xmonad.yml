@@ -20,11 +20,13 @@
   ansible.builtin.file:
     path: ~/.cache/xmonad
     state: directory
+    mode: "0775"
 
 - name: Create XMonad data directory
   ansible.builtin.file:
     path: ~/.local/share/xmonad
     state: directory
+    mode: "0775"
 
 - name: Reset XMonad
   ansible.builtin.command:
@@ -44,6 +46,9 @@
   ansible.builtin.copy:
     src: xmonad.desktop
     dest: /usr/share/applications/
+    owner: root
+    group: root
+    mode: "0644"
   become: true
 
 - name: Modify Mint desktop management script
@@ -57,11 +62,13 @@
   ansible.builtin.file:
     path: /tmp/install_dmenu2
     state: directory
+    mode: "0700"
 
 - name: Download dmenu2 files
   ansible.builtin.get_url:
     url: "https://github.com/spcmd/dmenu2/raw/{{ dmenu2_version }}/dmenu2-{{ dmenu2_version }}.tar.gz"
     dest: /tmp/install_dmenu2/dmenu2.tar.gz
+    mode: "0600"
 
 - name: Extract dmenu2 source
   ansible.builtin.unarchive:
@@ -94,6 +101,9 @@
   ansible.builtin.file:
     path: /usr/local/share/man/man1
     state: directory
+    owner: root
+    group: root
+    mode: "0755"
   become: true
 
 - name: Copy dmenu2 man files
