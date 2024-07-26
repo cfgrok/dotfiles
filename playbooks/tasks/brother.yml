@@ -19,6 +19,7 @@
 - name: Install scanner driver
   ansible.builtin.command:
     cmd: gdebi -n /tmp/install_brother/brscan3.deb
+    creates: /usr/bin/brsaneconfig3
   become: true
 
 - name: Download udev rule
@@ -30,6 +31,7 @@
 - name: Install udev rule
   ansible.builtin.command:
     cmd: gdebi -n /tmp/install_brother/udev-rule.deb
+    creates: /etc/udev/rules.d/60-brother-libsane-type1.rules
   become: true
 
 - name: Modify udev rule

@@ -14,6 +14,7 @@
 - name: Install bat
   ansible.builtin.command:
     cmd: gdebi -n /tmp/install_bat/bat.deb
+    creates: /usr/bin/bat
   become: true
 
 - name: Clean up bat install directory

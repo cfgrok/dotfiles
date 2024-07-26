@@ -18,6 +18,7 @@
 - name: Install DeaDBeeF
   ansible.builtin.command:
     cmd: gdebi -n /tmp/install_deadbeef/deadbeef.deb
+    creates: /opt/deadbeef/bin/deadbeef
   become: true
 
 - name: Create DeaDBeeF config directory
@@ -68,12 +69,14 @@
     executable: /usr/bin/zsh
     cmd: ./configure
     chdir: "{{ plugin_install_dir }}"
+    creates: "{{ plugin_install_dir }}/libtool"
 
 - name: Install plugin
   ansible.builtin.shell:
     executable: /usr/bin/zsh
     cmd: make install
     chdir: "{{ plugin_install_dir }}"
+    creates: /usr/local/lib/deadbeef/mpris.so
   become: true
 
 - name: Copy plugin files to DeaDBeeF library directory

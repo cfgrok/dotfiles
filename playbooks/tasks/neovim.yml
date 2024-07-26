@@ -76,25 +76,25 @@
     - { src: bin/nvim, dest: /usr/bin/nvim, mode: "0755" }
     - { src: lib/nvim/parser, dest: /usr/lib/nvim/, mode: "0755" }
     - {
-      src: share/applications/nvim.desktop,
-      dest: /usr/share/applications/nvim.desktop,
-      mode: "0644",
-    }
+        src: share/applications/nvim.desktop,
+        dest: /usr/share/applications/nvim.desktop,
+        mode: "0644",
+      }
     - {
-      src: share/icons/hicolor/128x128/apps/nvim.png,
-      dest: /usr/share/icons/hicolor/128x128/apps/nvim.png,
-      mode: "0644",
-    }
+        src: share/icons/hicolor/128x128/apps/nvim.png,
+        dest: /usr/share/icons/hicolor/128x128/apps/nvim.png,
+        mode: "0644",
+      }
     - {
-      src: share/locale/en_GB/LC_MESSAGES/nvim.mo,
-      dest: /usr/share/locale/en_GB/LC_MESSAGES/nvim.mo,
-      mode: "0644",
-    }
+        src: share/locale/en_GB/LC_MESSAGES/nvim.mo,
+        dest: /usr/share/locale/en_GB/LC_MESSAGES/nvim.mo,
+        mode: "0644",
+      }
     - {
-      src: share/man/man1/nvim.1,
-      dest: /usr/share/man/man1/nvim.1,
-      mode: "0644",
-    }
+        src: share/man/man1/nvim.1,
+        dest: /usr/share/man/man1/nvim.1,
+        mode: "0644",
+      }
     - { src: share/nvim/runtime, dest: /usr/share/nvim/, mode: "0755" }
   become: true
 
@@ -140,20 +140,20 @@
 
 - name: Set Neovim as default application for "editor", "vi" and "vim" commands
   ansible.builtin.command:
-    cmd: "{{ item }}"
+    cmd: "update-alternatives --install /usr/bin/{{ item }} {{ item }} /usr/bin/nvim 120"
   loop:
-    - "update-alternatives --install /usr/bin/editor editor /usr/bin/nvim 100"
-    - "update-alternatives --install /usr/bin/vi vi /usr/bin/nvim 100"
-    - "update-alternatives --install /usr/bin/vim vim /usr/bin/nvim 100"
-    - "update-alternatives --set editor /usr/bin/nvim"
-    - "update-alternatives --set vi /usr/bin/nvim"
-    - "update-alternatives --set vim /usr/bin/nvim"
+    - "editor"
+    - "vi"
+    - "vim"
   become: true
+  register: update_output
+  changed_when: "'update-alternatives: using /usr/bin/nvim' in update_output.stdout"
 
-- name: Install neovim npm package
+- name: Install neovim node package
   ansible.builtin.shell:
     executable: /usr/bin/zsh
-    cmd: source ~/.config/nvm/nvm.sh && npm install -g neovim
+    cmd: source ~/.config/nvm/nvm.sh --no-use && npm install -g neovim
+    creates: "~/.config/nvm/versions/node/{{ node_version }}/lib/node_modules/neovim"
 
 - name: Check whether Neovim config directory exists
   ansible.builtin.stat:
@@ -162,21 +162,14 @@
 
 - name: Clone repository to config directory if it doesn't exist
   ansible.builtin.git:
-    repo: git@github.com:cfgrok/nvim-config.git
+    repo: https://github.com/cfgrok/nvim-config
     dest: "{{ config_dir }}"
+    version: master
   when: not git_dir.stat.exists
 
-- name: Check whether upstream remote exists
-  ansible.builtin.shell:
-    cmd: git remote | grep upstream | cat
-    chdir: "{{ config_dir }}"
-  register: upstream_remote
-
-- name: Set up "upstream" remote in config directory if it doesn't exist
+- name: Update remote url for repo # noqa: command-instead-of-module
   ansible.builtin.command:
-    cmd: "{{ item }}"
+    cmd: git remote set-url origin git@github.com:cfgrok/nvim-config.git
     chdir: "{{ config_dir }}"
-  loop:
-    - git remote add upstream https://github.com/LazyVim/starter
-    - git remote set-url upstream --push no-push
-  when: upstream_remote.stdout | length == 0
+  changed_when: true
+  when: not git_dir.stat.exists

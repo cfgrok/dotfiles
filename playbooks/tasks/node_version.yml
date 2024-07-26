@@ -1,0 +1,14 @@
+- name: Set command to cat nvm alias path
+  ansible.builtin.set_fact:
+    cat_alias: cat ~/.config/nvm/alias/
+
+- name: Find default node version
+  ansible.builtin.shell:
+    executable: /usr/bin/zsh
+    cmd: "{{ cat_alias }}$( {{ cat_alias }}$( {{ cat_alias }}default ) )"
+  register: node_version
+  changed_when: false
+
+- name: Set node version variable
+  ansible.builtin.set_fact:
+    node_version: "{{ node_version.stdout }}"

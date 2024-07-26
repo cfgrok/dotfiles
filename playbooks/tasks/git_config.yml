@@ -17,15 +17,19 @@
     path: "~/.config/git/config"
     state: link
 
-- name: Update remote url for dotfiles repo
+- name: Update remote url for dotfiles repo # noqa: command-instead-of-module
   ansible.builtin.command:
     cmd: git remote set-url origin git@github.com:cfgrok/dotfiles.git
     chdir: ~/Documents/workspace/dotfiles
+  changed_when: true
 
 - name: Create ssh key pair
   ansible.builtin.command:
     cmd: ssh-keygen -f ~/.ssh/id_rsa -N "" -q
+    creates: ~/.ssh/id_rsa
 
 - name: Add ssh key to ssh-agent
   ansible.builtin.command:
     cmd: ssh-add
+  register: ssh_add_output
+  changed_when: "'Identity added: ' in ssh_add_output.stdout"

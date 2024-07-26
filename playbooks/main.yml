@@ -7,9 +7,7 @@
     deadbeef_minor_version: 1.9.1-1
     deadbeef_plugin_version: 1.14
     dmenu2_version: 0.2.1
-    home_path: "/home/{{ ansible_user_id }}"
     nerdfont_version: 2.1.0
-    neovim_version: 0.9.5
     ruby_version: 3.3.1
     ubuntu_release: jammy
 
@@ -71,6 +69,12 @@
     - name: Install zsh and Oh My Zsh
       ansible.builtin.import_tasks: tasks/oh_my_zsh.yml
       tags: zsh
+
+    - name: Set nodejs version
+      ansible.builtin.import_tasks: tasks/node_version.yml
+      tags:
+        - node
+        - neovim
 
     - name: Install nvm and nodejs
       ansible.builtin.import_tasks: tasks/node.yml

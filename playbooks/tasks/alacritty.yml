@@ -32,11 +32,6 @@
     update_cache: true
   become: true
 
-- name: Set Alacritty as default terminal emulator
-  ansible.builtin.command:
-    cmd: update-alternatives --set x-terminal-emulator /usr/bin/alacritty
-  become: true
-
 - name: Create Alacritty config directory
   ansible.builtin.file:
     path: ~/.config/alacritty
@@ -61,6 +56,7 @@
 - name: Install Alacritty terminfo entries
   ansible.builtin.command:
     cmd: tic -xe alacritty,alacritty-direct /tmp/alacritty.info
+    creates: /etc/terminfo/a/alacritty
   become: true
 
 - name: Remove downloaded terminfo file

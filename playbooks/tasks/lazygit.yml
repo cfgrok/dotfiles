@@ -44,6 +44,7 @@
 - name: Install Lazygit executable
   ansible.builtin.command:
     cmd: install /tmp/lazygit /usr/local/bin
+    creates: /usr/local/bin/lazygit
   become: true
 
 - name: Remove downloaded tarfile and executable

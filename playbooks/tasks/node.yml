@@ -1,10 +1,19 @@
 ---
+- name: Retrieve latest nvm release information from GitHub API
+  ansible.builtin.uri:
+    url: https://api.github.com/repos/nvm-sh/nvm/releases/latest
+    method: GET
+    return_content: true
+  register: api_response
+
 - name: Install nvm
   ansible.builtin.git:
     repo: https://github.com/nvm-sh/nvm
     dest: ~/.config/nvm
+    version: "{{ api_response.json.tag_name }}"
 
 - name: Install node
   ansible.builtin.shell:
     executable: /usr/bin/zsh
-    cmd: source ~/.config/nvm/nvm.sh && nvm install --lts
+    cmd: "source ~/.config/nvm/nvm.sh --no-use && nvm install {{ node_version }}"
+    creates: "~/.config/nvm/versions/node/{{ node_version }}"

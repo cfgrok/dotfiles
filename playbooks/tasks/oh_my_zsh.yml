@@ -20,6 +20,7 @@
   ansible.builtin.git:
     repo: https://github.com/ohmyzsh/ohmyzsh
     dest: ~/.config/oh-my-zsh
+    version: master
 
 - name: Create zsh config directory
   ansible.builtin.file:
@@ -37,6 +38,7 @@
   ansible.builtin.git:
     repo: https://github.com/romkatv/powerlevel10k
     dest: ~/.config/oh-my-zsh/custom/themes/powerlevel10k
+    version: master
 
 - name: Symlink powerlevel10k config script
   ansible.builtin.file:
@@ -68,13 +70,16 @@
 - name: Refresh font cache
   ansible.builtin.command:
     cmd: fc-cache
+  changed_when: false
 
 - name: "Install custom plugin: zsh-autosuggestions"
   ansible.builtin.git:
     repo: https://github.com/zsh-users/zsh-autosuggestions
     dest: ~/.config/oh-my-zsh/custom/plugins/zsh-autosuggestions
+    version: master
 
 - name: "Install custom plugin: zsh-syntax-highlighting"
   ansible.builtin.git:
     repo: https://github.com/zsh-users/zsh-syntax-highlighting
     dest: ~/.config/oh-my-zsh/custom/plugins/zsh-syntax-highlighting
+    version: master

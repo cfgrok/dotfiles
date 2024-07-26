@@ -150,10 +150,12 @@
     dest: "{{ firefox_directory.files[0].path }}/user-overrides.js"
     mode: "0664"
 
-- name: Run arkenfox update script
+- name: Run arkenfox update script # noqa: command-instead-of-shell
   ansible.builtin.shell:
     cmd: ./updater.sh -su
     chdir: "{{ firefox_directory.files[0].path }}"
+  register: update_output
+  changed_when: "'user.js has been backed up and replaced with the latest version!' in update_output.stdout"
 
 - name: Copy Firefox policies file
   ansible.builtin.copy:
