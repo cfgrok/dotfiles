@@ -3,6 +3,7 @@
   ansible.builtin.git:
     repo: https://github.com/rbenv/rbenv
     dest: ~/.local/rbenv
+    version: master
 
 - name: Create rbenv plugins directory
   ansible.builtin.file:
@@ -14,6 +15,7 @@
   ansible.builtin.git:
     repo: https://github.com/rbenv/ruby-build
     dest: ~/.local/rbenv/plugins/ruby-build
+    version: master
 
 - name: Install ruby dependencies
   ansible.builtin.apt:
@@ -37,40 +39,46 @@
   ansible.builtin.set_fact:
     env_vars: export PATH=~/.local/rbenv/bin:$PATH; export RBENV_ROOT=~/.local/rbenv;
 
+- name: Find latest installable ruby versions
+  ansible.builtin.shell:
+    executable: /usr/bin/zsh
+    cmd: "({{ env_vars }} rbenv install -l)"
+  register: ruby_version
+  changed_when: false
+
+- name: Define latest MRI ruby version number
+  ansible.builtin.set_fact:
+    ruby_version: "{{ ruby_version.stdout_lines | select('match', '^[\\d\\.]+$') | max }}"
+
 - name: Install ruby
   ansible.builtin.shell:
     executable: /usr/bin/zsh
     cmd: "({{ env_vars }} rbenv install -s {{ ruby_version }})"
+    creates: "~/.local/rbenv/versions/{{ ruby_version }}"
+
+- name: Find current ruby version
+  ansible.builtin.shell:
+    executable: /usr/bin/zsh
+    cmd: "{{ env_vars }} rbenv global"
+  register: current_version
+  changed_when: false
 
 - name: Set global ruby version
   ansible.builtin.shell:
     executable: /usr/bin/zsh
     cmd: "({{ env_vars }} rbenv global {{ ruby_version }})"
+  when: current_version.stdout != ruby_version
+  changed_when: true
 
 - name: Define rbenv initialization variable string
   ansible.builtin.set_fact:
     rbenv_init: eval "$( rbenv init - zsh )";
 
-- name: Install solargraph gem
+- name: Install neovim gem
   ansible.builtin.shell:
     executable: /usr/bin/zsh
-    cmd: "({{ env_vars }} {{ rbenv_init }} gem install solargraph)"
-
-- name: Clone reline repository
-  ansible.builtin.git:
-    repo: https://github.com/ruby/reline
-    dest: ~/Documents/workspace/reline
-
-- name: Build reline gem
-  ansible.builtin.shell:
-    executable: /usr/bin/zsh
-    cmd: rake build
-    chdir: ~/Documents/workspace/reline
-
-- name: Install reline gem
-  ansible.builtin.shell:
-    executable: /usr/bin/zsh
-    cmd: "({{ env_vars }} {{ rbenv_init }} gem install ~/Documents/workspace/reline/pkg/*.gem)"
+    cmd: "({{ env_vars }} {{ rbenv_init }} gem install neovim)"
+    creates: "~/.local/rbenv/versions/{{ ruby_version }}/lib/ruby/gems/*/gems/neovim-*"
 
 - name: Symlink irbrc file
   ansible.builtin.file:
