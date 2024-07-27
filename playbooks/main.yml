@@ -2,10 +2,6 @@
 - name: Primary machine install
   hosts: localhost
   vars:
-    # TODO: install latest deadbeef version automatically
-    deadbeef_version: 1.9.1
-    deadbeef_minor_version: 1.9.1-1
-    deadbeef_plugin_version: 1.14
     # TODO: install latest dmenu version automatically?
     dmenu2_version: 0.2.1
     # TODO: install latest nerdfont version automatically?

@@ -5,20 +5,25 @@
     state: directory
     mode: "0700"
 
+- name: Set download URL
+  ansible.builtin.set_fact:
+    download_url:
+      "{{ query('ansible.builtin.url', 'https://deadbeef.sourceforge.io/download.html') | \
+      select('match', '.+universal deb.+') | regex_search('https[^\"]+') }}"
+
+- name: Set installation file path
+  ansible.builtin.set_fact:
+    deadbeef_install_file: "/tmp/install_deadbeef/{{ download_url | regex_search('[^/]+(?=/download$)') }}"
+
 - name: Download DeaDBeeF
   ansible.builtin.get_url:
-    url: "https://sourceforge.net/projects/deadbeef/files/travis/linux/\
-      {{ deadbeef_version }}\
-      /deadbeef-static_\
-      {{ deadbeef_minor_version }}\
-      _amd64.deb/download"
-    dest: /tmp/install_deadbeef/deadbeef.deb
+    url: "{{ download_url }}"
+    dest: "{{ deadbeef_install_file }}"
     mode: "0600"
 
 - name: Install DeaDBeeF
-  ansible.builtin.command:
-    cmd: gdebi -n /tmp/install_deadbeef/deadbeef.deb
-    creates: /opt/deadbeef/bin/deadbeef
+  ansible.builtin.apt:
+    deb: "{{ deadbeef_install_file }}"
   become: true
 
 - name: Create DeaDBeeF config directory
@@ -33,29 +38,38 @@
     dest: ~/.config/deadbeef/config
     mode: "0664"
 
+- name: Retrieve MPRIS2 plugin tags from GitHub API
+  ansible.builtin.uri:
+    url: https://api.github.com/repos/DeaDBeeF-Player/deadbeef-mpris2-plugin/tags
+    method: GET
+    return_content: true
+  register: api_response
+
+- name: Set latest MPRIS2 plugin tag tarball URL
+  ansible.builtin.set_fact:
+    tarball_url: "{{ api_response.json | json_query('[0].tarball_url') }}"
+
 - name: Download MPRIS2 plugin source
   ansible.builtin.get_url:
-    url: "https://github.com/Serranya/deadbeef-mpris2-plugin/releases/download/\
-      v{{ deadbeef_plugin_version }}\
-      /deadbeef-mpris2-plugin-\
-      {{ deadbeef_plugin_version }}.tar.xz"
-    dest: /tmp/install_deadbeef/plugin.tar.xz
+    url: "{{ tarball_url }}"
+    dest: /tmp/install_deadbeef/plugin.tar.gz
     mode: "0600"
 
 - name: Extract plugin source
   ansible.builtin.unarchive:
-    src: /tmp/install_deadbeef/plugin.tar.xz
+    src: /tmp/install_deadbeef/plugin.tar.gz
     dest: /tmp/install_deadbeef
     remote_src: true
 
-- name: Install plugin build dependency
-  ansible.builtin.apt:
-    name: libglib2.0-dev
-  become: true
+- name: Find plugin install directory
+  ansible.builtin.find:
+    paths: /tmp/install_deadbeef
+    file_type: directory
+  register: plugin_install_dir
 
 - name: Set plugin install directory variable
   ansible.builtin.set_fact:
-    plugin_install_dir: "/tmp/install_deadbeef/deadbeef-{{ deadbeef_plugin_version }}"
+    plugin_install_dir: "{{ plugin_install_dir.files[0].path }}"
 
 - name: Copy DeaDBeeF library files to plugin install directory
   ansible.builtin.copy:
@@ -63,6 +77,22 @@
     dest: "{{ plugin_install_dir }}"
     remote_src: true
     mode: "0644"
+
+- name: Install plugin build dependencies
+  ansible.builtin.apt:
+    name:
+      - libglib2.0-dev
+      - libtool
+    update_cache: true
+  become: true
+
+- name: Update plugin configuration files
+  ansible.builtin.shell:
+    executable: /usr/bin/zsh
+    cmd: autoreconf --install
+    chdir: "{{ plugin_install_dir }}"
+    creates: "{{ plugin_install_dir }}/configure"
+  become: true
 
 - name: Configure plugin
   ansible.builtin.shell:
