@@ -27,6 +27,20 @@
         git_name: "{{ git_name_entry.user_input }}"
       tags: git_config
 
+    - name: Update apt cache
+      ansible.builtin.apt:
+        update_cache: true
+      become: true
+      tags:
+        - install_packages
+        - xmonad
+        - jgmenu
+        - zsh
+        - rbenv
+        - deadbeef
+        - postgres
+        - brother
+
     - name: Remove unwanted default packages
       ansible.builtin.import_tasks: tasks/clean_packages.yml
       tags: clean_packages
@@ -65,9 +79,7 @@
 
     - name: Set nodejs version
       ansible.builtin.import_tasks: tasks/node_version.yml
-      tags:
-        - node
-        - neovim
+      tags: [neovim, node]
 
     - name: Install nvm and nodejs
       ansible.builtin.import_tasks: tasks/node.yml

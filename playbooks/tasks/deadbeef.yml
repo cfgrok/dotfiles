@@ -83,7 +83,6 @@
     name:
       - libglib2.0-dev
       - libtool
-    update_cache: true
   become: true
 
 - name: Update plugin configuration files

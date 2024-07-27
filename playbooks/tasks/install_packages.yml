@@ -70,7 +70,6 @@
       - vagrant
       - virtualbox
       - vlc
-    update_cache: true
   become: true
 
 - name: Set askpass path in sudo.conf

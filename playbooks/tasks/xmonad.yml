@@ -8,7 +8,6 @@
       - libghc-xmonad-doc
       - suckless-tools
       - xmonad
-    update_cache: true
   become: true
 
 - name: Symlink XMonad config
