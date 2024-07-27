@@ -8,6 +8,7 @@
       - libghc-xmonad-doc
       - suckless-tools
       - xmonad
+    update_cache: true
   become: true
 
 - name: Symlink XMonad config
@@ -58,6 +59,17 @@
     regexp: "^(\\s+)(settings.set_string\\(\"windowmanager\", \"mint-window-manager\"\\))$"
     replace: "\\1# \\2"
   become: true
+
+- name: Retrieve latest dmenu2 release information from GitHub API
+  ansible.builtin.uri:
+    url: https://api.github.com/repos/spcmd/dmenu2/releases/latest
+    method: GET
+    return_content: true
+  register: api_response
+
+- name: Set dmenu2 version number
+  ansible.builtin.set_fact:
+    dmenu2_version: "{{ api_response.json.tag_name }}"
 
 - name: Create dmenu2 install directory
   ansible.builtin.file:
