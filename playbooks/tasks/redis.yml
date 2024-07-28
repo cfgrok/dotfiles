@@ -1,0 +1,36 @@
+---
+- name: Download apt signing key for Redis
+  ansible.builtin.get_url:
+    url: https://packages.redis.io/gpg
+    dest: /tmp/redis-key
+    mode: "0600"
+
+- name: Ensure apt keyring directory exists
+  ansible.builtin.file:
+    path: /etc/apt/keyrings
+    state: directory
+    mode: "0755"
+  become: true
+
+- name: Dearmor signing key and save in keyrings directory
+  ansible.builtin.command:
+    cmd: gpg --dearmor -o /etc/apt/keyrings/redis-archive-keyring.gpg /tmp/redis-key
+    creates: /etc/apt/keyrings/redis-archive-keyring.gpg
+  become: true
+
+- name: Remove downloaded key file
+  ansible.builtin.file:
+    path: /tmp/redis-key
+    state: absent
+
+- name: Create apt source file
+  ansible.builtin.apt_repository:
+    repo: "deb [signed-by=/etc/apt/keyrings/redis-archive-keyring.gpg] https://packages.redis.io/deb {{ ubuntu_release }} main"
+    filename: redis
+  become: true
+
+- name: Install Redis
+  ansible.builtin.apt:
+    name: redis
+    update_cache: true
+  become: true

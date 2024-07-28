@@ -5,8 +5,6 @@
     ubuntu_release: jammy
 
   tasks:
-    # TODO: install redis from ppa
-
     - name: Prompt for git config email
       ansible.builtin.pause:
         prompt: Enter email for git config
@@ -112,6 +110,10 @@
     - name: Install PostgreSQL
       ansible.builtin.import_tasks: tasks/postgres.yml
       tags: postgres
+
+    - name: Install Redis
+      ansible.builtin.import_tasks: tasks/redis.yml
+      tags: redis
 
     - name: Update user settings
       ansible.builtin.import_tasks: tasks/settings.yml
