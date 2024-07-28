@@ -44,7 +44,7 @@
 - name: Symlink Alacritty config files
   ansible.builtin.file:
     src: "{{ playbook_dir }}/files/{{ item }}"
-    dest: "~/.config/alacritty/{{ item }}"
+    path: "~/.config/alacritty/{{ item }}"
     state: link
   loop:
     - alacritty.toml
@@ -53,7 +53,7 @@
 - name: Download terminfo file for Alacritty
   ansible.builtin.get_url:
     url: https://raw.githubusercontent.com/alacritty/alacritty/master/extra/alacritty.info
-    dest: /tmp/alacritty.info
+    dest: /tmp/
     mode: "0600"
 
 - name: Install Alacritty terminfo entries

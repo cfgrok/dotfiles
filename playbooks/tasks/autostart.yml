@@ -2,7 +2,7 @@
 - name: Copy autostart files to .config/autostart directory
   ansible.builtin.copy:
     src: "/etc/xdg/autostart/{{ item }}"
-    dest: "~/.config/autostart/{{ item }}"
+    dest: ~/.config/autostart/
     remote_src: true
     mode: "0664"
     force: false

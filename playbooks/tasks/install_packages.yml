@@ -96,10 +96,10 @@
 - name: Fix missing defaults error when launching vim-tiny
   ansible.builtin.file:
     path: /usr/share/vim/vim82/defaults.vim
+    state: touch
     owner: root
     group: root
     mode: "0644"
-    state: touch
   become: true
 
 - name: Symlink rg config files
@@ -134,10 +134,14 @@
     patterns: "*default-release"
   register: firefox_directory
 
+- name: Set Firefox profile directory variable
+  ansible.builtin.set_fact:
+    firefox_directory: "{{ firefox_directory.files[0].path }}"
+
 - name: Download arkenfox scripts to Firefox profile directory
   ansible.builtin.get_url:
     url: "https://raw.githubusercontent.com/arkenfox/user.js/master/{{ item }}"
-    dest: "{{ firefox_directory.files[0].path }}/{{ item }}"
+    dest: "{{ firefox_directory }}/"
     mode: "0775"
   loop:
     - prefsCleaner.sh
@@ -145,21 +149,21 @@
 
 - name: Copy user-overrides.js to Firefox profile directory
   ansible.builtin.copy:
-    src: files/user-overrides.js
-    dest: "{{ firefox_directory.files[0].path }}/user-overrides.js"
+    src: user-overrides.js
+    dest: "{{ firefox_directory }}/"
     mode: "0664"
 
 - name: Run arkenfox update script # noqa: command-instead-of-shell
   ansible.builtin.shell:
     cmd: ./updater.sh -su
-    chdir: "{{ firefox_directory.files[0].path }}"
+    chdir: "{{ firefox_directory }}"
   register: update_output
   changed_when: "'user.js has been backed up and replaced with the latest version!' in update_output.stdout"
 
 - name: Copy Firefox policies file
   ansible.builtin.copy:
-    src: files/policies.json
-    dest: /usr/lib/firefox/distribution/policies.json
+    src: policies.json
+    dest: /usr/lib/firefox/distribution/
     owner: root
     group: root
     mode: "0644"

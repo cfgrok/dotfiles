@@ -34,7 +34,7 @@
 
 - name: Copy DeaDBeeF config file
   ansible.builtin.copy:
-    src: files/deadbeef_config
+    src: deadbeef_config
     dest: ~/.config/deadbeef/config
     mode: "0664"
 
@@ -111,7 +111,7 @@
 - name: Copy plugin files to DeaDBeeF library directory
   ansible.builtin.copy:
     src: "/usr/local/lib/deadbeef/{{ item.name }}"
-    dest: "/opt/deadbeef/lib/deadbeef/{{ item.name }}"
+    dest: /opt/deadbeef/lib/deadbeef/
     remote_src: true
     owner: root
     group: root

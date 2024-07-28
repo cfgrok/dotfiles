@@ -2,7 +2,7 @@
 - name: Download apt signing key for Brave and save in keyrings directory
   ansible.builtin.get_url:
     url: https://brave-browser-apt-release.s3.brave.com/brave-browser-archive-keyring.gpg
-    dest: /usr/share/keyrings/brave-browser-archive-keyring.gpg
+    dest: /usr/share/keyrings/
     owner: root
     group: root
     mode: "0644"

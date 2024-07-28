@@ -6,8 +6,8 @@
 
 - name: Copy supporting scripts to system directory
   ansible.builtin.copy:
-    src: "files/{{ item }}"
-    dest: "/usr/local/bin/{{ item }}"
+    src: "{{ item }}"
+    dest: /usr/local/bin/
     owner: root
     group: root
     mode: "0755"

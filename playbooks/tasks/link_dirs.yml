@@ -15,8 +15,8 @@
 
 - name: Create Music symlink
   ansible.builtin.file:
-    path: ~/Music
     src: /mnt/data/music
+    path: ~/Music
     state: link
 
 - name: Create documents mount directory
@@ -30,8 +30,8 @@
 
 - name: Create docs symlink
   ansible.builtin.file:
-    path: ~/docs
     src: /mnt/data/documents
+    path: ~/docs
     state: link
 
 - name: Create photos mount directory

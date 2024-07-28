@@ -2,10 +2,10 @@
 - name: Create install dir
   ansible.builtin.file:
     path: /opt/pcloud
+    state: directory
     owner: root
     group: root
     mode: "0755"
-    state: directory
   become: true
 
 - name: Get JSON from API

@@ -91,7 +91,7 @@
 - name: Copy dmenu2 executables
   ansible.builtin.copy:
     src: "/tmp/install_dmenu2/dmenu2-{{ dmenu2_version }}/{{ item }}"
-    dest: "/usr/local/bin/{{ item }}"
+    dest: /usr/local/bin/
     remote_src: true
     owner: root
     group: root
@@ -121,7 +121,7 @@
 - name: Copy dmenu2 man files
   ansible.builtin.copy:
     src: "/tmp/install_dmenu2/dmenu2-{{ dmenu2_version }}/{{ item }}"
-    dest: "/usr/local/share/man/man1/{{ item }}"
+    dest: /usr/local/share/man/man1/
     remote_src: true
     owner: root
     group: root
@@ -138,7 +138,7 @@
 
 - name: Add wrapper script for dmenu file opening
   ansible.builtin.copy:
-    src: files/user-shell-wrapper
+    src: user-shell-wrapper
     dest: /usr/local/bin/
     owner: root
     group: root
