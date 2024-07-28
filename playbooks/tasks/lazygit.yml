@@ -46,9 +46,10 @@
       - README.md
 
 - name: Install Lazygit executable
-  ansible.builtin.command:
-    cmd: install /tmp/lazygit /usr/local/bin
-    creates: /usr/local/bin/lazygit
+  ansible.builtin.copy:
+    src: /tmp/lazygit
+    dest: /usr/local/bin/
+    mode: "0755"
   become: true
 
 - name: Remove downloaded tarfile and executable
