@@ -12,7 +12,9 @@
 
 - name: Find and set checksum file URL
   ansible.builtin.set_fact:
-    checksum_url: "{{ api_response.json | json_query('assets[?name == `checksums.txt`] | [0].browser_download_url') }}"
+    checksum_url:
+      "{{ api_response.json | json_query('assets[?name == `checksums.txt`] \
+      | [0].browser_download_url') }}"
 
 - name: Retrieve checksum file content
   ansible.builtin.uri:
@@ -23,11 +25,13 @@
 
 - name: Find and set checksum
   ansible.builtin.set_fact:
-    checksum: "{{ checksum_response.content | regex_search('(?<=\n)[\\da-f]+(?=\\s+lazygit_[\\d\\.]+_Linux_x86_64)') }}"
+    checksum: "{{ checksum_response.content \
+      | regex_search('(?<=\n)[\\da-f]+(?=\\s+lazygit_[\\d\\.]+_Linux_x86_64)') }}"
 
 - name: Download Lazygit tarfile
   ansible.builtin.get_url:
-    url: "https://github.com/jesseduffield/lazygit/releases/latest/download/lazygit_{{ tag_name }}_Linux_x86_64.tar.gz"
+    url: "https://github.com/jesseduffield/lazygit/releases/latest/download/\
+      lazygit_{{ tag_name }}_Linux_x86_64.tar.gz"
     dest: /tmp/lazygit.tar.gz
     checksum: "sha256:{{ checksum }}"
     mode: "0600"

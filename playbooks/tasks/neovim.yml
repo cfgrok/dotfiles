@@ -14,7 +14,9 @@
 
 - name: Find and set checksum file URL
   ansible.builtin.set_fact:
-    checksum_url: "{{ api_response.json | json_query('assets[?name == `{}.sha256sum`] | [0].browser_download_url'.format(tarfile)) }}"
+    checksum_url:
+      "{{ api_response.json | json_query('assets[?name == `{}.sha256sum`] \
+      | [0].browser_download_url'.format(tarfile)) }}"
 
 - name: Retrieve checksum file content
   ansible.builtin.uri:
@@ -29,7 +31,8 @@
 
 - name: Find and set tarfile download URL
   ansible.builtin.set_fact:
-    download_url: "{{ api_response.json | json_query('assets[?name == `{}`] | [0].browser_download_url'.format(tarfile)) }}"
+    download_url: "{{ api_response.json | json_query('assets[?name == `{}`] \
+      | [0].browser_download_url'.format(tarfile)) }}"
 
 - name: Download Neovim tarfile
   ansible.builtin.get_url:

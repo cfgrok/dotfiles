@@ -78,7 +78,8 @@
 
 - name: Download dmenu2 files
   ansible.builtin.get_url:
-    url: "https://github.com/spcmd/dmenu2/raw/{{ dmenu2_version }}/dmenu2-{{ dmenu2_version }}.tar.gz"
+    url: "https://github.com/spcmd/dmenu2/raw/{{ dmenu2_version }}\
+      /dmenu2-{{ dmenu2_version }}.tar.gz"
     dest: /tmp/install_dmenu2/dmenu2.tar.gz
     mode: "0600"
 

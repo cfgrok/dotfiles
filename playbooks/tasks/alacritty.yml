@@ -1,7 +1,8 @@
 ---
 - name: Download apt signing key for Alacritty
   ansible.builtin.get_url:
-    url: https://keyserver.ubuntu.com/pks/lookup?op=get&search=0x3a160895cc2ce253085d08a552b24df7d43b5377
+    url: https://keyserver.ubuntu.com/pks/lookup?\
+      op=get&search=0x3a160895cc2ce253085d08a552b24df7d43b5377
     dest: /tmp/alacritty-key
     mode: "0600"
 
@@ -25,7 +26,8 @@
 
 - name: Create apt source file
   ansible.builtin.apt_repository:
-    repo: "deb [signed-by=/etc/apt/keyrings/alacritty-archive-keyring.gpg] https://ppa.launchpadcontent.net/aslatter/ppa/ubuntu {{ ubuntu_release }} main"
+    repo: "deb [signed-by=/etc/apt/keyrings/alacritty-archive-keyring.gpg] \
+      https://ppa.launchpadcontent.net/aslatter/ppa/ubuntu {{ ubuntu_release }} main"
     filename: alacritty
   become: true
 

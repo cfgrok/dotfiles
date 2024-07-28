@@ -12,7 +12,9 @@
 
 - name: Find and set checksum file URL
   ansible.builtin.set_fact:
-    checksum_url: "{{ api_response.json | json_query('assets[?ends_with(name, `_amd64.deb.sha256`)] | [0].browser_download_url') }}"
+    checksum_url:
+      "{{ api_response.json | json_query('assets[?ends_with(name, `_amd64.deb.sha256`)] \
+      | [0].browser_download_url') }}"
 
 - name: Retrieve checksum file content
   ansible.builtin.uri:
@@ -27,7 +29,9 @@
 
 - name: Find and set deb file download URL
   ansible.builtin.set_fact:
-    download_url: "{{ api_response.json | json_query('assets[?ends_with(name, `_amd64.deb`)] | [0].browser_download_url') }}"
+    download_url:
+      "{{ api_response.json | json_query('assets[?ends_with(name, `_amd64.deb`)] \
+      | [0].browser_download_url') }}"
 
 - name: Download ripgrep deb file
   ansible.builtin.get_url:
