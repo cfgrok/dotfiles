@@ -1,4 +1,8 @@
 ---
+- name: Set install file path
+  ansible.builtin.set_fact:
+    install_file: /tmp/bat.deb
+
 - name: Retrieve latest bat release information from GitHub API
   ansible.builtin.uri:
     url: https://api.github.com/repos/sharkdp/bat/releases/latest
@@ -6,27 +10,25 @@
     return_content: true
   register: api_response
 
-- name: Set bat version number
+- name: Find and set deb file download URL
   ansible.builtin.set_fact:
-    bat_version: "{{ api_response.json.tag_name | regex_search('[\\d\\.]+') }}"
-
-- name: Set bat installation filename
-  ansible.builtin.set_fact:
-    bat_install_file: bat_{{ bat_version }}_amd64.deb
+    download_url:
+      "{{ api_response.json | json_query('assets[?ends_with(name, `_amd64.deb`)] \
+      | [?starts_with(name, `bat_`)] | [0].browser_download_url') }}"
 
 - name: Download bat
   ansible.builtin.get_url:
-    url: "https://github.com/sharkdp/bat/releases/download/v{{ bat_version }}/{{ bat_install_file }}"
-    dest: /tmp/
+    url: "{{ download_url }}"
+    dest: "{{ install_file }}"
     mode: "0600"
 
 - name: Install bat
   ansible.builtin.apt:
-    deb: "/tmp/{{ bat_install_file }}"
+    deb: "{{ install_file }}"
   become: true
 
 - name: Clean up bat install file
   ansible.builtin.file:
-    path: "/tmp/{{ bat_install_file }}"
+    path: "{{ install_file }}"
     state: absent
   become: true
