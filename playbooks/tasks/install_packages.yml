@@ -60,7 +60,6 @@
       - nmap
       - peek
       - playerctl
-      - ripgrep
       - screenkey
       - ssh-askpass-gnome
       - simplescreenrecorder
@@ -101,15 +100,6 @@
     group: root
     mode: "0644"
   become: true
-
-- name: Symlink rg config files
-  ansible.builtin.file:
-    src: "{{ playbook_dir }}/files/{{ item }}"
-    path: "~/.config/rg/{{ item }}"
-    state: link
-  loop:
-    - rgignore
-    - rgrc
 
 - name: Symlink fd ignore file
   ansible.builtin.file:

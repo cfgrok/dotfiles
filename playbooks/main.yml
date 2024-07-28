@@ -63,6 +63,10 @@
       ansible.builtin.import_tasks: tasks/git_config.yml
       tags: git_config
 
+    - name: Install ripgrep
+      ansible.builtin.import_tasks: tasks/ripgrep.yml
+      tags: ripgrep
+
     - name: Install Lazygit
       ansible.builtin.import_tasks: tasks/lazygit.yml
       tags: lazygit

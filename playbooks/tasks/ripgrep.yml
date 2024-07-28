@@ -1,0 +1,57 @@
+---
+- name: Set install file path
+  ansible.builtin.set_fact:
+    install_file: /tmp/ripgrep.deb
+
+- name: Retrieve latest ripgrep release information from GitHub API
+  ansible.builtin.uri:
+    url: https://api.github.com/repos/BurntSushi/ripgrep/releases/latest
+    method: GET
+    return_content: true
+  register: api_response
+
+- name: Find and set checksum file URL
+  ansible.builtin.set_fact:
+    checksum_url: "{{ api_response.json | json_query('assets[?ends_with(name, `_amd64.deb.sha256`)] | [0].browser_download_url') }}"
+
+- name: Retrieve checksum file content
+  ansible.builtin.uri:
+    url: "{{ checksum_url }}"
+    method: GET
+    return_content: true
+  register: checksum_response
+
+- name: Find and set checksum
+  ansible.builtin.set_fact:
+    checksum: "{{ checksum_response.content | regex_search('[\\da-f]+') }}"
+
+- name: Find and set deb file download URL
+  ansible.builtin.set_fact:
+    download_url: "{{ api_response.json | json_query('assets[?ends_with(name, `_amd64.deb`)] | [0].browser_download_url') }}"
+
+- name: Download ripgrep deb file
+  ansible.builtin.get_url:
+    url: "{{ download_url }}"
+    dest: "{{ install_file }}"
+    checksum: "sha256:{{ checksum }}"
+    mode: "0600"
+
+- name: Install ripgrep
+  ansible.builtin.apt:
+    deb: "{{ install_file }}"
+  become: true
+
+- name: Clean up ripgrep install file
+  ansible.builtin.file:
+    path: "{{ install_file }}"
+    state: absent
+  become: true
+
+- name: Symlink rg config files
+  ansible.builtin.file:
+    src: "{{ playbook_dir }}/files/{{ item }}"
+    path: "~/.config/rg/{{ item }}"
+    state: link
+  loop:
+    - rgignore
+    - rgrc
