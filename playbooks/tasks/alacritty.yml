@@ -5,10 +5,17 @@
     dest: /tmp/alacritty-key
     mode: "0600"
 
+- name: Ensure apt keyring directory exists
+  ansible.builtin.file:
+    path: /etc/apt/keyrings
+    state: directory
+    mode: "0755"
+  become: true
+
 - name: Dearmor signing key and save in keyrings directory
   ansible.builtin.command:
-    cmd: gpg --dearmor -o /usr/share/keyrings/alacritty.gpg /tmp/alacritty-key
-    creates: /usr/share/keyrings/alacritty.gpg
+    cmd: gpg --dearmor -o /etc/apt/keyrings/alacritty-archive-keyring.gpg /tmp/alacritty-key
+    creates: /etc/apt/keyrings/alacritty-archive-keyring.gpg
   become: true
 
 - name: Remove downloaded key file
@@ -17,13 +24,9 @@
     state: absent
 
 - name: Create apt source file
-  ansible.builtin.copy:
-    dest: /etc/apt/sources.list.d/alacritty.list
-    content: "deb [signed-by=/usr/share/keyrings/alacritty.gpg] https://ppa.launchpadcontent.net/aslatter/ppa/ubuntu {{ ubuntu_release }} main"
-    owner: root
-    group: root
-    mode: "0644"
-    force: false
+  ansible.builtin.apt_repository:
+    repo: "deb [signed-by=/etc/apt/keyrings/alacritty-archive-keyring.gpg] https://ppa.launchpadcontent.net/aslatter/ppa/ubuntu {{ ubuntu_release }} main"
+    filename: alacritty
   become: true
 
 - name: Install Alacritty
